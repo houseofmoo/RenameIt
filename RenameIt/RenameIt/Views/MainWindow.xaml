@@ -1,0 +1,59 @@
+﻿<Window x:Class="RenameIt.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RenameIt"
+        mc:Ignorable="d"
+        Title="RenameIt" Height="500" Width="900">
+    <Grid>
+        <!-- Grid Definitions -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- List View / Main Content -->
+        <ListView Grid.Column="0" ItemsSource="{Binding Items}" x:Name="listView">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="{Binding ListViewColumnWidth}" DisplayMemberBinding="{Binding Name}" Header="Name"/>
+                    <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Arrow}" Header="=>"/>
+                    <GridViewColumn Width="{Binding ListViewColumnWidth}" DisplayMemberBinding="{Binding NewName}" Header="New Name"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <!-- Text Boxes and Buttons -->
+        <StackPanel Grid.Column="1">
+            <TextBox x:Name="ShowNameTextBox" Padding="10" Text="{Binding ShowNameTextBoxText}" />
+            <TextBox x:Name="SeasonTextBox" Padding="10" Text="{Binding SeasonTextBoxText}"/>
+            <TextBox x:Name="EpisodeStartNumberTextBox" Padding="10" Text="{Binding EpisodeStartNumberTextBoxText}"/>
+            
+            <!-- Directory Button -->
+            <Button Content="{Binding DirectoryButtonContent, FallbackValue=Directory}" 
+                    Command="{Binding DirectoryButton.ClickCommand}"
+                    FontSize="12" 
+                    Padding="10"
+                    IsEnabled="{Binding DirectoryButton.ClickCommand.CanExecute}"
+                    Background="#efefef"/>
+
+            <!-- Preview Button -->
+            <Button Content="{Binding PreviewButtonContent, FallbackValue=Preview}" 
+                    Command="{Binding PreviewButton.ClickCommand}"
+                    FontSize="12"
+                    Padding="10"
+                    IsEnabled="{Binding PreviewButton.ClickCommand.CanExecute}"
+                    Background="#efefef"/>
+
+            <!-- Confirm Button -->
+            <Button Content="{Binding ConfirmButtonContent, FallbackValue=Confirm}"
+                    Command="{Binding ConfirmButton.ClickCommand}"
+                     FontSize="12" 
+                    Padding="10"
+                    IsEnabled="{Binding ConfirmButton.ClickCommand.CanExecute}"
+                    Background="#efefef"/>
+        </StackPanel>
+
+    </Grid>
+</Window>
