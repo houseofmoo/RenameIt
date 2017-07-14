@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -197,12 +198,12 @@ namespace RenameIt.ViewModels.MainWindow
             this.ConfirmButton = new ButtonViewModel(null, false);
 
             // on keyboard or mouse focus, we select all text in the text box
-            this._showNameTextBox.GotKeyboardFocus += textBoxOnFocusSelectALlText;
-            this._showNameTextBox.GotMouseCapture += textBoxOnFocusSelectALlText;
-            this._seasonTextBox.GotKeyboardFocus += textBoxOnFocusSelectALlText;
-            this._seasonTextBox.GotMouseCapture += textBoxOnFocusSelectALlText;
-            this._episodeStartNumberTextBox.GotKeyboardFocus += textBoxOnFocusSelectALlText;
-            this._episodeStartNumberTextBox.GotMouseCapture += textBoxOnFocusSelectALlText;
+            this._showNameTextBox.GotKeyboardFocus += textBoxOnFocusSelectAllText;
+            this._showNameTextBox.GotMouseCapture += textBoxOnFocusSelectAllText;
+            this._seasonTextBox.GotKeyboardFocus += textBoxOnFocusSelectAllText;
+            this._seasonTextBox.GotMouseCapture += textBoxOnFocusSelectAllText;
+            this._episodeStartNumberTextBox.GotKeyboardFocus += textBoxOnFocusSelectAllText;
+            this._episodeStartNumberTextBox.GotMouseCapture += textBoxOnFocusSelectAllText;
         }
         #endregion
 
@@ -220,23 +221,11 @@ namespace RenameIt.ViewModels.MainWindow
                 return;
 
             // set Items list to new files list
-            this.Items = this.Items = new ObservableCollection<Directory.ItemViewModel>(files.Select(file => new Directory.ItemViewModel(file)));
+            this.Items = new ObservableCollection<Directory.ItemViewModel>(files.Select(file => new Directory.ItemViewModel(file)));
 
-            // Check if this.Items list has anything, if so enable preview button
+            // if items list has any items, we enable preview button
             if (this.Items.Any())
-            {
-                // if the list has items, we enable preview button
                 this.enablePreviewButton();
-
-                // and just make sure confirm button remains disabled
-                this.disableConfirmButton();
-            }
-            else
-            {
-                // otherwise we make sure both buttons are disabled
-                this.disablePreviewButton();
-                this.disableConfirmButton();
-            }
         }
 
         /// <summary>
@@ -300,7 +289,7 @@ namespace RenameIt.ViewModels.MainWindow
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void textBoxOnFocusSelectALlText(object sender, RoutedEventArgs e)
+        private void textBoxOnFocusSelectAllText(object sender, RoutedEventArgs e)
         {
             var box = sender as TextBox;
             if (box != null && box.IsFocused)
@@ -330,7 +319,7 @@ namespace RenameIt.ViewModels.MainWindow
         }
 
         /// <summary>
-        /// Enables just the confirm button.
+        /// Enables the confirm button.
         /// </summary>
         private void enableConfirmButton()
         {
@@ -341,7 +330,7 @@ namespace RenameIt.ViewModels.MainWindow
         }
 
         /// <summary>
-        /// Disables both preview and confirm buttons.
+        /// Disables the confirm button.
         /// </summary>
         private void disableConfirmButton()
         {

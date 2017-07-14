@@ -33,18 +33,20 @@ namespace RenameIt.Helpers
         /// <param name="path"></param>
         public static List<Models.DirectoryItem> GetFilesFromDirectory()
         {
+            var files = new List<Models.DirectoryItem>();
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
                 if (System.Windows.Forms.DialogResult.OK == dialog.ShowDialog())
                 {
-                    var files = Helpers.MediaFiles.Get(dialog.SelectedPath);
+                    files = Helpers.MediaFiles.Get(dialog.SelectedPath);
                 }
-                return new List<Models.DirectoryItem>();
+
+                return files;
             }
         }
 
         /// <summary>
-        /// Gets name of media file from full path
+        /// Gets name of file from full path
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -53,8 +55,11 @@ namespace RenameIt.Helpers
             // split by separators
             string[] temp = path.Split(new string[] { "/", "\\" }, StringSplitOptions.RemoveEmptyEntries);
 
-            // if we didnt have any separators, then path is name of file
-            if (temp != null && temp.Length == 0)
+            if (temp == null)
+                // error, return empty string
+                return string.Empty;
+            else if (temp.Length == 0)
+                // if we didnt have any separators, then path is name of file
                 return path;
 
             // return last item which is the name
