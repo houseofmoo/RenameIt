@@ -7,25 +7,7 @@ namespace RenameIt.Helpers
 {
     static class MediaFiles
     {
-        /// <summary>
-        /// Returns a list of <see cref="Models.DirectoryItem"/> from provided path.
-        /// </summary>
-        /// <returns></returns>
-        public static List<Models.DirectoryItem> Get(string path)
-        {
-            var files = Directory.GetFiles(path);
 
-            var items = new List<Models.DirectoryItem>();
-
-            items.AddRange(files.Select(file => new Models.DirectoryItem
-            {
-                FullPath = file,
-                Name = getNameFromPath(file),
-                Directory = Path.GetDirectoryName(file)
-            }));
-
-            return items;
-        }
 
         /// <summary> 
         /// Attempts to retreive files from selected directory.
@@ -38,7 +20,7 @@ namespace RenameIt.Helpers
             {
                 if (System.Windows.Forms.DialogResult.OK == dialog.ShowDialog())
                 {
-                    files = Helpers.MediaFiles.Get(dialog.SelectedPath);
+                    files = MediaFiles.getDirectoryItemListFromPath(dialog.SelectedPath);
                 }
 
                 return files;
@@ -46,24 +28,34 @@ namespace RenameIt.Helpers
         }
 
         /// <summary>
-        /// Gets name of file from full path
+        /// Returns a list of <see cref="Models.DirectoryItem"/> from provided path.
         /// </summary>
-        /// <param name="path"></param>
         /// <returns></returns>
-        private static string getNameFromPath(string path)
+        private static List<Models.DirectoryItem> getDirectoryItemListFromPath(string path)
         {
-            // split by separators
-            string[] temp = path.Split(new string[] { "/", "\\" }, StringSplitOptions.RemoveEmptyEntries);
+            // value to be returned
+            var items = new List<Models.DirectoryItem>();
 
-            if (temp == null)
-                // error, return empty string
-                return string.Empty;
-            else if (temp.Length == 0)
-                // if we didnt have any separators, then path is name of file
-                return path;
+            // try get the files from the directory and add them to items list
+            try
+            {
+                var dirInfo = new DirectoryInfo(path);
+                var fileInfo = dirInfo.GetFiles();
 
-            // return last item which is the name
-            return temp[temp.Length - 1];
+                // add all files to items list
+                items.AddRange(fileInfo.Select(file => new Models.DirectoryItem
+                {
+                    FullPath = file.FullName,
+                    Name = file.Name,
+                    Directory = file.DirectoryName,
+                }));
+            }
+            catch (Exception e)
+            {
+                // TODO - Deal with exception
+            }
+
+            return items;
         }
     }
 }
