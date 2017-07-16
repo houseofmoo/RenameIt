@@ -36,7 +36,7 @@ namespace RenameIt.Helpers.Titles
         /// </summary>
         /// <param name="showInfo">Information we need to make request to API.</param>
         /// <returns></returns>
-        public static List<string> Get(Request showInfo)
+        public static List<string> GetEpisodeTitles(Models.Titles.Request showInfo)
         {
             // get show id
             string showId = fetchShowId(showInfo.ShowName);
@@ -45,7 +45,7 @@ namespace RenameIt.Helpers.Titles
                 return null;
 
             // get episode titles
-            List<string> titles = fetchShowTitles(showId, showInfo.Season, showInfo.EpisodeBegin, showInfo.EpisodeCount);
+            List<string> titles = fetchShowTitles(showId, showInfo);
 
             return titles;
         }
@@ -66,15 +66,15 @@ namespace RenameIt.Helpers.Titles
                 string url = TvApiShowIdQueryUrl + showName;
 
                 // make request and map reply to object
-                ShowIdReply reply = null;
+                Models.Titles.ShowIdReply reply = null;
                 using (var client = new System.Net.WebClient())
                 {
                     var json = client.DownloadString(url);
                     var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                    reply = serializer.Deserialize<ShowIdReply>(json);
+                    reply = serializer.Deserialize<Models.Titles.ShowIdReply>(json);
                 }
 
-                // return item we care about
+                // return info we care about
                 return reply.id.ToString();
             }
             catch
@@ -91,7 +91,7 @@ namespace RenameIt.Helpers.Titles
         /// <param name="epBegin">Which episode to begin with.</param>
         /// <param name="epCount">Number of episodes we are expecting to find.</param>
         /// <returns></returns>
-        private static List<string> fetchShowTitles(string showId, string season, string epBegin, int epCount)
+        private static List<string> fetchShowTitles(string showId, Models.Titles.Request showInfo)
         {
             // list that will hold episode titles
             List<string> titles = new List<string>();
@@ -99,22 +99,22 @@ namespace RenameIt.Helpers.Titles
             try
             {
                 // convert episode begin to int to incrementing through episodes
-                int episodeBegin = Convert.ToInt32(epBegin);
+                int episodeBegin = Convert.ToInt32(showInfo.EpisodeBegin);
 
                 // make a request for each episodes title
-                for (int i = 0; i < epCount; i++)
+                for (int i = 0; i < showInfo.EpisodeCount; i++)
                 {
                     // create url with show id, season, epBegin
                     string url = TvApiEpisodeInfoQueryUrl + showId + @"/" + TvApiEpsodeSeasonQuery +
-                                 season + TvApiEpisodeNumberQuery + episodeBegin;
+                                 showInfo.Season + TvApiEpisodeNumberQuery + episodeBegin;
 
                     // make request and map reply to object
-                    EpisodeInfoReply reply = null;
+                    Models.Titles.EpisodeInfoReply reply = null;
                     using (var client = new System.Net.WebClient())
                     {
                         var json = client.DownloadString(url);
                         var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                        reply = serializer.Deserialize<EpisodeInfoReply>(json);
+                        reply = serializer.Deserialize<Models.Titles.EpisodeInfoReply>(json);
 
                         titles.Add(reply.name);
                     }
@@ -128,10 +128,11 @@ namespace RenameIt.Helpers.Titles
             }
             catch
             {
+                // occurs when the api request was faulty
                 if (titles != null && titles.Any())
-                {
+                    // return titles we may have received
                     return titles;
-                }
+
                 return null;
             }
         }

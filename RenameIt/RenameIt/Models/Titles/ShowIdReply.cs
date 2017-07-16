@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RenameIt.Helpers.Titles
+namespace RenameIt.Models.Titles
 {
     /// <summary>
     /// The json object structure of a Show ID request to API.

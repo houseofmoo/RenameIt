@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RenameIt.Helpers.Titles
+namespace RenameIt.Models.Titles
 {
+    /// <summary>
+    /// Provides information about the tv show we're interested in.
+    /// </summary>
     public class Request
     {
         public string ShowName { get; set; }
