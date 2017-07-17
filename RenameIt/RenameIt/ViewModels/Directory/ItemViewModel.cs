@@ -1,5 +1,8 @@
 ﻿namespace RenameIt.ViewModels.Directory
 {
+    /// <summary>
+    /// ViewModel for a directory item.
+    /// </summary>
     class ItemViewModel : Base.ViewModel
     {
         #region private fields

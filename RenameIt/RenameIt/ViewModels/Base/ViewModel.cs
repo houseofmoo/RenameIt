@@ -2,6 +2,9 @@
 
 namespace RenameIt.ViewModels.Base
 {
+    /// <summary>
+    /// Base ViewModel other view models inherit from to get OnPropertyChanged event.
+    /// </summary>
     class ViewModel : INotifyPropertyChanged
     {
         private PropertyChangedEventHandler _propertyChanged;

@@ -4,7 +4,7 @@ using System.Windows.Input;
 namespace RenameIt.ViewModels.MainWindow
 {
     /// <summary>
-    /// A buttons command.
+    /// ViewModel for buttons.
     /// </summary>
     class ButtonViewModel
     {

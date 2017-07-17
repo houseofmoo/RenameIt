@@ -32,7 +32,7 @@ namespace RenameIt.Helpers.Titles
         #endregion
 
         /// <summary>
-        /// Returns a list of episode titles for the show based on season and starting point.
+        /// Returns a list of episode titles for the show based on season and starting point. Returns null if request failed.
         /// </summary>
         /// <param name="showInfo">Information we need to make request to API.</param>
         /// <returns></returns>

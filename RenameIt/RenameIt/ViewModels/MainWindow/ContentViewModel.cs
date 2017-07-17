@@ -6,6 +6,9 @@ using System.Windows.Controls;
 
 namespace RenameIt.ViewModels.MainWindow
 {
+    /// <summary>
+    /// ViewModel for the main window.
+    /// </summary>
     class ContentViewModel : Base.ViewModel
     {
         #region private constants

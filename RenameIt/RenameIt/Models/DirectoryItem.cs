@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace RenameIt.Models
 {
+    /// <summary>
+    /// Represents a file inside a directory.
+    /// </summary>
     class DirectoryItem
     {
         #region private fields
