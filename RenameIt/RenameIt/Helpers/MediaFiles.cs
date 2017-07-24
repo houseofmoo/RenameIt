@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
@@ -7,8 +8,6 @@ namespace RenameIt.Helpers
 {
     static class MediaFiles
     {
-
-
         /// <summary> 
         /// Attempts to retreive files from selected directory.
         /// </summary>
@@ -18,12 +17,37 @@ namespace RenameIt.Helpers
             var files = new List<Models.DirectoryItem>();
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
+                // personal use
+                dialog.SelectedPath = @"E:\FileZilla\";
+
                 if (System.Windows.Forms.DialogResult.OK == dialog.ShowDialog())
                 {
                     files = MediaFiles.getDirectoryItemListFromPath(dialog.SelectedPath);
                 }
 
                 return files;
+            }
+        }
+
+        /// <summary>
+        /// Changes file names to newly defined names.
+        /// </summary>
+        public static void UpdateFileNames(ObservableCollection<ViewModels.Directory.ItemViewModel> items) {
+            foreach (var item in items) {
+                // remove illegal characters
+                item.NewName = removeIllegalFileCharacters(item.NewName);
+
+                // change name
+                File.Move(item.FullPath, item.Directory + "\\" + item.NewName);
+
+                // update path
+                item.FullPath = item.Directory + "\\" + item.NewName;
+
+                // new name is now the name
+                item.Name = item.NewName;
+
+                // new name is now empty
+                item.NewName = string.Empty;
             }
         }
 
@@ -48,14 +72,34 @@ namespace RenameIt.Helpers
                     FullPath = file.FullName,
                     Name = file.Name,
                     Directory = file.DirectoryName,
+                    Extension = file.Extension,
                 }));
             }
             catch (Exception e)
             {
+                e.ToString();
                 // TODO - Deal with exception
             }
 
             return items;
+        }
+
+        /// <summary>
+        /// Removes illegal environment characters from file paths
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        private static string removeIllegalFileCharacters(string title) {
+            // get a list off all invalid characters
+            string illegal = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+
+
+            // remove and item that matches a illegal character
+            foreach (var c in illegal) {
+                title = title.Replace(c.ToString(), "");
+            }
+
+            return title;
         }
     }
 }

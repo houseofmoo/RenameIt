@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -13,14 +14,14 @@ namespace RenameIt.ViewModels.MainWindow
     {
         #region private constants
         // text box default values
-        private const string ShowName = "Show Name";
-        private const string Season = "Season";
-        private const string EpisodeStartNumber = "Episode Start Number";
+        private const string SHOWNAME = "Show Name";
+        private const string SEASON = "Season";
+        private const string EPISODESTART = "Episode Start Number";
 
         // button text default values
-        private const string Directory = "Select Directory";
-        private const string Preview = "Preview";
-        private const string Confirm = "Confirm";
+        private const string DIRECTORY = "Select Directory";
+        private const string PREVIEW = "Preview";
+        private const string CONFIRM = "Confirm";
         #endregion
 
         #region private fields
@@ -29,20 +30,22 @@ namespace RenameIt.ViewModels.MainWindow
         private ButtonViewModel _previewButton;
         private ButtonViewModel _confirmButton;
 
-        // text boxes
-        private TextBox _showNameTextBox;
-        private string _showNameTextBoxText;
-        private TextBox _seasonTextBox;
-        private string _seasonTextBoxText;
-        private TextBox _episodeStartNumberTextBox;
-        private string _episodeStartNumberTextBoxText;
-
-        // list view
-        private ListView _listView;
-        private double _listViewColumnWidth;
+        // text boxes text
+        private string _showName = SHOWNAME;
+        private string _season = SEASON;
+        private string _episodeStart = EPISODESTART;
 
         // data
         private ObservableCollection<Directory.ItemViewModel> _items;
+
+        // formatting
+        private double _listViewColumnSize = 265f;
+
+        // options
+        private bool _getEpisodeTitles = true;
+        private bool _ignoreSubTitles = false;
+        private bool _deleteNonMediaFiles = true;
+        private bool _searchSubDirectories = true;
         #endregion
 
         #region public properties
@@ -54,7 +57,8 @@ namespace RenameIt.ViewModels.MainWindow
             get { return _directoryButton; }
             set
             {
-                if (_directoryButton == value) return;
+                if (_directoryButton == value)
+                    return;
                 _directoryButton = value;
                 OnPropertyChanged(nameof(DirectoryButton));
             }
@@ -63,7 +67,7 @@ namespace RenameIt.ViewModels.MainWindow
         /// <summary>
         /// Returns directory button content.
         /// </summary>
-        public string DirectoryButtonContent { get { return Directory; } }
+        public string DirectoryButtonContent { get { return DIRECTORY; } }
 
         /// <summary>
         /// Preview button.
@@ -73,7 +77,8 @@ namespace RenameIt.ViewModels.MainWindow
             get { return _previewButton; }
             set
             {
-                if (_previewButton == value) return;
+                if (_previewButton == value)
+                    return;
                 _previewButton = value;
                 OnPropertyChanged(nameof(PreviewButton));
             }
@@ -82,7 +87,7 @@ namespace RenameIt.ViewModels.MainWindow
         /// <summary>
         /// Returns preview button content
         /// </summary>
-        public string PreviewButtonContent { get { return Preview; } }
+        public string PreviewButtonContent { get { return PREVIEW; } }
 
         /// <summary>
         /// Confirm button.
@@ -92,7 +97,8 @@ namespace RenameIt.ViewModels.MainWindow
             get { return _confirmButton; }
             set
             {
-                if (_confirmButton == value) return;
+                if (_confirmButton == value)
+                    return;
                 _confirmButton = value;
                 OnPropertyChanged(nameof(ConfirmButton));
             }
@@ -101,61 +107,50 @@ namespace RenameIt.ViewModels.MainWindow
         /// <summary>
         /// Returns confirm button content.
         /// </summary>
-        public string ConfirmButtonContent { get { return Confirm; } }
+        public string ConfirmButtonContent { get { return CONFIRM; } }
 
         /// <summary>
         /// The show name text boxes text. If text is ever empty, sets value to "Show Name".
         /// </summary>
-        public string ShowNameTextBoxText
+        public string ShowName
         {
-            get { return _showNameTextBoxText; }
+            get { return _showName; }
             set
             {
-                if (value == _showNameTextBoxText) return;
-                _showNameTextBoxText = value == string.Empty ? ShowName : value;
-                OnPropertyChanged(nameof(ShowNameTextBoxText));
+                if (value == _showName)
+                    return;
+                _showName = value == string.Empty ? ShowName : value;
+                OnPropertyChanged(nameof(ShowName));
             }
         }
 
         /// <summary>
         /// The season text boxes text. If text is ever empty, sets value to "Season".
         /// </summary>
-        public string SeasonTextBoxText
+        public string Season
         {
-            get { return _seasonTextBoxText; }
+            get { return _season; }
             set
             {
-                if (value == _seasonTextBoxText) return;
-                _seasonTextBoxText = value == string.Empty ? Season : value;
-                OnPropertyChanged(nameof(SeasonTextBoxText));
+                if (value == _season)
+                    return;
+                _season = value == string.Empty ? SEASON : value;
+                OnPropertyChanged(nameof(Season));
             }
         }
 
         /// <summary>
         /// The episdoe start number text boxes text. If text is ever empty, sets value to "Episode Start Number".
         /// </summary>
-        public string EpisodeStartNumberTextBoxText
+        public string EpisodeStart
         {
-            get { return _episodeStartNumberTextBoxText; }
+            get { return _episodeStart; }
             set
             {
-                if (value == _episodeStartNumberTextBoxText) return;
-                _episodeStartNumberTextBoxText = value == string.Empty ? EpisodeStartNumber : value;
-                OnPropertyChanged(nameof(EpisodeStartNumberTextBoxText));
-            }
-        }
-
-        /// <summary>
-        /// Returns the current list view column width.
-        /// </summary>
-        public double ListViewColumnWidth
-        {
-            get { return _listViewColumnWidth; }
-            set
-            {
-                if (_listViewColumnWidth == value) return;
-                _listViewColumnWidth = value;
-                OnPropertyChanged(nameof(ListViewColumnWidth));
+                if (value == _episodeStart)
+                    return;
+                _episodeStart = value == string.Empty ? EPISODESTART : value;
+                OnPropertyChanged(nameof(EpisodeStart));
             }
         }
 
@@ -167,9 +162,25 @@ namespace RenameIt.ViewModels.MainWindow
             get { return _items; }
             set
             {
-                if (_items == value) return;
+                if (_items == value)
+                    return;
                 _items = value;
                 OnPropertyChanged(nameof(Items));
+            }
+        }
+
+        /// <summary>
+        /// Sets the column width of the list view initially
+        /// </summary>
+        public double ListViewColumnSize
+        {
+            get { return _listViewColumnSize; }
+            set
+            {
+                if (_listViewColumnSize == value)
+                    return;
+                _listViewColumnSize = value;
+                OnPropertyChanged(nameof(ListViewColumnSize));
             }
         }
         #endregion
@@ -178,20 +189,8 @@ namespace RenameIt.ViewModels.MainWindow
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public ContentViewModel(ListView listView, TextBox showNameTextBox, TextBox seasonTextBox, TextBox episodeStartNumberTextBox)
+        public ContentViewModel()
         {
-            // set UI elements we need to manipulate
-            this._listView = listView;
-            this._showNameTextBox = showNameTextBox;
-            this._seasonTextBox = seasonTextBox;
-            this._episodeStartNumberTextBox = episodeStartNumberTextBox;
-
-            // default window settings
-            this.ListViewColumnWidth = 250f;
-            this.ShowNameTextBoxText = ShowName;
-            this.SeasonTextBoxText = Season;
-            this.EpisodeStartNumberTextBoxText = EpisodeStartNumber;
-
             // create items data structure, this holds the bulk of the data
             this.Items = new ObservableCollection<Directory.ItemViewModel>();
 
@@ -199,18 +198,10 @@ namespace RenameIt.ViewModels.MainWindow
             this.DirectoryButton = new ButtonViewModel(() => directoryButtonClick(), true);
             this.PreviewButton = new ButtonViewModel(null, false);
             this.ConfirmButton = new ButtonViewModel(null, false);
-
-            // on keyboard or mouse focus, we select all text in the text box
-            this._showNameTextBox.GotKeyboardFocus += textBoxOnFocusSelectAllText;
-            this._showNameTextBox.GotMouseCapture += textBoxOnFocusSelectAllText;
-            this._seasonTextBox.GotKeyboardFocus += textBoxOnFocusSelectAllText;
-            this._seasonTextBox.GotMouseCapture += textBoxOnFocusSelectAllText;
-            this._episodeStartNumberTextBox.GotKeyboardFocus += textBoxOnFocusSelectAllText;
-            this._episodeStartNumberTextBox.GotMouseCapture += textBoxOnFocusSelectAllText;
         }
         #endregion
 
-        #region private functions
+        #region button click methods
         /// <summary>
         /// When the directory button is clicked.
         /// </summary>
@@ -228,7 +219,12 @@ namespace RenameIt.ViewModels.MainWindow
 
             // if items list has any items, we enable preview button
             if (this.Items.Any())
-                this.enablePreviewButton();
+            {
+                // TODO
+                // Recreating the object each time we enable or disable a button is a horrible
+                // way to achieve this functionality. Fix it.
+                this.PreviewButton = new ButtonViewModel(() => previewButtonClick(), true);
+            }
         }
 
         /// <summary>
@@ -236,14 +232,33 @@ namespace RenameIt.ViewModels.MainWindow
         /// </summary>
         private void previewButtonClick()
         {
-            //List<string> titles = Helpers.FetchTitles();
+            // if input is invalid
+            if (!Helpers.Util.ValidateInput(this.ShowName, this.Season, this.EpisodeStart, this.Items.Count))
+            {
+                MessageBox.Show("Please provide a show name, an season number (decimal) and a episode begin number (decimal).");
+                return;
+            }
+
+            // create request
+            var showInfo = new Models.Titles.Request()
+            {
+                ShowName = this.ShowName,
+                Season = this.Season,
+                EpisodeBegin = this.EpisodeStart,
+                EpisodeCount = this.Items.Count,
+            };
+
+            // fetch titles
+            List<string> titles = Helpers.Titles.Fetcher.GetEpisodeTitles(showInfo);
 
             // present changes to user
-            //this.previewNewNames(titles);
-            this.previewNewNames();
+            this.previewNewNames(titles);
 
             // enable the confirm button
-            this.enableConfirmButton();
+            // TODO
+            // Recreating the object each time we enable or disable a button is a horrible
+            // way to achieve this functionality. Fix it.
+            this.ConfirmButton = new ButtonViewModel(() => confirmButtonClick(), true);
         }
 
         /// <summary>
@@ -252,95 +267,49 @@ namespace RenameIt.ViewModels.MainWindow
         private void confirmButtonClick()
         {
             // make changes to files
-            this.updateFileNames();
+            Helpers.MediaFiles.UpdateFileNames(this.Items);
 
-            // disable preview and confirm buttons
-            this.disablePreviewButton();
-            this.disableConfirmButton();
-        }
-
-        /// <summary>
-        /// Retreives episode titles and presents a preview of the new names to the user.
-        /// </summary>
-        private void previewNewNames()
-        {
-            // update items with new names
-            int counter = 1;
-            foreach (var item in this.Items)
-            {
-                item.NewName = item.Name + counter.ToString();
-                counter++;
-            }
-        }
-
-        /// <summary>
-        /// Changes file names to newly defined names.
-        /// </summary>
-        private void updateFileNames()
-        {
-            foreach (var item in this.Items)
-            {
-                System.IO.File.Move(item.FullPath, item.Directory + "\\" + item.NewName);
-                item.FullPath = item.Directory + "\\" + item.NewName;
-                item.Name = item.NewName;
-                item.NewName = string.Empty;
-            }
-        }
-
-        /// <summary>
-        /// When the a Text Box receives focus, select all text in the text box.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void textBoxOnFocusSelectAllText(object sender, RoutedEventArgs e)
-        {
-            var box = sender as TextBox;
-            if (box != null && box.IsFocused)
-                box.SelectAll();
-        }
-
-        /// <summary>
-        /// Enables the preview button.
-        /// </summary>
-        private void enablePreviewButton()
-        {
-            // TODO
-            // Recreating the object each time we enable or disable a button is a horrible
-            // way to achieve this functionality. Fix it.
-            this.PreviewButton = new ButtonViewModel(() => previewButtonClick(), true);
-        }
-
-        /// <summary>
-        /// Disables the preview button.
-        /// </summary>
-        private void disablePreviewButton()
-        {
-            // TODO
-            // Recreating the object each time we enable or disable a button is a horrible
-            // way to achieve this functionality. Fix it.
-            this.PreviewButton = new ButtonViewModel(null, false);
-        }
-
-        /// <summary>
-        /// Enables the confirm button.
-        /// </summary>
-        private void enableConfirmButton()
-        {
-            // TODO
-            // Recreating the object each time we enable or disable a button is a horrible
-            // way to achieve this functionality. Fix it.
-            this.ConfirmButton = new ButtonViewModel(() => confirmButtonClick(), true);
-        }
-
-        /// <summary>
-        /// Disables the confirm button.
-        /// </summary>
-        private void disableConfirmButton()
-        {
+            // disable confirm button
             // TODO
             // Recreating the object each time we enable or disable a button is a horrible
             // way to achieve this functionality. Fix it.
             this.ConfirmButton = new ButtonViewModel(null, false);
+        }
+        #endregion
+
+        #region misc methods
+        /// <summary>
+        /// Retreives episode titles and presents a preview of the new names to the user.
+        /// </summary>
+        private void previewNewNames(List<string> titles)
+        {
+            // counter to increment episode number
+            int counter = Convert.ToInt32(this.EpisodeStart);
+
+            // index to titles
+            int titleIndex = 0;
+            var title = string.Empty;
+
+            // update items with new names
+            foreach (var item in this.Items)
+            {
+                // check if we can add the title
+                if (titles != null && titleIndex < titles.Count)
+                {
+                    title = titles[titleIndex];
+                }
+                else
+                {
+                    title = string.Empty;
+                }
+
+                // build new name and add it to the items field
+                item.AddNewName(this.ShowName, this.Season, counter, title);
+
+                // increment counter and indexer
+                counter++;
+                titleIndex++;
+            }
         }
         #endregion
     }

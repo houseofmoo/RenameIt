@@ -1,0 +1,7 @@
+1. Add ability to add sub folders so you can mass 
+change several season at once
+
+2. check box to turn fetcher on/off
+
+3. contentviewmodel is a mess. previewButtonClick() needs 
+validation, and addLeadingZeroes() probably needs work.

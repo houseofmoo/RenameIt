@@ -12,8 +12,7 @@ namespace RenameIt.Views
             InitializeComponent();
 
             // connect to the main windows view model
-            this.DataContext = new ViewModels.MainWindow.ContentViewModel(this.listView,
-                this.ShowNameTextBox, this.SeasonTextBox, this.EpisodeStartNumberTextBox);
+            this.DataContext = new ViewModels.MainWindow.ContentViewModel();
         }
     }
 }

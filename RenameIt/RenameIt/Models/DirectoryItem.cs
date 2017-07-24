@@ -9,12 +9,13 @@ namespace RenameIt.Models
     /// <summary>
     /// Represents a file inside a directory.
     /// </summary>
-    class DirectoryItem
+    public class DirectoryItem
     {
         #region private fields
         private string _fullPath;
         private string _directory;
         private string _name;
+        private string _extension;
         #endregion
 
         #region public properties
@@ -29,11 +30,18 @@ namespace RenameIt.Models
             get { return _name; }
             set { _name = value; }
         }
+
         public string Directory
         {
             get { return _directory; }
             set { _directory = value; }
-        } 
+        }
+        
+        public string Extension
+        {
+            get { return _extension; }
+            set { _extension = value; }
+        }
         #endregion
     }
 }

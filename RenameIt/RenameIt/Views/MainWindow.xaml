@@ -17,18 +17,18 @@
         <ListView Grid.Column="0" ItemsSource="{Binding Items}" x:Name="listView">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="{Binding ListViewColumnWidth}" DisplayMemberBinding="{Binding Name}" Header="Name"/>
+                    <GridViewColumn Width="{Binding ListViewColumnSize}"  DisplayMemberBinding="{Binding Name}" Header="Name"/>
                     <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Arrow}" Header="=>"/>
-                    <GridViewColumn Width="{Binding ListViewColumnWidth}" DisplayMemberBinding="{Binding NewName}" Header="New Name"/>
+                    <GridViewColumn Width="{Binding ListViewColumnSize}" DisplayMemberBinding="{Binding NewName}" Header="New Name"/>
                 </GridView>
             </ListView.View>
         </ListView>
 
         <!-- Text Boxes and Buttons -->
         <StackPanel Grid.Column="1">
-            <TextBox x:Name="ShowNameTextBox" Padding="10" Text="{Binding ShowNameTextBoxText}" />
-            <TextBox x:Name="SeasonTextBox" Padding="10" Text="{Binding SeasonTextBoxText}"/>
-            <TextBox x:Name="EpisodeStartNumberTextBox" Padding="10" Text="{Binding EpisodeStartNumberTextBoxText}"/>
+            <TextBox x:Name="ShowNameTextBox" Padding="10" Text="{Binding ShowName}" />
+            <TextBox x:Name="SeasonTextBox" Padding="10" Text="{Binding Season}"/>
+            <TextBox x:Name="EpisodeStartNumberTextBox" Padding="10" Text="{Binding EpisodeStart}"/>
             
             <!-- Directory Button -->
             <Button Content="{Binding DirectoryButtonContent, FallbackValue=Directory}" 
@@ -53,6 +53,19 @@
                     Padding="10"
                     IsEnabled="{Binding ConfirmButton.ClickCommand.CanExecute}"
                     Background="#efefef"/>
+
+            <CheckBox Content="Get Episode Titles" 
+                      Margin="5"
+                      IsChecked="True"/>
+            <CheckBox Content="Ignore Subtitles" 
+                      Margin="5"/>
+            <CheckBox Content="Delete Non-Media files" 
+                      Margin="5"
+                      IsChecked="True"/>
+            <CheckBox Content="Search Subdirectories" 
+                      Margin="5"
+                      IsChecked="True"/>
+            
         </StackPanel>
 
     </Grid>

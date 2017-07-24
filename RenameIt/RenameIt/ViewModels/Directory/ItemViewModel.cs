@@ -1,14 +1,18 @@
-﻿namespace RenameIt.ViewModels.Directory
+﻿using System;
+using System.Collections.Generic;
+
+namespace RenameIt.ViewModels.Directory
 {
     /// <summary>
     /// ViewModel for a directory item.
     /// </summary>
-    class ItemViewModel : Base.ViewModel
+    public class ItemViewModel : Base.ViewModel
     {
         #region private fields
         private string _fullPath;
         private string _directory;
         private string _name;
+        private string _extension;
         private string _newName;
         #endregion
 
@@ -21,7 +25,8 @@
             get { return _fullPath; }
             set
             {
-                if (_fullPath == value) return;
+                if (_fullPath == value)
+                    return;
                 _fullPath = value;
                 OnPropertyChanged(nameof(FullPath));
             }
@@ -35,7 +40,8 @@
             get { return _directory; }
             set
             {
-                if (_directory == value) return;
+                if (_directory == value)
+                    return;
                 _directory = value;
                 OnPropertyChanged(nameof(Directory));
             }
@@ -49,9 +55,25 @@
             get { return _name; }
             set
             {
-                if (_name == value) return;
+                if (_name == value)
+                    return;
                 _name = value;
                 OnPropertyChanged(nameof(Name));
+            }
+        }
+
+        /// <summary>
+        /// Extension of the file
+        /// </summary>
+        public string Extension
+        {
+            get { return _extension; }
+            set
+            {
+                if (_extension == value)
+                    return;
+                _extension = value;
+                OnPropertyChanged(nameof(Extension));
             }
         }
 
@@ -63,7 +85,8 @@
             get { return _newName; }
             set
             {
-                if (_newName == value) return;
+                if (_newName == value)
+                    return;
                 _newName = value;
                 OnPropertyChanged(nameof(NewName));
             }
@@ -96,7 +119,36 @@
             this.FullPath = item.FullPath;
             this.Name = item.Name;
             this.Directory = item.Directory;
-            NewName = string.Empty;
+            this.Extension = item.Extension;
+            this.NewName = string.Empty;
+        }
+        #endregion
+
+        #region methods
+        public void AddNewName(string showname, string season, int epNum, string title)
+        {
+            // build new name
+            this.NewName = $"{showname} - " +
+                $"S{addLeadingZeroes(season)}" +
+                $"E{addLeadingZeroes(epNum.ToString())}";
+
+            if (title != string.Empty)
+                this.NewName += $" - {title}";
+
+            this.NewName += this.Extension;
+        }
+
+        /// <summary>
+        /// Adds leading zeros to a string that represents a number.
+        /// </summary>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        public static string addLeadingZeroes(string num)
+        {
+            int _num = Convert.ToInt32(num);
+
+            // return number
+            return _num < 10 ? "0" + _num.ToString() : _num.ToString();
         }
         #endregion
     }
