@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- List View / Main Content -->
-        <ListView Grid.Column="0" ItemsSource="{Binding Items}" x:Name="listView">
+        <ListView Grid.Column="0" ItemsSource="{Binding VideoItems}" x:Name="listView">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="{Binding ListViewColumnSize}"  DisplayMemberBinding="{Binding Name}" Header="Name"/>
@@ -54,17 +54,18 @@
                     IsEnabled="{Binding ConfirmButton.ClickCommand.CanExecute}"
                     Background="#efefef"/>
 
-            <CheckBox Content="Get Episode Titles" 
+            <CheckBox Content="{Binding GetEpisodeTitlesContent}" 
                       Margin="5"
-                      IsChecked="True"/>
-            <CheckBox Content="Ignore Subtitles" 
-                      Margin="5"/>
-            <CheckBox Content="Delete Non-Media files" 
+                      IsChecked="{Binding GetEpisodeTitles}"/>
+            <CheckBox Content="{Binding IgnoreSubtitlesContent}" 
                       Margin="5"
-                      IsChecked="True"/>
-            <CheckBox Content="Search Subdirectories" 
+                      IsChecked="{Binding IgnoreSubtitles}"/>
+            <CheckBox Content="{Binding DeleteNonMediaFilesContent}" 
                       Margin="5"
-                      IsChecked="True"/>
+                      IsChecked="{Binding DeleteNonMediaFiles}"/>
+            <CheckBox Content="{Binding SearchSubDirectoriesContent}" 
+                      Margin="5"
+                      IsChecked="{Binding SearchSubDirectories}"/>
             
         </StackPanel>
 

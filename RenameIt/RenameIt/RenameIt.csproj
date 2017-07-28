@@ -66,6 +66,7 @@
     </Compile>
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Helpers\Util.cs" />
+    <Compile Include="Identifiers\Extensions.cs" />
     <Compile Include="Models\Titles\EpisodeInfoReply.cs" />
     <Compile Include="Models\Titles\Request.cs" />
     <Compile Include="Models\Titles\ShowIdReply.cs" />

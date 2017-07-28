@@ -6,7 +6,7 @@ namespace RenameIt.ViewModels.Directory
     /// <summary>
     /// ViewModel for a directory item.
     /// </summary>
-    public class ItemViewModel : Base.ViewModel
+    public class VideoItemViewModel : Base.ViewModel
     {
         #region private fields
         private string _fullPath;
@@ -102,19 +102,20 @@ namespace RenameIt.ViewModels.Directory
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public ItemViewModel()
+        public VideoItemViewModel()
         {
             FullPath = string.Empty;
             Directory = string.Empty;
             Name = string.Empty;
             NewName = string.Empty;
+
         }
 
         /// <summary>
         /// Construct a new <see cref="DirectoryItemViewModel"/> using a <see cref="Models.DirectoryItem"/> object.
         /// </summary>
         /// <param name="item"></param>
-        public ItemViewModel(Models.DirectoryItem item)
+        public VideoItemViewModel(Models.DirectoryItem item)
         {
             this.FullPath = item.FullPath;
             this.Name = item.Name;
@@ -143,7 +144,7 @@ namespace RenameIt.ViewModels.Directory
         /// </summary>
         /// <param name="num"></param>
         /// <returns></returns>
-        public static string addLeadingZeroes(string num)
+        private static string addLeadingZeroes(string num)
         {
             int _num = Convert.ToInt32(num);
 

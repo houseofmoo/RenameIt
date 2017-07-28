@@ -21,18 +21,53 @@ namespace RenameIt.Helpers
                 dialog.SelectedPath = @"E:\FileZilla\";
 
                 if (System.Windows.Forms.DialogResult.OK == dialog.ShowDialog())
-                {
                     files = MediaFiles.getDirectoryItemListFromPath(dialog.SelectedPath);
-                }
 
                 return files;
             }
         }
 
         /// <summary>
+        /// Grabs only items from the files list that match video file extensions
+        /// </summary>
+        /// <param name="files">List of files pulled from directory</param>
+        /// <returns></returns>
+        public static List<Models.DirectoryItem> GetOnlyVideoFiles(List<Models.DirectoryItem> files)
+        {
+            var videoFiles = new List<Models.DirectoryItem>();
+            foreach (var file in files)
+            {
+                // only add files that match 
+                if (Identifiers.Extensions.Video.Contains(file.Extension.ToLower()))
+                    videoFiles.Add(file);
+            }
+
+            return videoFiles;
+        }
+
+        /// <summary>
+        /// Grabs items from the files list that match video file or subtitle extensions
+        /// </summary>
+        /// <param name="files">List of files pulled from directory</param>
+        /// <returns></returns>
+        public static List<Models.DirectoryItem> GetVideoAndSubtitleFiles(List<Models.DirectoryItem> files)
+        {
+            var videoFiles = new List<Models.DirectoryItem>();
+            foreach (var file in files)
+            {
+                // only add files that match 
+                if (Identifiers.Extensions.Video.Contains(file.Extension.ToLower()) ||
+                    Identifiers.Extensions.Subtitle.Contains(file.Extension.ToLower()))
+                    videoFiles.Add(file);
+            }
+
+            return videoFiles;
+        }
+
+        /// <summary>
         /// Changes file names to newly defined names.
         /// </summary>
-        public static void UpdateFileNames(ObservableCollection<ViewModels.Directory.ItemViewModel> items) {
+        public static void UpdateFileNames(ObservableCollection<ViewModels.Directory.VideoItemViewModel> items) {
             foreach (var item in items) {
                 // remove illegal characters
                 item.NewName = removeIllegalFileCharacters(item.NewName);
@@ -93,11 +128,9 @@ namespace RenameIt.Helpers
             // get a list off all invalid characters
             string illegal = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
 
-
             // remove and item that matches a illegal character
-            foreach (var c in illegal) {
+            foreach (var c in illegal)
                 title = title.Replace(c.ToString(), "");
-            }
 
             return title;
         }

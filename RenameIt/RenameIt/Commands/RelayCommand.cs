@@ -63,7 +63,7 @@ namespace RenameIt.Commands
         }
 
         /// <summary>
-        /// Executes the actoin.
+        /// Executes the action.
         /// </summary>
         /// <param name="parameter"></param>
         public void Execute(object parameter)
