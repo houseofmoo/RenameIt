@@ -32,12 +32,12 @@ namespace RenameIt.Helpers
         /// </summary>
         /// <param name="files">List of files pulled from directory</param>
         /// <returns></returns>
-        public static List<Models.DirectoryItem> GetOnlyVideoFiles(List<Models.DirectoryItem> files)
+        public static List<Models.DirectoryItem> GetVideoFiles(List<Models.DirectoryItem> files)
         {
             var videoFiles = new List<Models.DirectoryItem>();
             foreach (var file in files)
             {
-                // only add files that match 
+                // only add files that match video extension
                 if (Identifiers.Extensions.Video.Contains(file.Extension.ToLower()))
                     videoFiles.Add(file);
             }
@@ -46,18 +46,17 @@ namespace RenameIt.Helpers
         }
 
         /// <summary>
-        /// Grabs items from the files list that match video file or subtitle extensions
+        /// Grabs items from the files list that match subtitle extensions
         /// </summary>
         /// <param name="files">List of files pulled from directory</param>
         /// <returns></returns>
-        public static List<Models.DirectoryItem> GetVideoAndSubtitleFiles(List<Models.DirectoryItem> files)
+        public static List<Models.DirectoryItem> GetSubtitleFiles(List<Models.DirectoryItem> files)
         {
             var videoFiles = new List<Models.DirectoryItem>();
             foreach (var file in files)
             {
-                // only add files that match 
-                if (Identifiers.Extensions.Video.Contains(file.Extension.ToLower()) ||
-                    Identifiers.Extensions.Subtitle.Contains(file.Extension.ToLower()))
+                // only add files that match subtitle extension 
+                if (Identifiers.Extensions.Subtitle.Contains(file.Extension.ToLower()))
                     videoFiles.Add(file);
             }
 
@@ -67,8 +66,10 @@ namespace RenameIt.Helpers
         /// <summary>
         /// Changes file names to newly defined names.
         /// </summary>
-        public static void UpdateFileNames(ObservableCollection<ViewModels.Directory.VideoItemViewModel> items) {
-            foreach (var item in items) {
+        public static void UpdateFileNames(ObservableCollection<ViewModels.Directory.VideoViewModel> items)
+        {
+            foreach (var item in items)
+            {
                 // remove illegal characters
                 item.NewName = removeIllegalFileCharacters(item.NewName);
 
@@ -124,7 +125,8 @@ namespace RenameIt.Helpers
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        private static string removeIllegalFileCharacters(string title) {
+        private static string removeIllegalFileCharacters(string title)
+        {
             // get a list off all invalid characters
             string illegal = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
 

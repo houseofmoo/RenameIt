@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RenameIt"
         mc:Ignorable="d"
-        Title="RenameIt" Height="500" Width="900">
-    <Grid>
+        Title="RenameIt" Height="800" Width="900">
+    <Grid Margin="10">
         <!-- Grid Definitions -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -14,21 +14,57 @@
         </Grid.ColumnDefinitions>
 
         <!-- List View / Main Content -->
-        <ListView Grid.Column="0" ItemsSource="{Binding VideoItems}" x:Name="listView">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="{Binding ListViewColumnSize}"  DisplayMemberBinding="{Binding Name}" Header="Name"/>
-                    <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Arrow}" Header="=>"/>
-                    <GridViewColumn Width="{Binding ListViewColumnSize}" DisplayMemberBinding="{Binding NewName}" Header="New Name"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <Grid Grid.Column="0" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+        <!-- Videos listview-->
+            <StackPanel Grid.Row="0" >
+                <TextBlock Text="Videos" FontSize="14" HorizontalAlignment="Center"/>
+                <ListView ItemsSource="{Binding VideoItems}" Height="{Binding ListViewHeight}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="{Binding ListViewColumnSize}"  DisplayMemberBinding="{Binding Name}" Header="Name"/>
+                            <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Arrow}" Header="=>"/>
+                            <GridViewColumn Width="{Binding ListViewColumnSize}" DisplayMemberBinding="{Binding NewName}" Header="New Name"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+
+            <!-- Subtitles listview -->
+            <StackPanel Grid.Row="1">
+                <TextBlock Text="Subtitles" FontSize="14" HorizontalAlignment="Center"/>
+                <ListView ItemsSource="{Binding SubtitleItems}" Height="{Binding ListViewHeight}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="{Binding ListViewColumnSize}"  DisplayMemberBinding="{Binding Name}" Header="Name"/>
+                            <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Arrow}" Header="=>"/>
+                            <GridViewColumn Width="{Binding ListViewColumnSize}" DisplayMemberBinding="{Binding NewName}" Header="New Name"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+        </Grid>
 
         <!-- Text Boxes and Buttons -->
-        <StackPanel Grid.Column="1">
-            <TextBox x:Name="ShowNameTextBox" Padding="10" Text="{Binding ShowName}" />
-            <TextBox x:Name="SeasonTextBox" Padding="10" Text="{Binding Season}"/>
-            <TextBox x:Name="EpisodeStartNumberTextBox" Padding="10" Text="{Binding EpisodeStart}"/>
+        <StackPanel Grid.Column="1"  Margin="5 30 5 5">
+            <TextBox x:Name="ShowNameTextBox" 
+                     Margin="5" 
+                     Padding="10" 
+                     Text="{Binding ShowName}"/>
+            
+            <TextBox x:Name="SeasonTextBox" 
+                     Margin="5" 
+                     Padding="10" 
+                     Text="{Binding Season}"/>
+            
+            <TextBox x:Name="EpisodeStartNumberTextBox" 
+                     Margin="5" 
+                     Padding="10" 
+                     Text="{Binding EpisodeStart}"/>
             
             <!-- Directory Button -->
             <Button Content="{Binding DirectoryButtonContent, FallbackValue=Directory}" 
@@ -36,7 +72,8 @@
                     FontSize="12" 
                     Padding="10"
                     IsEnabled="{Binding DirectoryButton.ClickCommand.CanExecute}"
-                    Background="#efefef"/>
+                    Background="#efefef"
+                    Margin="5"/>
 
             <!-- Preview Button -->
             <Button Content="{Binding PreviewButtonContent, FallbackValue=Preview}" 
@@ -44,7 +81,8 @@
                     FontSize="12"
                     Padding="10"
                     IsEnabled="{Binding PreviewButton.ClickCommand.CanExecute}"
-                    Background="#efefef"/>
+                    Background="#efefef"
+                    Margin="5"/>
 
             <!-- Confirm Button -->
             <Button Content="{Binding ConfirmButtonContent, FallbackValue=Confirm}"
@@ -52,20 +90,24 @@
                      FontSize="12" 
                     Padding="10"
                     IsEnabled="{Binding ConfirmButton.ClickCommand.CanExecute}"
-                    Background="#efefef"/>
-
+                    Background="#efefef"
+                    Margin="5"/>
+    
+            <!-- Options check boxes -->
             <CheckBox Content="{Binding GetEpisodeTitlesContent}" 
                       Margin="5"
                       IsChecked="{Binding GetEpisodeTitles}"/>
-            <CheckBox Content="{Binding IgnoreSubtitlesContent}" 
+            <CheckBox Content="{Binding IncludeSubtitlesContent}" 
                       Margin="5"
-                      IsChecked="{Binding IgnoreSubtitles}"/>
+                      IsChecked="{Binding IncludeSubtitles}"/>
             <CheckBox Content="{Binding DeleteNonMediaFilesContent}" 
                       Margin="5"
-                      IsChecked="{Binding DeleteNonMediaFiles}"/>
+                      IsChecked="{Binding DeleteNonMediaFiles}"
+                      IsEnabled="False"/>
             <CheckBox Content="{Binding SearchSubDirectoriesContent}" 
                       Margin="5"
-                      IsChecked="{Binding SearchSubDirectories}"/>
+                      IsChecked="{Binding SearchSubDirectories}"
+                      IsEnabled="False"/>
             
         </StackPanel>
 

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace RenameIt.ViewModels.Directory
 {
-    /// <summary>
-    /// ViewModel for a directory item.
-    /// </summary>
-    public class VideoItemViewModel : Base.ViewModel
+    public class ItemViewModel : Base.ViewModel
     {
         #region private fields
         private string _fullPath;
@@ -102,7 +102,7 @@ namespace RenameIt.ViewModels.Directory
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public VideoItemViewModel()
+        public ItemViewModel()
         {
             FullPath = string.Empty;
             Directory = string.Empty;
@@ -115,7 +115,7 @@ namespace RenameIt.ViewModels.Directory
         /// Construct a new <see cref="DirectoryItemViewModel"/> using a <see cref="Models.DirectoryItem"/> object.
         /// </summary>
         /// <param name="item"></param>
-        public VideoItemViewModel(Models.DirectoryItem item)
+        public ItemViewModel(Models.DirectoryItem item)
         {
             this.FullPath = item.FullPath;
             this.Name = item.Name;

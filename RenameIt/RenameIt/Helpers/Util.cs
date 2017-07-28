@@ -4,14 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RenameIt.Helpers {
-    public static class Util {
-        public static bool ValidateInput(string showName, string season, string episodeStartNumber, int count) {
-            try {
+namespace RenameIt.Helpers
+{
+    public static class Util
+    {
+        public static bool ValidateInput(string showName, string season, string episodeStartNumber, int count)
+        {
+            try
+            {
                 // attempt to convert values to numbers
                 var s = Convert.ToInt32(season);
                 var e = Convert.ToInt32(episodeStartNumber);
-            } catch {
+            }
+            catch
+            {
                 // if that failed, we return false
                 return false;
             }

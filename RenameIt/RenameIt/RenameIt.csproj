@@ -75,6 +75,8 @@
     <Compile Include="Models\DirectoryItem.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Compile Include="ViewModels\Directory\ItemViewModel.cs" />
+    <Compile Include="ViewModels\Directory\VideoViewModel.cs" />
+    <Compile Include="ViewModels\Directory\SubtitleViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\ButtonViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\ContentViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">

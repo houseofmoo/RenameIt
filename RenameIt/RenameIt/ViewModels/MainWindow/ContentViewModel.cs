@@ -25,12 +25,12 @@ namespace RenameIt.ViewModels.MainWindow
 
         // check box content values
         private const string GET_EPISODE_TITLES = "Get Episode Titles";
-        private const string IGNORE_SUBTITLES = "Ignore Subtitles";
+        private const string INCLUDE_SUBTITLES = "Include Subtitles";
         private const string DELETE_NONMEDIA_FILES = "Delete Non-media Files";
         private const string SEARCH_SUBDIRECTORIES = "Search Sub-directories";
 
-        // file types
-
+        // formatting constants
+        private const double MINIMUM_LIST_VIEW_HEIGHT = 300d;
         #endregion
 
         #region private fields
@@ -45,14 +45,16 @@ namespace RenameIt.ViewModels.MainWindow
         private string _episodeStart = EPISODESTART;
 
         // data
-        private ObservableCollection<Directory.VideoItemViewModel> _videoItems;
+        private ObservableCollection<Directory.VideoViewModel> _videoItems;
+        private ObservableCollection<Directory.SubtitleViewModel> _subtitleItems;
 
         // formatting
-        private double _listViewColumnSize = 265f;
+        private double _listViewColumnSize = 250d;
+        private double _listViewHeight = 335d;
 
         // options
         private bool _getEpisodeTitles = true;
-        private bool _ignoreSubtitles = false;
+        private bool _includeSubtitles = true;
         private bool _deleteNonMediaFiles = false;
         private bool _searchSubDirectories = false;
         #endregion
@@ -164,9 +166,9 @@ namespace RenameIt.ViewModels.MainWindow
         }
 
         /// <summary>
-        /// List of items found in the directory
+        /// List of video items found in the directory
         /// </summary>
-        public ObservableCollection<Directory.VideoItemViewModel> VideoItems
+        public ObservableCollection<Directory.VideoViewModel> VideoItems
         {
             get { return _videoItems; }
             set
@@ -175,6 +177,21 @@ namespace RenameIt.ViewModels.MainWindow
                     return;
                 _videoItems = value;
                 OnPropertyChanged(nameof(VideoItems));
+            }
+        }
+
+        /// <summary>
+        /// List of subtitle items found in the directory
+        /// </summary>
+        public ObservableCollection<Directory.SubtitleViewModel> SubtitleItems
+        {
+            get { return _subtitleItems; }
+            set
+            {
+                if (_subtitleItems == value)
+                    return;
+                _subtitleItems = value;
+                OnPropertyChanged(nameof(SubtitleItems));
             }
         }
 
@@ -188,8 +205,24 @@ namespace RenameIt.ViewModels.MainWindow
             {
                 if (_listViewColumnSize == value)
                     return;
+                
                 _listViewColumnSize = value;
                 OnPropertyChanged(nameof(ListViewColumnSize));
+            }
+        }
+
+        /// <summary>
+        /// Holds the list view height. Sets a default valut. Value cannot go below default value
+        /// </summary>
+        public double ListViewHeight
+        {
+            get { return _listViewHeight; }
+            set
+            {
+                if (_listViewHeight == value)
+                    return;
+                _listViewHeight = value < MINIMUM_LIST_VIEW_HEIGHT ? MINIMUM_LIST_VIEW_HEIGHT : value;
+                OnPropertyChanged(nameof(ListViewHeight));
             }
         }
 
@@ -216,22 +249,22 @@ namespace RenameIt.ViewModels.MainWindow
         /// <summary>
         /// Stores the checkbox value of Ignore Subtitles
         /// </summary>
-        public bool IgnoreSubtitles
+        public bool IncludeSubtitles
         {
-            get { return _ignoreSubtitles; }
+            get { return _includeSubtitles; }
             set
             {
-                if (_ignoreSubtitles == value)
+                if (_includeSubtitles == value)
                     return;
-                _ignoreSubtitles = value;
-                OnPropertyChanged(nameof(IgnoreSubtitles));
+                _includeSubtitles = value;
+                OnPropertyChanged(nameof(IncludeSubtitles));
             }
         }
 
         /// <summary>
         /// Returns the content for Ignore Subtitles checkbox
         /// </summary>
-        public string IgnoreSubtitlesContent { get { return IGNORE_SUBTITLES; } }
+        public string IncludeSubtitlesContent { get { return INCLUDE_SUBTITLES; } }
 
         /// <summary>
         /// Stores the checkbox value of Delete Non-media Files
@@ -281,7 +314,8 @@ namespace RenameIt.ViewModels.MainWindow
         public ContentViewModel()
         {
             // create items data structure, this holds the bulk of the data
-            this.VideoItems = new ObservableCollection<Directory.VideoItemViewModel>();
+            this.VideoItems = new ObservableCollection<Directory.VideoViewModel>();
+            this.SubtitleItems = new ObservableCollection<Directory.SubtitleViewModel>();
 
             // pass mutator functions to button view model which contain the commands
             this.DirectoryButton = new ButtonViewModel(() => directoryButtonClick(), true);
@@ -298,22 +332,24 @@ namespace RenameIt.ViewModels.MainWindow
         {
             // gets the files from the selected directory
             var files = Helpers.MediaFiles.GetFilesFromDirectory();
+            List<Models.DirectoryItem> videoFiles = Helpers.MediaFiles.GetVideoFiles(files);
+            List<Models.DirectoryItem> subtitleFiles = Helpers.MediaFiles.GetSubtitleFiles(files);
 
-            // get the files that are actually video files
-            if (this.IgnoreSubtitles)
-                files = Helpers.MediaFiles.GetOnlyVideoFiles(files);
-            else
-                files = Helpers.MediaFiles.GetVideoAndSubtitleFiles(files);
-
-            // if we found no items in the directory, nothing to do
-            if (!files.Any())
+            // if we found no valid items in the directory, nothing to do
+            if (!videoFiles.Any() && !subtitleFiles.Any())
                 return;
 
             // set Items list to new files list
-            this.VideoItems = new ObservableCollection<Directory.VideoItemViewModel>(files.Select(file => new Directory.VideoItemViewModel(file)));
+            this.VideoItems = new ObservableCollection<Directory.VideoViewModel>(videoFiles.Select(file => new Directory.VideoViewModel(file)));
 
-            // if items list has any items, we enable preview button
-            if (this.VideoItems.Any())
+            // do we want subtitle files?
+            if (this.IncludeSubtitles)
+            {
+                this.SubtitleItems = new ObservableCollection<Directory.SubtitleViewModel>(subtitleFiles.Select(file => new Directory.SubtitleViewModel(file)));
+            }
+
+            // if items lists have any items, we enable preview button
+            if (this.VideoItems.Any() || this.SubtitleItems.Any())
             {
                 // TODO
                 // Recreating the object each time we enable or disable a button is a horrible
