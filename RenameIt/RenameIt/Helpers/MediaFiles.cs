@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace RenameIt.Helpers
 {
+    /// <summary>
+    /// Helper class that can deal with retreiving and manipulating files
+    /// </summary>
     static class MediaFiles
     {
         /// <summary> 
@@ -28,45 +31,28 @@ namespace RenameIt.Helpers
         }
 
         /// <summary>
-        /// Grabs only items from the files list that match video file extensions
+        /// Grabs items from the files list that match valid formats.
         /// </summary>
-        /// <param name="files">List of files pulled from directory</param>
+        /// <param name="files">Files from the directory</param>
+        /// <param name="validFormat">Valid formats we care about</param>
         /// <returns></returns>
-        public static List<Models.DirectoryItem> GetVideoFiles(List<Models.DirectoryItem> files)
+        public static List<Models.DirectoryItem> GetMatchingFiles(List<Models.DirectoryItem> files, string[] validFormat)
         {
-            var videoFiles = new List<Models.DirectoryItem>();
+            var validFiles = new List<Models.DirectoryItem>();
             foreach (var file in files)
             {
-                // only add files that match video extension
-                if (Identifiers.Extensions.Video.Contains(file.Extension.ToLower()))
-                    videoFiles.Add(file);
+                // only add files that match valid extension 
+                if (validFormat.Contains(file.Extension.ToLower()))
+                    validFiles.Add(file);
             }
 
-            return videoFiles;
-        }
-
-        /// <summary>
-        /// Grabs items from the files list that match subtitle extensions
-        /// </summary>
-        /// <param name="files">List of files pulled from directory</param>
-        /// <returns></returns>
-        public static List<Models.DirectoryItem> GetSubtitleFiles(List<Models.DirectoryItem> files)
-        {
-            var videoFiles = new List<Models.DirectoryItem>();
-            foreach (var file in files)
-            {
-                // only add files that match subtitle extension 
-                if (Identifiers.Extensions.Subtitle.Contains(file.Extension.ToLower()))
-                    videoFiles.Add(file);
-            }
-
-            return videoFiles;
+            return validFiles;
         }
 
         /// <summary>
         /// Changes file names to newly defined names.
         /// </summary>
-        public static void UpdateFileNames(ObservableCollection<ViewModels.Directory.VideoViewModel> items)
+        public static void UpdateFileNames(ObservableCollection<ViewModels.Directory.ItemViewModel> items)
         {
             foreach (var item in items)
             {

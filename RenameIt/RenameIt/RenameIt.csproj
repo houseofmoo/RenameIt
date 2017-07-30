@@ -56,6 +56,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Styles\TextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -75,8 +79,6 @@
     <Compile Include="Models\DirectoryItem.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Compile Include="ViewModels\Directory\ItemViewModel.cs" />
-    <Compile Include="ViewModels\Directory\VideoViewModel.cs" />
-    <Compile Include="ViewModels\Directory\SubtitleViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\ButtonViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\ContentViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
@@ -113,5 +115,6 @@
   <ItemGroup>
     <Resource Include="TODO List.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -77,8 +77,10 @@ namespace RenameIt.Helpers.Titles
                 // return info we care about
                 return reply.id.ToString();
             }
-            catch
+            catch (Exception e)
             {
+                // debugging
+                Console.WriteLine(e);
                 return null;
             }
         }

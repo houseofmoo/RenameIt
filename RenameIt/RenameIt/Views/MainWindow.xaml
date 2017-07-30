@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:RenameIt"
         mc:Ignorable="d"
         Title="RenameIt" Height="800" Width="900">
+
     <Grid Margin="10">
         <!-- Grid Definitions -->
         <Grid.ColumnDefinitions>
@@ -51,19 +52,16 @@
 
         <!-- Text Boxes and Buttons -->
         <StackPanel Grid.Column="1"  Margin="5 30 5 5">
-            <TextBox x:Name="ShowNameTextBox" 
-                     Margin="5" 
-                     Padding="10" 
+            <TextBox Style="{StaticResource placeHolder}"
+                     Tag="Show Name"
                      Text="{Binding ShowName}"/>
-            
-            <TextBox x:Name="SeasonTextBox" 
-                     Margin="5" 
-                     Padding="10" 
+
+            <TextBox Style="{StaticResource placeHolder}"
+                     Tag="Season"
                      Text="{Binding Season}"/>
-            
-            <TextBox x:Name="EpisodeStartNumberTextBox" 
-                     Margin="5" 
-                     Padding="10" 
+
+            <TextBox Style="{StaticResource placeHolder}"
+                     Tag="Episode Start Number"
                      Text="{Binding EpisodeStart}"/>
             
             <!-- Directory Button -->
@@ -71,7 +69,7 @@
                     Command="{Binding DirectoryButton.ClickCommand}"
                     FontSize="12" 
                     Padding="10"
-                    IsEnabled="{Binding DirectoryButton.ClickCommand.CanExecute}"
+                    IsEnabled="{Binding DirectoryButtonEnabled}"
                     Background="#efefef"
                     Margin="5"/>
 
@@ -80,7 +78,7 @@
                     Command="{Binding PreviewButton.ClickCommand}"
                     FontSize="12"
                     Padding="10"
-                    IsEnabled="{Binding PreviewButton.ClickCommand.CanExecute}"
+                    IsEnabled="{Binding PreviewButtonEnabled}"
                     Background="#efefef"
                     Margin="5"/>
 
@@ -89,7 +87,7 @@
                     Command="{Binding ConfirmButton.ClickCommand}"
                      FontSize="12" 
                     Padding="10"
-                    IsEnabled="{Binding ConfirmButton.ClickCommand.CanExecute}"
+                    IsEnabled="{Binding ConfirmButtonEnabled}"
                     Background="#efefef"
                     Margin="5"/>
     

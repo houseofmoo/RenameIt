@@ -13,11 +13,6 @@ namespace RenameIt.ViewModels.MainWindow
     class ContentViewModel : Base.ViewModel
     {
         #region private constants
-        // text box default content values
-        private const string SHOWNAME = "Show Name";
-        private const string SEASON = "Season";
-        private const string EPISODESTART = "Episode Start Number";
-
         // button text content values
         private const string DIRECTORY = "Select Directory";
         private const string PREVIEW = "Preview";
@@ -30,7 +25,8 @@ namespace RenameIt.ViewModels.MainWindow
         private const string SEARCH_SUBDIRECTORIES = "Search Sub-directories";
 
         // formatting constants
-        private const double MINIMUM_LIST_VIEW_HEIGHT = 300d;
+        private const double LIST_VIEW_COLUMN_SIZE = 205d;
+        private const double MINIMUM_LIST_VIEW_HEIGHT = 335d;
         #endregion
 
         #region private fields
@@ -39,27 +35,32 @@ namespace RenameIt.ViewModels.MainWindow
         private ButtonViewModel _previewButton;
         private ButtonViewModel _confirmButton;
 
-        // text boxes text
-        private string _showName = SHOWNAME;
-        private string _season = SEASON;
-        private string _episodeStart = EPISODESTART;
+        // button enabled
+        private bool _directoryButtonEnabled = true;
+        private bool _previewButtonEnabled = false;
+        private bool _confirmButtonEnabled = false;
 
-        // data
-        private ObservableCollection<Directory.VideoViewModel> _videoItems;
-        private ObservableCollection<Directory.SubtitleViewModel> _subtitleItems;
+        // textbox text
+        private string _showName;
+        private string _season;
+        private string _episodeStart;
 
-        // formatting
-        private double _listViewColumnSize = 250d;
-        private double _listViewHeight = 335d;
-
-        // options
+        // checkbox
         private bool _getEpisodeTitles = true;
         private bool _includeSubtitles = true;
         private bool _deleteNonMediaFiles = false;
         private bool _searchSubDirectories = false;
+
+        // formatting
+        private double _listViewColumnSize = LIST_VIEW_COLUMN_SIZE;
+        private double _listViewHeight = MINIMUM_LIST_VIEW_HEIGHT;
+
+        // data items
+        private ObservableCollection<Directory.ItemViewModel> _videoItems;
+        private ObservableCollection<Directory.ItemViewModel> _subtitleItems;
         #endregion
 
-        #region public properties
+        #region button properties
         /// <summary>
         /// Directory button.
         /// </summary>
@@ -121,7 +122,54 @@ namespace RenameIt.ViewModels.MainWindow
         public string ConfirmButtonContent { get { return CONFIRM; } }
 
         /// <summary>
-        /// The show name text boxes text. If text is ever empty, sets value to "Show Name".
+        /// Enables and disables the directory button
+        /// </summary>
+        public bool DirectoryButtonEnabled
+        {
+            get { return _directoryButtonEnabled; }
+            set
+            {
+                if (_directoryButtonEnabled == value)
+                    return;
+                _directoryButtonEnabled = value;
+                OnPropertyChanged(nameof(DirectoryButtonEnabled));
+            }
+        }
+
+        /// <summary>
+        /// Enables and disables the preview button
+        /// </summary>
+        public bool PreviewButtonEnabled
+        {
+            get { return _previewButtonEnabled; }
+            set
+            {
+                if (_previewButtonEnabled == value)
+                    return;
+                _previewButtonEnabled = value;
+                OnPropertyChanged(nameof(PreviewButtonEnabled));
+            }
+        }
+
+        /// <summary>
+        /// Enables and disables the confirm button
+        /// </summary>
+        public bool ConfirmButtonEnabled
+        {
+            get { return _confirmButtonEnabled; }
+            set
+            {
+                if (_confirmButtonEnabled == value)
+                    return;
+                _confirmButtonEnabled = value;
+                OnPropertyChanged(nameof(ConfirmButtonEnabled));
+            }
+        }
+        #endregion
+
+        #region textbox properties
+        /// <summary>
+        /// The show name text box text
         /// </summary>
         public string ShowName
         {
@@ -130,13 +178,13 @@ namespace RenameIt.ViewModels.MainWindow
             {
                 if (value == _showName)
                     return;
-                _showName = value == string.Empty ? SHOWNAME : value;
+                _showName = value;
                 OnPropertyChanged(nameof(ShowName));
             }
         }
 
         /// <summary>
-        /// The season text boxes text. If text is ever empty, sets value to "Season".
+        /// The season text box text
         /// </summary>
         public string Season
         {
@@ -145,13 +193,13 @@ namespace RenameIt.ViewModels.MainWindow
             {
                 if (value == _season)
                     return;
-                _season = value == string.Empty ? SEASON : value;
+                _season = value;
                 OnPropertyChanged(nameof(Season));
             }
         }
 
         /// <summary>
-        /// The episdoe start number text boxes text. If text is ever empty, sets value to "Episode Start Number".
+        /// The episdoe start number text box text
         /// </summary>
         public string EpisodeStart
         {
@@ -160,72 +208,13 @@ namespace RenameIt.ViewModels.MainWindow
             {
                 if (value == _episodeStart)
                     return;
-                _episodeStart = value == string.Empty ? EPISODESTART : value;
+                _episodeStart = value;
                 OnPropertyChanged(nameof(EpisodeStart));
             }
         }
+        #endregion
 
-        /// <summary>
-        /// List of video items found in the directory
-        /// </summary>
-        public ObservableCollection<Directory.VideoViewModel> VideoItems
-        {
-            get { return _videoItems; }
-            set
-            {
-                if (_videoItems == value)
-                    return;
-                _videoItems = value;
-                OnPropertyChanged(nameof(VideoItems));
-            }
-        }
-
-        /// <summary>
-        /// List of subtitle items found in the directory
-        /// </summary>
-        public ObservableCollection<Directory.SubtitleViewModel> SubtitleItems
-        {
-            get { return _subtitleItems; }
-            set
-            {
-                if (_subtitleItems == value)
-                    return;
-                _subtitleItems = value;
-                OnPropertyChanged(nameof(SubtitleItems));
-            }
-        }
-
-        /// <summary>
-        /// Sets the column width of the list view initially
-        /// </summary>
-        public double ListViewColumnSize
-        {
-            get { return _listViewColumnSize; }
-            set
-            {
-                if (_listViewColumnSize == value)
-                    return;
-                
-                _listViewColumnSize = value;
-                OnPropertyChanged(nameof(ListViewColumnSize));
-            }
-        }
-
-        /// <summary>
-        /// Holds the list view height. Sets a default valut. Value cannot go below default value
-        /// </summary>
-        public double ListViewHeight
-        {
-            get { return _listViewHeight; }
-            set
-            {
-                if (_listViewHeight == value)
-                    return;
-                _listViewHeight = value < MINIMUM_LIST_VIEW_HEIGHT ? MINIMUM_LIST_VIEW_HEIGHT : value;
-                OnPropertyChanged(nameof(ListViewHeight));
-            }
-        }
-
+        #region checkbox properties
         /// <summary>
         /// Stores the checkbox value of Get Episode Titles
         /// </summary>
@@ -307,20 +296,81 @@ namespace RenameIt.ViewModels.MainWindow
         public string SearchSubDirectoriesContent { get { return SEARCH_SUBDIRECTORIES; } }
         #endregion
 
+        #region formatting properties
+        /// <summary>
+        /// Sets the column width of the list view initially
+        /// </summary>
+        public double ListViewColumnSize
+        {
+            get { return _listViewColumnSize; }
+            set
+            {
+                if (_listViewColumnSize == value)
+                    return;
+                
+                _listViewColumnSize = value;
+                OnPropertyChanged(nameof(ListViewColumnSize));
+            }
+        }
+
+        /// <summary>
+        /// Holds the list view height. Sets a default valut. Value cannot go below default value
+        /// </summary>
+        public double ListViewHeight
+        {
+            get { return _listViewHeight; }
+            set
+            {
+                if (_listViewHeight == value)
+                    return;
+                _listViewHeight = value < MINIMUM_LIST_VIEW_HEIGHT ? MINIMUM_LIST_VIEW_HEIGHT : value;
+                OnPropertyChanged(nameof(ListViewHeight));
+            }
+        }
+        #endregion
+
+        #region data items properties
+        /// <summary>
+        /// List of video items found in the directory
+        /// </summary>
+        public ObservableCollection<Directory.ItemViewModel> VideoItems
+        {
+            get { return _videoItems; }
+            set
+            {
+                if (_videoItems == value)
+                    return;
+                _videoItems = value;
+                OnPropertyChanged(nameof(VideoItems));
+            }
+        }
+
+        /// <summary>
+        /// List of subtitle items found in the directory
+        /// </summary>
+        public ObservableCollection<Directory.ItemViewModel> SubtitleItems
+        {
+            get { return _subtitleItems; }
+            set
+            {
+                if (_subtitleItems == value)
+                    return;
+                _subtitleItems = value;
+                OnPropertyChanged(nameof(SubtitleItems));
+            }
+        }
+        #endregion
+
         #region constructor
         /// <summary>
         /// Default constructor.
         /// </summary>
         public ContentViewModel()
         {
-            // create items data structure, this holds the bulk of the data
-            this.VideoItems = new ObservableCollection<Directory.VideoViewModel>();
-            this.SubtitleItems = new ObservableCollection<Directory.SubtitleViewModel>();
-
-            // pass mutator functions to button view model which contain the commands
+            // pass mutator functions to button view model which contain the command
             this.DirectoryButton = new ButtonViewModel(() => directoryButtonClick(), true);
-            this.PreviewButton = new ButtonViewModel(null, false);
-            this.ConfirmButton = new ButtonViewModel(null, false);
+            this.PreviewButton = new ButtonViewModel(() => previewButtonClick(), true);
+            this.ConfirmButton = new ButtonViewModel(() => confirmButtonClick(), true);
         }
         #endregion
 
@@ -332,30 +382,23 @@ namespace RenameIt.ViewModels.MainWindow
         {
             // gets the files from the selected directory
             var files = Helpers.MediaFiles.GetFilesFromDirectory();
-            List<Models.DirectoryItem> videoFiles = Helpers.MediaFiles.GetVideoFiles(files);
-            List<Models.DirectoryItem> subtitleFiles = Helpers.MediaFiles.GetSubtitleFiles(files);
+            List<Models.DirectoryItem> videoFiles = Helpers.MediaFiles.GetMatchingFiles(files, Identifiers.Extensions.Video);
+            List<Models.DirectoryItem> subtitleFiles = Helpers.MediaFiles.GetMatchingFiles(files, Identifiers.Extensions.Subtitle);
 
             // if we found no valid items in the directory, nothing to do
             if (!videoFiles.Any() && !subtitleFiles.Any())
                 return;
 
             // set Items list to new files list
-            this.VideoItems = new ObservableCollection<Directory.VideoViewModel>(videoFiles.Select(file => new Directory.VideoViewModel(file)));
+            this.VideoItems = new ObservableCollection<Directory.ItemViewModel>(videoFiles.Select(file => new Directory.ItemViewModel(file)));
 
             // do we want subtitle files?
             if (this.IncludeSubtitles)
-            {
-                this.SubtitleItems = new ObservableCollection<Directory.SubtitleViewModel>(subtitleFiles.Select(file => new Directory.SubtitleViewModel(file)));
-            }
+                this.SubtitleItems = new ObservableCollection<Directory.ItemViewModel>(subtitleFiles.Select(file => new Directory.ItemViewModel(file)));
 
             // if items lists have any items, we enable preview button
             if (this.VideoItems.Any() || this.SubtitleItems.Any())
-            {
-                // TODO
-                // Recreating the object each time we enable or disable a button is a horrible
-                // way to achieve this functionality. Fix it.
-                this.PreviewButton = new ButtonViewModel(() => previewButtonClick(), true);
-            }
+                this.PreviewButtonEnabled = true;
         }
 
         /// <summary>
@@ -393,10 +436,7 @@ namespace RenameIt.ViewModels.MainWindow
             this.previewNewNames(titles);
 
             // enable the confirm button
-            // TODO
-            // Recreating the object each time we enable or disable a button is a horrible
-            // way to achieve this functionality. Fix it.
-            this.ConfirmButton = new ButtonViewModel(() => confirmButtonClick(), true);
+            this.ConfirmButtonEnabled = true;
         }
 
         /// <summary>
@@ -406,30 +446,55 @@ namespace RenameIt.ViewModels.MainWindow
         {
             // make changes to files
             Helpers.MediaFiles.UpdateFileNames(this.VideoItems);
+            Helpers.MediaFiles.UpdateFileNames(this.SubtitleItems);
 
             // disable confirm button
-            // TODO
-            // Recreating the object each time we enable or disable a button is a horrible
-            // way to achieve this functionality. Fix it.
-            this.ConfirmButton = new ButtonViewModel(null, false);
+            this.ConfirmButtonEnabled = false;
+
+            // if for some reason we have confirmed on no items, we disable preview button
+            if (!this.VideoItems.Any() && !this.SubtitleItems.Any())
+                this.PreviewButtonEnabled = false;
         }
         #endregion
 
         #region misc methods
         /// <summary>
-        /// Retreives episode titles and presents a preview of the new names to the user.
+        /// Update items with their new name, for presentation purposes only. This does not change the name of the file
         /// </summary>
         private void previewNewNames(List<string> titles)
         {
             // counter to increment episode number
             int counter = Convert.ToInt32(this.EpisodeStart);
 
-            // index to titles
+            // index to episode title
             int titleIndex = 0;
-            var title = string.Empty;
 
-            // update items with new names
+            // holds episode title
+            string title;
+
+            // update video items with new names
             foreach (var item in this.VideoItems)
+            {
+                // check if we can add the title
+                if (titles != null && titleIndex < titles.Count)
+                    title = titles[titleIndex];
+                else
+                    title = string.Empty;
+
+                // build new name and add it to the items field
+                item.AddNewName(this.ShowName, this.Season, counter, title);
+
+                // increment counter and indexer
+                counter++;
+                titleIndex++;
+            }
+
+            // reset for subtitles
+            counter = Convert.ToInt32(this.EpisodeStart);
+            titleIndex = 0;
+
+            // update subtitle items with new names
+            foreach (var item in this.SubtitleItems)
             {
                 // check if we can add the title
                 if (titles != null && titleIndex < titles.Count)
