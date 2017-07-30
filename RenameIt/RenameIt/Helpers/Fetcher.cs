@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RenameIt.Helpers.Titles
+namespace RenameIt.Helpers
 {
     /// <summary>
     /// Fetch titles for a given show and season.
@@ -103,26 +103,27 @@ namespace RenameIt.Helpers.Titles
                 // convert episode begin to int to incrementing through episodes
                 int episodeBegin = Convert.ToInt32(showInfo.EpisodeBegin);
 
-                // make a request for each episodes title
-                for (int i = 0; i < showInfo.EpisodeCount; i++)
+                // create new webclient for api requests 
+                using (var client = new System.Net.WebClient())
                 {
-                    // create url with show id, season, epBegin
-                    string url = TvApiEpisodeInfoQueryUrl + showId + @"/" + TvApiEpsodeSeasonQuery +
-                                 showInfo.Season + TvApiEpisodeNumberQuery + episodeBegin;
-
-                    // make request and map reply to object
-                    Models.Titles.EpisodeInfoReply reply = null;
-                    using (var client = new System.Net.WebClient())
+                    // make a request for each episodes title
+                    for (int i = 0; i < showInfo.EpisodeCount; i++)
                     {
+                        // create url with show id, season, epBegin
+                        string url = TvApiEpisodeInfoQueryUrl + showId + @"/" + TvApiEpsodeSeasonQuery +
+                                     showInfo.Season + TvApiEpisodeNumberQuery + episodeBegin;
+
+                        // make request and map reply to object
                         var json = client.DownloadString(url);
                         var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                        reply = serializer.Deserialize<Models.Titles.EpisodeInfoReply>(json);
+                        var reply = serializer.Deserialize<Models.Titles.EpisodeInfoReply>(json);
+                        
+                        if (reply != null)
+                            titles.Add(reply.name);
 
-                        titles.Add(reply.name);
+                        // increment to next episode 
+                        episodeBegin++;
                     }
-
-                    // increment to next episode 
-                    episodeBegin++;
                 }
 
                 // return item we care about

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RenameIt"
         mc:Ignorable="d"
-        Title="RenameIt" Height="800" Width="900">
+        Title="Welcome to RenameIt, the video file renaming tool" Height="800" Width="900">
 
     <Grid Margin="10">
         <!-- Grid Definitions -->

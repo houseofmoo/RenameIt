@@ -429,7 +429,7 @@ namespace RenameIt.ViewModels.MainWindow
                 };
 
                 // fetch titles
-                titles = Helpers.Titles.Fetcher.GetEpisodeTitles(showInfo);
+                titles = Helpers.Fetcher.GetEpisodeTitles(showInfo);
             }
 
             // present changes to user
