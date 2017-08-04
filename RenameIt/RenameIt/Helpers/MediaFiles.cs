@@ -26,6 +26,7 @@ namespace RenameIt.Helpers
                 if (System.Windows.Forms.DialogResult.OK == dialog.ShowDialog())
                     files = MediaFiles.getDirectoryItemListFromPath(dialog.SelectedPath);
 
+
                 return files;
             }
         }

@@ -52,6 +52,7 @@
 
         <!-- Text Boxes and Buttons -->
         <StackPanel Grid.Column="1"  Margin="5 30 5 5">
+            <!-- Text Boxes -->
             <TextBox Style="{StaticResource placeHolder}"
                      Tag="Show Name"
                      Text="{Binding ShowName}"/>
@@ -66,47 +67,62 @@
             
             <!-- Directory Button -->
             <Button Content="{Binding DirectoryButtonContent, FallbackValue=Directory}" 
-                    Command="{Binding DirectoryButton.ClickCommand}"
+                    Command="{Binding DirectoryButtonCommand}"
                     FontSize="12" 
                     Padding="10"
                     IsEnabled="{Binding DirectoryButtonEnabled}"
                     Background="#efefef"
                     Margin="5"/>
 
-            <!-- Preview Button -->
-            <Button Content="{Binding PreviewButtonContent, FallbackValue=Preview}" 
-                    Command="{Binding PreviewButton.ClickCommand}"
-                    FontSize="12"
-                    Padding="10"
-                    IsEnabled="{Binding PreviewButtonEnabled}"
-                    Background="#efefef"
-                    Margin="5"/>
-
-            <!-- Confirm Button -->
-            <Button Content="{Binding ConfirmButtonContent, FallbackValue=Confirm}"
-                    Command="{Binding ConfirmButton.ClickCommand}"
-                     FontSize="12" 
-                    Padding="10"
-                    IsEnabled="{Binding ConfirmButtonEnabled}"
-                    Background="#efefef"
-                    Margin="5"/>
-    
             <!-- Options check boxes -->
-            <CheckBox Content="{Binding GetEpisodeTitlesContent}" 
-                      Margin="5"
-                      IsChecked="{Binding GetEpisodeTitles}"/>
-            <CheckBox Content="{Binding IncludeSubtitlesContent}" 
-                      Margin="5"
-                      IsChecked="{Binding IncludeSubtitles}"/>
-            <CheckBox Content="{Binding DeleteNonMediaFilesContent}" 
-                      Margin="5"
-                      IsChecked="{Binding DeleteNonMediaFiles}"
-                      IsEnabled="False"/>
-            <CheckBox Content="{Binding SearchSubDirectoriesContent}" 
-                      Margin="5"
-                      IsChecked="{Binding SearchSubDirectories}"
-                      IsEnabled="False"/>
-            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <CheckBox Content="{Binding GetEpisodeTitlesContent}" 
+                            Margin="5"
+                            FontSize="10"
+                            IsChecked="{Binding GetEpisodeTitles}"/>
+                    <CheckBox Content="{Binding IncludeSubtitlesContent}" 
+                            Margin="5"
+                            FontSize="10"
+                            IsChecked="{Binding IncludeSubtitles}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <CheckBox Content="{Binding DeleteNonMediaFilesContent}" 
+                            Margin="5"
+                            FontSize="10"
+                            IsChecked="{Binding DeleteNonMediaFiles}"
+                            IsEnabled="False"/>
+                    <CheckBox Content="{Binding SearchSubDirectoriesContent}" 
+                            Margin="5"
+                            FontSize="10"
+                            IsChecked="{Binding SearchSubDirectories}"
+                            IsEnabled="False"/>
+                </StackPanel>
+            </Grid>
+
+            <StackPanel>
+                <!-- Preview Button -->
+                <Button Content="{Binding PreviewButtonContent, FallbackValue=Preview}" 
+                        Command="{Binding PreviewButtonCommand}"
+                        FontSize="12"
+                        Padding="10"
+                        IsEnabled="{Binding PreviewButtonEnabled}"
+                        Background="#efefef"
+                        Margin="5"/>
+
+                <!-- Confirm Button -->
+                <Button Content="{Binding ConfirmButtonContent, FallbackValue=Confirm}"
+                        Command="{Binding ConfirmButtonCommand}"
+                        FontSize="12" 
+                        Padding="10"
+                        IsEnabled="{Binding ConfirmButtonEnabled}"
+                        Background="#efefef"
+                        Margin="5"/>
+            </StackPanel>
         </StackPanel>
 
     </Grid>

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace RenameIt.ViewModels.MainWindow
 {
@@ -15,8 +16,8 @@ namespace RenameIt.ViewModels.MainWindow
         #region private constants
         // button text content values
         private const string DIRECTORY = "Select Directory";
-        private const string PREVIEW = "Preview";
-        private const string CONFIRM = "Confirm";
+        private const string PREVIEW = "Preview Changes";
+        private const string CONFIRM = "Commit Changes";
 
         // check box content values
         private const string GET_EPISODE_TITLES = "Get Episode Titles";
@@ -30,10 +31,10 @@ namespace RenameIt.ViewModels.MainWindow
         #endregion
 
         #region private fields
-        // buttons
-        private ButtonViewModel _directoryButton;
-        private ButtonViewModel _previewButton;
-        private ButtonViewModel _confirmButton;
+        // button commands
+        private ICommand _directroyButtonCommand;
+        private ICommand _previewButtonCommand;
+        private ICommand _confirmButtonCommand;
 
         // button enabled
         private bool _directoryButtonEnabled = true;
@@ -62,19 +63,9 @@ namespace RenameIt.ViewModels.MainWindow
 
         #region button properties
         /// <summary>
-        /// Directory button.
+        /// Get directory button command
         /// </summary>
-        public ButtonViewModel DirectoryButton
-        {
-            get { return _directoryButton; }
-            set
-            {
-                if (_directoryButton == value)
-                    return;
-                _directoryButton = value;
-                OnPropertyChanged(nameof(DirectoryButton));
-            }
-        }
+        public ICommand DirectoryButtonCommand { get { return _directroyButtonCommand; } }
 
         /// <summary>
         /// Returns directory button content.
@@ -82,19 +73,9 @@ namespace RenameIt.ViewModels.MainWindow
         public string DirectoryButtonContent { get { return DIRECTORY; } }
 
         /// <summary>
-        /// Preview button.
+        /// Get preview button command
         /// </summary>
-        public ButtonViewModel PreviewButton
-        {
-            get { return _previewButton; }
-            set
-            {
-                if (_previewButton == value)
-                    return;
-                _previewButton = value;
-                OnPropertyChanged(nameof(PreviewButton));
-            }
-        }
+        public ICommand PreviewButtonCommand { get { return _previewButtonCommand; } }
 
         /// <summary>
         /// Returns preview button content
@@ -102,19 +83,9 @@ namespace RenameIt.ViewModels.MainWindow
         public string PreviewButtonContent { get { return PREVIEW; } }
 
         /// <summary>
-        /// Confirm button.
+        /// Gets confirm button command
         /// </summary>
-        public ButtonViewModel ConfirmButton
-        {
-            get { return _confirmButton; }
-            set
-            {
-                if (_confirmButton == value)
-                    return;
-                _confirmButton = value;
-                OnPropertyChanged(nameof(ConfirmButton));
-            }
-        }
+        public ICommand ConfirmButtonCommand { get { return _confirmButtonCommand; } }
 
         /// <summary>
         /// Returns confirm button content.
@@ -367,10 +338,14 @@ namespace RenameIt.ViewModels.MainWindow
         /// </summary>
         public ContentViewModel()
         {
+            // create lists
+            this.VideoItems = new ObservableCollection<Directory.ItemViewModel>();
+            this.SubtitleItems = new ObservableCollection<Directory.ItemViewModel>();
+
             // pass mutator functions to button view model which contain the command
-            this.DirectoryButton = new ButtonViewModel(() => directoryButtonClick(), true);
-            this.PreviewButton = new ButtonViewModel(() => previewButtonClick(), true);
-            this.ConfirmButton = new ButtonViewModel(() => confirmButtonClick(), true);
+            this._directroyButtonCommand = new Commands.RelayCommand(this.directoryButtonClick, true);
+            this._previewButtonCommand = new Commands.RelayCommand(this.previewButtonClick, true);
+            this._confirmButtonCommand = new Commands.RelayCommand(this.confirmButtonClick, true);
         }
         #endregion
 
@@ -380,6 +355,10 @@ namespace RenameIt.ViewModels.MainWindow
         /// </summary>
         private void directoryButtonClick()
         {
+            // disable confirm button, we do not want users to be able to
+            // confirm changes before previewing them
+            this.ConfirmButtonEnabled = false;
+
             // gets the files from the selected directory
             var files = Helpers.MediaFiles.GetFilesFromDirectory();
             List<Models.DirectoryItem> videoFiles = Helpers.MediaFiles.GetMatchingFiles(files, Identifiers.Extensions.Video);
