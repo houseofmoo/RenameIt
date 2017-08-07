@@ -26,11 +26,11 @@ namespace RenameIt.Identifiers
         /// </summary>
         public static void ResetDefaultExtensions()
         {
-            User.Settings.VideoExtensions.Clear();
-            User.Settings.VideoExtensions.AddRange(_videoDefault);
+            User.Settings.Get().VideoExtensions.Clear();
+            User.Settings.Get().VideoExtensions.AddRange(_videoDefault);
 
-            User.Settings.SubtitleExtensions.Clear();
-            User.Settings.SubtitleExtensions.AddRange(_subtitleDefault);
+            User.Settings.Get().SubtitleExtensions.Clear();
+            User.Settings.Get().SubtitleExtensions.AddRange(_subtitleDefault);
         }
     }
 }

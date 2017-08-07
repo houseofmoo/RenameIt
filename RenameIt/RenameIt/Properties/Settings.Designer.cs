@@ -26,12 +26,12 @@ namespace RenameIt.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool GetTitles {
+        public bool GetEpisodeTitles {
             get {
-                return ((bool)(this["GetTitles"]));
+                return ((bool)(this["GetEpisodeTitles"]));
             }
             set {
-                this["GetTitles"] = value;
+                this["GetEpisodeTitles"] = value;
             }
         }
         

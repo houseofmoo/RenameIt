@@ -6,18 +6,23 @@
         xmlns:local="clr-namespace:RenameIt"
         xmlns:PageConverter="clr-namespace:RenameIt.ValueConverters"
         mc:Ignorable="d"
-        Title="Welcome to RenameIt, the video file renaming tool" Height="800" Width="900" Closing="Window_Closing">
+        Title="Welcome to RenameIt, the video file renaming tool" Height="800" Width="900">
 
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="9*"/>
         </Grid.ColumnDefinitions>
-        
-        <Button Grid.Column="0" Content="ChangePage" Command="{Binding ChangePageCommand}"/>
+
+        <Button Grid.Column="0" 
+                Content="{Binding ChangePageButtonContent}" 
+                Command="{Binding ChangePageCommand}"
+                Height="20"
+                VerticalAlignment="Top"/>
         
         <Frame x:Name="MainFrame"
                Grid.Column="1"
+               Grid.ColumnSpan="2"
                Content="{Binding CurrentPage, Converter={PageConverter:PageValueConverter}}"/>
     </Grid>
 </Window>

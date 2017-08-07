@@ -8,33 +8,55 @@
       d:DesignHeight="300" d:DesignWidth="300"
       Title="SettingsPage">
 
-    <!-- Options check boxes -->
-    <Grid>
+    <!-- Settings -->
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
+            <!-- Get Episode Titles checkbox -->
             <CheckBox Content="{Binding GetEpisodeTitlesContent}" 
                             Margin="5"
-                            FontSize="10"
+                            FontSize="{Binding FontSize}"
                             IsChecked="{Binding GetEpisodeTitles}"/>
+            
+            <!-- Include Subtitles checkbox -->
             <CheckBox Content="{Binding IncludeSubtitlesContent}" 
                             Margin="5"
-                            FontSize="10"
+                            FontSize="{Binding FontSize}"
                             IsChecked="{Binding IncludeSubtitles}"/>
+            
+            <!-- Apply Button -->
+            <Button Content="{Binding ApplyButtonContent}" 
+                    Command="{Binding ApplyButtonCommand}"
+                    FontSize="{Binding FontSize}"
+                    Height="{Binding ButtonHeight}"
+                    Margin="10"/>
         </StackPanel>
+        
         <StackPanel Grid.Column="1">
+            <!-- Delete Non-Media Files checkbox -->
             <CheckBox Content="{Binding DeleteNonMediaFilesContent}" 
                             Margin="5"
-                            FontSize="10"
+                            FontSize="{Binding FontSize}"
                             IsChecked="{Binding DeleteNonMediaFiles}"/>
+            
+            <!-- Search Subdirectories checkbox -->
             <CheckBox Content="{Binding SearchSubDirectoriesContent}" 
                             Margin="5"
-                            FontSize="10"
+                            FontSize="{Binding FontSize}"
                             IsChecked="{Binding SearchSubDirectories}"
                             IsEnabled="False"/>
+            
+            <!-- Cancel Button -->
+            <Button Content="{Binding CancelButtonContent}" 
+                    Command="{Binding CancelButtonCommand}"
+                    FontSize="{Binding FontSize}"
+                    Height="{Binding ButtonHeight}"
+                    Margin="10"/>
         </StackPanel>
+        
     </Grid>
     
 </Page>

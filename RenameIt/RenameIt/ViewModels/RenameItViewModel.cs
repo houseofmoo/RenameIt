@@ -272,10 +272,10 @@ namespace RenameIt.ViewModels
             var files = Helpers.MediaFiles.GetFilesFromDirectory(out this._directoryPath);
 
             // build video files list
-            var videoFiles = Helpers.MediaFiles.GetMatchingFiles(files, User.Settings.VideoExtensions);
+            var videoFiles = Helpers.MediaFiles.GetMatchingFiles(files, User.Settings.Get().VideoExtensions);
 
             // build subtitle files list
-            var subtitleFiles = Helpers.MediaFiles.GetMatchingFiles(files, User.Settings.SubtitleExtensions);
+            var subtitleFiles = Helpers.MediaFiles.GetMatchingFiles(files, User.Settings.Get().SubtitleExtensions);
 
             // if we found no valid items in the directory, nothing to do
             if (!videoFiles.Any() && !subtitleFiles.Any())
@@ -285,7 +285,7 @@ namespace RenameIt.ViewModels
             this.VideoItems = new ObservableCollection<Directory.ItemViewModel>(videoFiles.Select(file => new Directory.ItemViewModel(file)));
 
             // do we want subtitle files?
-            if (User.Settings.IncludeSubtitles)
+            if (User.Settings.Get().IncludeSubtitles)
                 this.SubtitleItems = new ObservableCollection<Directory.ItemViewModel>(subtitleFiles.Select(file => new Directory.ItemViewModel(file)));
 
             // if items lists have any items, we enable preview button
@@ -309,7 +309,7 @@ namespace RenameIt.ViewModels
             List<string> titles = null;
 
             // only fetch titles if user wants to
-            if (User.Settings.GetEpisodeTitles)
+            if (User.Settings.Get().GetEpisodeTitles)
             {
                 // create request
                 var showInfo = new Models.Titles.Request()
