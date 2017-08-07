@@ -41,6 +41,7 @@ namespace RenameIt.Helpers
             // get show id
             string showId = fetchShowId(showInfo.ShowName);
 
+            // if getting show id failed, no reason to continue
             if (showId == null)
                 return null;
 

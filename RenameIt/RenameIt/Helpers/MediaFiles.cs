@@ -15,7 +15,7 @@ namespace RenameIt.Helpers
         /// Attempts to retreive files from selected directory.
         /// </summary>
         /// <param name="path"></param>
-        public static List<Models.DirectoryItem> GetFilesFromDirectory()
+        public static List<Models.DirectoryItem> GetFilesFromDirectory(out string directory)
         {
             var files = new List<Models.DirectoryItem>();
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
@@ -23,11 +23,19 @@ namespace RenameIt.Helpers
                 // personal use
                 dialog.SelectedPath = @"E:\FileZilla\";
 
+                // show file dialog box and get directory items from selected directory
                 if (System.Windows.Forms.DialogResult.OK == dialog.ShowDialog())
+                {
                     files = MediaFiles.getDirectoryItemListFromPath(dialog.SelectedPath);
+                    directory = dialog.SelectedPath;
+                    return files;
+                }
+                else
+                {
+                    directory = string.Empty;
+                    return files;
+                }
 
-
-                return files;
             }
         }
 
@@ -37,17 +45,51 @@ namespace RenameIt.Helpers
         /// <param name="files">Files from the directory</param>
         /// <param name="validFormat">Valid formats we care about</param>
         /// <returns></returns>
-        public static List<Models.DirectoryItem> GetMatchingFiles(List<Models.DirectoryItem> files, string[] validFormat)
+        public static List<Models.DirectoryItem> GetMatchingFiles(List<Models.DirectoryItem> files, List<string> validExtensions)
         {
+            // list of valid files
             var validFiles = new List<Models.DirectoryItem>();
+
+            // only add files that match valid extension 
             foreach (var file in files)
             {
-                // only add files that match valid extension 
-                if (validFormat.Contains(file.Extension.ToLower()))
+                if (validExtensions.Contains(file.Extension.ToLower()))
                     validFiles.Add(file);
             }
 
             return validFiles;
+        }
+
+        /// <summary>
+        /// Deletes file that do not match Video or Subtitle extensions
+        /// </summary>
+        /// <param name="files"></param>
+        /// <param name="validFormat"></param>
+        public static void DeleteInvalidFiles(string directory)
+        {
+            // ensure directory exists
+            if (!Directory.Exists(directory))
+                return;
+
+            // length of the new list
+            int length = Properties.Settings.Default.VideoExtensions.Count + Properties.Settings.Default.SubtitleExtensions.Count;
+
+            // create new list
+            var validExtensions = new string[length];
+
+            // place all valid extensions into new list
+            Properties.Settings.Default.VideoExtensions.CopyTo(validExtensions, 0);
+            Properties.Settings.Default.SubtitleExtensions.CopyTo(validExtensions, Properties.Settings.Default.VideoExtensions.Count);
+
+            // get all files from directory
+            var files = getDirectoryItemListFromPath(directory);
+
+            // delete files where their extension is not valid
+            foreach (var file in files)
+            {
+                if (!validExtensions.Contains(file.Extension.ToLower()))
+                    File.Delete(file.FullPath);
+            }
         }
 
         /// <summary>
@@ -78,7 +120,7 @@ namespace RenameIt.Helpers
         /// Returns a list of <see cref="Models.DirectoryItem"/> from provided path.
         /// </summary>
         /// <returns></returns>
-        private static List<Models.DirectoryItem> getDirectoryItemListFromPath(string path)
+        private static List<Models.DirectoryItem> getDirectoryItemListFromPath(string directoryPath)
         {
             // value to be returned
             var items = new List<Models.DirectoryItem>();
@@ -86,7 +128,7 @@ namespace RenameIt.Helpers
             // try get the files from the directory and add them to items list
             try
             {
-                var dirInfo = new DirectoryInfo(path);
+                var dirInfo = new DirectoryInfo(directoryPath);
                 var fileInfo = dirInfo.GetFiles();
 
                 // add all files to items list

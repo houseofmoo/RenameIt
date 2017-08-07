@@ -59,6 +59,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="User\Settings.cs" />
+    <Compile Include="Views\Pages\RenameItPage.xaml.cs">
+      <DependentUpon>RenameItPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Pages\SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
     <Page Include="Styles\TextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -74,19 +81,32 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Helpers\Util.cs" />
     <Compile Include="Identifiers\Extensions.cs" />
+    <Compile Include="Identifiers\Pages.cs" />
     <Compile Include="Models\Titles\EpisodeInfoReply.cs" />
     <Compile Include="Models\Titles\Request.cs" />
     <Compile Include="Models\Titles\ShowIdReply.cs" />
     <Compile Include="Helpers\Fetcher.cs" />
     <Compile Include="Helpers\MediaFiles.cs" />
     <Compile Include="Models\DirectoryItem.cs" />
+    <Compile Include="ValueConverters\Base\ValueConverter.cs" />
+    <Compile Include="ValueConverters\PageValueConverter.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Compile Include="ViewModels\Directory\ItemViewModel.cs" />
-    <Compile Include="ViewModels\MainWindow\ContentViewModel.cs" />
+    <Compile Include="ViewModels\RenameItViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Pages\RenameItPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Pages\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

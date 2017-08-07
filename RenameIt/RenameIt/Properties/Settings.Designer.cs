@@ -8,22 +8,87 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RenameIt.Properties
-{
-
-
+namespace RenameIt.Properties {
+    
+    
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
-    {
-
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.1.0.0")]
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-
-        public static Settings Default
-        {
-            get
-            {
+        
+        public static Settings Default {
+            get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool GetTitles {
+            get {
+                return ((bool)(this["GetTitles"]));
+            }
+            set {
+                this["GetTitles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IncludeSubtitles {
+            get {
+                return ((bool)(this["IncludeSubtitles"]));
+            }
+            set {
+                this["IncludeSubtitles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DeleteNonMediaFiles {
+            get {
+                return ((bool)(this["DeleteNonMediaFiles"]));
+            }
+            set {
+                this["DeleteNonMediaFiles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <string>.avi</string>
+  <string>.mkv</string>
+  <string>.mp4</string>
+  <string>.wmv</string>
+  <string>.mov</string>
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection VideoExtensions {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["VideoExtensions"]));
+            }
+            set {
+                this["VideoExtensions"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
+            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
+            "tring>.srt</string>\r\n</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection SubtitleExtensions {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["SubtitleExtensions"]));
+            }
+            set {
+                this["SubtitleExtensions"] = value;
             }
         }
     }

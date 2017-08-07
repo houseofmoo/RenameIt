@@ -6,24 +6,18 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace RenameIt.ViewModels.MainWindow
+namespace RenameIt.ViewModels
 {
     /// <summary>
     /// ViewModel for the main window.
     /// </summary>
-    class ContentViewModel : Base.ViewModel
+    class RenameItViewModel : Base.ViewModel
     {
         #region private constants
         // button text content values
         private const string DIRECTORY = "Select Directory";
         private const string PREVIEW = "Preview Changes";
         private const string CONFIRM = "Commit Changes";
-
-        // check box content values
-        private const string GET_EPISODE_TITLES = "Get Episode Titles";
-        private const string INCLUDE_SUBTITLES = "Include Subtitles";
-        private const string DELETE_NONMEDIA_FILES = "Delete Non-media Files";
-        private const string SEARCH_SUBDIRECTORIES = "Search Sub-directories";
 
         // formatting constants
         private const double LIST_VIEW_COLUMN_SIZE = 205d;
@@ -46,12 +40,6 @@ namespace RenameIt.ViewModels.MainWindow
         private string _season;
         private string _episodeStart;
 
-        // checkbox
-        private bool _getEpisodeTitles = true;
-        private bool _includeSubtitles = true;
-        private bool _deleteNonMediaFiles = false;
-        private bool _searchSubDirectories = false;
-
         // formatting
         private double _listViewColumnSize = LIST_VIEW_COLUMN_SIZE;
         private double _listViewHeight = MINIMUM_LIST_VIEW_HEIGHT;
@@ -59,6 +47,9 @@ namespace RenameIt.ViewModels.MainWindow
         // data items
         private ObservableCollection<Directory.ItemViewModel> _videoItems;
         private ObservableCollection<Directory.ItemViewModel> _subtitleItems;
+
+        // working directory
+        private string _directoryPath;
         #endregion
 
         #region button properties
@@ -185,88 +176,6 @@ namespace RenameIt.ViewModels.MainWindow
         }
         #endregion
 
-        #region checkbox properties
-        /// <summary>
-        /// Stores the checkbox value of Get Episode Titles
-        /// </summary>
-        public bool GetEpisodeTitles
-        {
-            get { return _getEpisodeTitles; }
-            set
-            {
-                if (_getEpisodeTitles == value)
-                    return;
-                _getEpisodeTitles = value;
-                OnPropertyChanged(nameof(GetEpisodeTitles));
-            }
-        }
-
-        /// <summary>
-        /// Returns the content for Get Episode Titles checkbox
-        /// </summary>
-        public string GetEpisodeTitlesContent { get { return GET_EPISODE_TITLES; } }
-
-        /// <summary>
-        /// Stores the checkbox value of Ignore Subtitles
-        /// </summary>
-        public bool IncludeSubtitles
-        {
-            get { return _includeSubtitles; }
-            set
-            {
-                if (_includeSubtitles == value)
-                    return;
-                _includeSubtitles = value;
-                OnPropertyChanged(nameof(IncludeSubtitles));
-            }
-        }
-
-        /// <summary>
-        /// Returns the content for Ignore Subtitles checkbox
-        /// </summary>
-        public string IncludeSubtitlesContent { get { return INCLUDE_SUBTITLES; } }
-
-        /// <summary>
-        /// Stores the checkbox value of Delete Non-media Files
-        /// </summary>
-        public bool DeleteNonMediaFiles
-        {
-            get { return _deleteNonMediaFiles; }
-            set
-            {
-                if (_deleteNonMediaFiles == value)
-                    return;
-                _deleteNonMediaFiles = value;
-                OnPropertyChanged(nameof(DeleteNonMediaFiles));
-            }
-        }
-
-        /// <summary>
-        /// Returns the content for Delete Non-media Files checkbox
-        /// </summary>
-        public string DeleteNonMediaFilesContent { get { return DELETE_NONMEDIA_FILES; } }
-
-        /// <summary>
-        /// Stores the checkbox value of Search Subdirectories
-        /// </summary>
-        public bool SearchSubDirectories
-        {
-            get { return _searchSubDirectories; }
-            set
-            {
-                if (_searchSubDirectories == value)
-                    return;
-                _searchSubDirectories = value;
-                OnPropertyChanged(nameof(SearchSubDirectories));
-            }
-        }
-
-        /// <summary>
-        /// Returns the content for Search Subdirectories checkbox
-        /// </summary>
-        public string SearchSubDirectoriesContent { get { return SEARCH_SUBDIRECTORIES; } }
-        #endregion
-
         #region formatting properties
         /// <summary>
         /// Sets the column width of the list view initially
@@ -336,7 +245,7 @@ namespace RenameIt.ViewModels.MainWindow
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public ContentViewModel()
+        public RenameItViewModel()
         {
             // create lists
             this.VideoItems = new ObservableCollection<Directory.ItemViewModel>();
@@ -360,19 +269,23 @@ namespace RenameIt.ViewModels.MainWindow
             this.ConfirmButtonEnabled = false;
 
             // gets the files from the selected directory
-            var files = Helpers.MediaFiles.GetFilesFromDirectory();
-            List<Models.DirectoryItem> videoFiles = Helpers.MediaFiles.GetMatchingFiles(files, Identifiers.Extensions.Video);
-            List<Models.DirectoryItem> subtitleFiles = Helpers.MediaFiles.GetMatchingFiles(files, Identifiers.Extensions.Subtitle);
+            var files = Helpers.MediaFiles.GetFilesFromDirectory(out this._directoryPath);
+
+            // build video files list
+            var videoFiles = Helpers.MediaFiles.GetMatchingFiles(files, User.Settings.VideoExtensions);
+
+            // build subtitle files list
+            var subtitleFiles = Helpers.MediaFiles.GetMatchingFiles(files, User.Settings.SubtitleExtensions);
 
             // if we found no valid items in the directory, nothing to do
             if (!videoFiles.Any() && !subtitleFiles.Any())
                 return;
 
-            // set Items list to new files list
+            // build and set VideoItems list
             this.VideoItems = new ObservableCollection<Directory.ItemViewModel>(videoFiles.Select(file => new Directory.ItemViewModel(file)));
 
             // do we want subtitle files?
-            if (this.IncludeSubtitles)
+            if (User.Settings.IncludeSubtitles)
                 this.SubtitleItems = new ObservableCollection<Directory.ItemViewModel>(subtitleFiles.Select(file => new Directory.ItemViewModel(file)));
 
             // if items lists have any items, we enable preview button
@@ -396,7 +309,7 @@ namespace RenameIt.ViewModels.MainWindow
             List<string> titles = null;
 
             // only fetch titles if user wants to
-            if (this.GetEpisodeTitles)
+            if (User.Settings.GetEpisodeTitles)
             {
                 // create request
                 var showInfo = new Models.Titles.Request()
@@ -443,7 +356,7 @@ namespace RenameIt.ViewModels.MainWindow
         private void previewNewNames(List<string> titles)
         {
             // counter to increment episode number
-            int counter = Convert.ToInt32(this.EpisodeStart);
+            int episodeNumber = Convert.ToInt32(this.EpisodeStart);
 
             // index to episode title
             int titleIndex = 0;
@@ -461,15 +374,15 @@ namespace RenameIt.ViewModels.MainWindow
                     title = string.Empty;
 
                 // build new name and add it to the items field
-                item.AddNewName(this.ShowName, this.Season, counter, title);
+                item.SetNewName(this.ShowName, this.Season, episodeNumber, title);
 
                 // increment counter and indexer
-                counter++;
+                episodeNumber++;
                 titleIndex++;
             }
 
             // reset for subtitles
-            counter = Convert.ToInt32(this.EpisodeStart);
+            episodeNumber = Convert.ToInt32(this.EpisodeStart);
             titleIndex = 0;
 
             // update subtitle items with new names
@@ -482,10 +395,10 @@ namespace RenameIt.ViewModels.MainWindow
                     title = string.Empty;
 
                 // build new name and add it to the items field
-                item.AddNewName(this.ShowName, this.Season, counter, title);
+                item.SetNewName(this.ShowName, this.Season, episodeNumber, title);
 
                 // increment counter and indexer
-                counter++;
+                episodeNumber++;
                 titleIndex++;
             }
         }

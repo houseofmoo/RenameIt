@@ -126,7 +126,7 @@ namespace RenameIt.ViewModels.Directory
         #endregion
 
         #region methods
-        public void AddNewName(string showname, string season, int epNum, string title)
+        public void SetNewName(string showname, string season, int epNum, string title)
         {
             // build new name
             this.NewName = $"{showname} - " +
@@ -146,10 +146,20 @@ namespace RenameIt.ViewModels.Directory
         /// <returns></returns>
         private static string addLeadingZeroes(string num)
         {
-            int _num = Convert.ToInt32(num);
+            try
+            {
+                // convert to a integer
+                int _num = Convert.ToInt32(num);
 
-            // return number
-            return _num < 10 ? "0" + _num.ToString() : _num.ToString();
+                // add leading 0 if needed, return number
+                return _num < 10 ? "0" + _num.ToString() : _num.ToString();
+            }
+            catch
+            {
+                // if we had an error, arriving string wasn't a number
+                // return it and continue
+                return num;
+            }
         }
         #endregion
     }
