@@ -17,18 +17,14 @@
 
         <!-- List View / Main Content -->
         <Grid Grid.Column="0" Margin="5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="227*"/>
-                <ColumnDefinition Width="59*"/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <!-- Videos listview-->
-            <StackPanel Grid.Row="0" Grid.ColumnSpan="2" >
-                <TextBlock Text="Videos" FontSize="14" HorizontalAlignment="Center"/>
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Videos" FontSize="16" HorizontalAlignment="Center"/>
                 <ListView ItemsSource="{Binding VideoItems}" Height="{Binding ListViewHeight}">
                     <ListView.View>
                         <GridView>
@@ -41,8 +37,8 @@
             </StackPanel>
 
             <!-- Subtitles listview -->
-            <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
-                <TextBlock Text="Subtitles" FontSize="14" HorizontalAlignment="Center"/>
+            <StackPanel Grid.Row="1">
+                <TextBlock Text="Subtitles" FontSize="16" HorizontalAlignment="Center"/>
                 <ListView ItemsSource="{Binding SubtitleItems}" Height="{Binding ListViewHeight}">
                     <ListView.View>
                         <GridView>
