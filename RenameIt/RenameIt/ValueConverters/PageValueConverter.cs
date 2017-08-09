@@ -24,8 +24,11 @@ namespace RenameIt.ValueConverters
                 case Identifiers.Pages.RenameIt:
                     return new Views.Pages.RenameItPage();
 
-                case Identifiers.Pages.Settings:
-                    return new Views.Pages.SettingsPage();
+                case Identifiers.Pages.Options:
+                    return new Views.Pages.OptionsPage();
+
+                case Identifiers.Pages.Extensions:
+                    return new Views.Pages.ExtensionsPage();
 
                 default:
                     Debugger.Break();

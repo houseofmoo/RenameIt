@@ -60,13 +60,25 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="User\Settings.cs" />
+    <Compile Include="ViewModels\OptionsViewModel.cs" />
+    <Compile Include="Views\Pages\ExtensionsPage.xaml.cs">
+      <DependentUpon>ExtensionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Pages\OptionsPage.xaml.cs">
+      <DependentUpon>OptionsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Pages\RenameItPage.xaml.cs">
       <DependentUpon>RenameItPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Pages\SettingsPage.xaml.cs">
-      <DependentUpon>SettingsPage.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Styles\TextBox.xaml">
+    <Page Include="Styles\ButtonStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\ColorStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\TextBoxStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -94,16 +106,19 @@
     <Compile Include="ViewModels\Directory\ItemViewModel.cs" />
     <Compile Include="ViewModels\RenameItViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Pages\RenameItPage.xaml">
+    <Page Include="Views\Pages\ExtensionsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Pages\SettingsPage.xaml">
+    <Page Include="Views\Pages\OptionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Pages\RenameItPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

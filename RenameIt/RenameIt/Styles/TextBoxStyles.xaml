@@ -10,6 +10,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
                     <Grid>
+                        
                         <!-- typed text -->
                         <TextBox Text="{Binding Path=Text,
                                                 RelativeSource={RelativeSource TemplatedParent}, 
@@ -18,18 +19,20 @@
                                 x:Name="textSource" 
                                 Background="Transparent" 
                                 Panel.ZIndex="2"
-                                 Padding="10"/>
+                                Padding="10"/>
+                        
                         <!-- place holder text-->
                         <TextBox Text="{TemplateBinding Tag}" 
                                  Background="{TemplateBinding Background}" 
                                  Panel.ZIndex="1"
                                  Padding="10">
+                            
                             <TextBox.Style>
                                 <Style TargetType="{x:Type TextBox}">
                                     <Setter Property="Foreground" Value="Transparent"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Path=Text, Source={x:Reference textSource}}" Value="">
-                                            <Setter Property="Foreground" Value="Gray"/>
+                                            <Setter Property="Foreground" Value="{StaticResource PlaceholdForegroundBrush}"/>
                                             <Setter Property="Padding" Value="10"/>
                                         </DataTrigger>
                                     </Style.Triggers>

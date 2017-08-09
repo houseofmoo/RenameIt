@@ -6,23 +6,48 @@
         xmlns:local="clr-namespace:RenameIt"
         xmlns:PageConverter="clr-namespace:RenameIt.ValueConverters"
         mc:Ignorable="d"
-        Title="Welcome to RenameIt, the video file renaming tool" Height="800" Width="900">
+        Title="Welcome to RenameIt, the video file renaming tool" Height="850" Width="900">
 
-    <Grid Margin="10">
+    <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{Binding MenuWidth}"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="9*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="0" 
-                Content="{Binding ChangePageButtonContent}" 
-                Command="{Binding ChangePageCommand}"
-                Height="20"
+        <StackPanel Grid.Column="0" Background="{StaticResource MenuBackgroundBrush}">
+            <!-- Title button -->
+            <Button Style="{StaticResource MenuTitleButton}"
+                Content="{Binding MenuTitleButtonContent}" 
+                Command="{Binding MenuTitleButtonCommand}"
                 VerticalAlignment="Top"/>
+
+            <!-- RenameIt button -->
+            <Button Style="{StaticResource MenuButton}"
+                Content="{Binding RenameItButtonContent}" 
+                Command="{Binding RenameItButtonCommand}"
+                Opacity="{Binding MenuButtonOpacity}"
+                VerticalAlignment="Top"/>
+
+            <!-- Extensions button -->
+            <Button Style="{StaticResource MenuButton}"
+                Content="{Binding ExtensionsButtonContent}" 
+                Command="{Binding ExtensionsButtonCommand}"
+                Opacity="{Binding MenuButtonOpacity}"
+                VerticalAlignment="Top"/>
+
+            <!-- Options button -->
+            <Button Style="{StaticResource MenuButton}"
+                Content="{Binding OptionsButtonContent}" 
+                Command="{Binding OptionsButtonCommand}"
+                Opacity="{Binding MenuButtonOpacity}"
+                VerticalAlignment="Top"/>
+        </StackPanel>
         
         <Frame x:Name="MainFrame"
                Grid.Column="1"
                Grid.ColumnSpan="2"
+               NavigationUIVisibility="Hidden"
+               Background="{StaticResource MainBackgroundBrush}"
                Content="{Binding CurrentPage, Converter={PageConverter:PageValueConverter}}"/>
     </Grid>
 </Window>

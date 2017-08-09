@@ -71,33 +71,19 @@
                      Text="{Binding EpisodeStart}"/>
 
             <!-- Directory Button -->
-            <Button Content="{Binding DirectoryButtonContent, FallbackValue=Directory}" 
-                    Command="{Binding DirectoryButtonCommand}"
-                    FontSize="12" 
-                    Padding="10"
-                    IsEnabled="{Binding DirectoryButtonEnabled}"
-                    Background="#efefef"
-                    Margin="5"/>
+            <Button Style="{StaticResource WindowButton}" 
+                    Content="{Binding DirectoryButtonContent, FallbackValue=Directory}" 
+                    Command="{Binding DirectoryButtonCommand}"/>
 
-            <StackPanel>
-                <!-- Preview Button -->
-                <Button Content="{Binding PreviewButtonContent, FallbackValue=Preview}" 
-                        Command="{Binding PreviewButtonCommand}"
-                        FontSize="12"
-                        Padding="10"
-                        IsEnabled="{Binding PreviewButtonEnabled}"
-                        Background="#efefef"
-                        Margin="5"/>
+            <!-- Preview Button -->
+            <Button Style="{StaticResource WindowButton}" 
+                    Content="{Binding PreviewButtonContent, FallbackValue=Preview}" 
+                    Command="{Binding PreviewButtonCommand}"/>
 
                 <!-- Confirm Button -->
-                <Button Content="{Binding ConfirmButtonContent, FallbackValue=Confirm}"
-                        Command="{Binding ConfirmButtonCommand}"
-                        FontSize="12" 
-                        Padding="10"
-                        IsEnabled="{Binding ConfirmButtonEnabled}"
-                        Background="#efefef"
-                        Margin="5"/>
-            </StackPanel>
+            <Button Style="{StaticResource WindowButton}" 
+                    Content="{Binding ConfirmButtonContent, FallbackValue=Confirm}"
+                    Command="{Binding ConfirmButtonCommand}"/>
         </StackPanel>
 
     </Grid>

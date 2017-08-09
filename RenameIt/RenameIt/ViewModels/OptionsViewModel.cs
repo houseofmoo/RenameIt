@@ -1,28 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace RenameIt.ViewModels
 {
-    /// <summary>
-    /// ViewModel for the settings window
-    /// </summary>
-    class SettingsViewModel : Base.ViewModel
+    class OptionsViewModel : Base.ViewModel
     {
         #region private constants
         // check box content values
         private const string GET_EPISODE_TITLES = "Get Episode Titles";
         private const string INCLUDE_SUBTITLES = "Include Subtitles";
-        private const string DELETE_NONMEDIA_FILES = "Delete Non-media Files";
+        private const string DELETE_NONMEDIA_FILES = "Delete Non-Media Files";
         private const string SEARCH_SUBDIRECTORIES = "Search Sub-directories";
         private const string APPLY = "Apply Changes";
         private const string CANCEL = "Cancel";
-
-        private const double FONT_SIZE = 15d;
-        private const int BUTTON_HEIGHT = 40;
         #endregion
 
         #region private fields
@@ -36,7 +25,6 @@ namespace RenameIt.ViewModels
         private bool _includeSubtitles = User.Settings.Get().IncludeSubtitles;
         private bool _deleteNonMediaFiles = User.Settings.Get().DeleteNonMediaFiles;
         private bool _searchSubdirectories = User.Settings.Get().SearchSubDirectories;
-
 
         // commands
         private ICommand _applyButtonCommand;
@@ -60,11 +48,6 @@ namespace RenameIt.ViewModels
         }
 
         /// <summary>
-        /// Returns the content for Get Episode Titles checkbox
-        /// </summary>
-        public string GetEpisodeTitlesContent { get { return GET_EPISODE_TITLES; } }
-
-        /// <summary>
         /// Stores the checkbox value of Ignore Subtitles
         /// </summary>
         public bool IncludeSubtitles
@@ -78,11 +61,6 @@ namespace RenameIt.ViewModels
                 OnPropertyChanged(nameof(IncludeSubtitles));
             }
         }
-
-        /// <summary>
-        /// Returns the content for Ignore Subtitles checkbox
-        /// </summary>
-        public string IncludeSubtitlesContent { get { return INCLUDE_SUBTITLES; } }
 
         /// <summary>
         /// Stores the checkbox value of Delete Non-media Files
@@ -100,11 +78,6 @@ namespace RenameIt.ViewModels
         }
 
         /// <summary>
-        /// Returns the content for Delete Non-media Files checkbox
-        /// </summary>
-        public string DeleteNonMediaFilesContent { get { return DELETE_NONMEDIA_FILES; } }
-
-        /// <summary>
         /// Stores the checkbox value of Search Subdirectories
         /// </summary>
         public bool SearchSubDirectories
@@ -119,48 +92,25 @@ namespace RenameIt.ViewModels
             }
         }
 
-        /// <summary>
-        /// Returns the content for Search Subdirectories checkbox
-        /// </summary>
+        public string GetEpisodeTitlesContent { get { return GET_EPISODE_TITLES; } }
+        public string IncludeSubtitlesContent { get { return INCLUDE_SUBTITLES; } }
+        public string DeleteNonMediaFilesContent { get { return DELETE_NONMEDIA_FILES; } }
         public string SearchSubDirectoriesContent { get { return SEARCH_SUBDIRECTORIES; } }
         #endregion
 
         #region button properties
-        /// <summary>
-        /// Apply buttons content
-        /// </summary>
         public string ApplyButtonContent { get { return APPLY; } }
-
-        /// <summary>
-        /// Apply buttons command
-        /// </summary>
-        public ICommand ApplyButtonCommand { get { return _applyButtonCommand; } }
-
-        /// <summary>
-        /// Cancel buttons content
-        /// </summary>
         public string CancelButtonContent { get { return CANCEL; } }
-        
-        /// <summary>
-        /// Cancel buttons command
-        /// </summary>
+
+        public ICommand ApplyButtonCommand { get { return _applyButtonCommand; } }
         public ICommand CancelButtonCommand { get { return _cancelButtonCommand; } }
         #endregion
 
-        #region formatting
-        /// <summary>
-        /// Font size for checkbox text
-        /// </summary>
-        public double FontSize { get { return FONT_SIZE; } }
-
-        /// <summary>
-        /// Heigh of a button in settings page
-        /// </summary>
-        public int ButtonHeight { get { return BUTTON_HEIGHT; } }
-        #endregion
-
         #region constructors
-        public SettingsViewModel()
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public OptionsViewModel()
         {
             // hold the previous state
             this._previousState = new User.Settings()
@@ -193,6 +143,9 @@ namespace RenameIt.ViewModels
 
             // this new state is now "previous state"
             this.updatePreviousState();
+
+            // save settings
+            this.saveSettings();
         }
 
         /// <summary>
@@ -215,6 +168,18 @@ namespace RenameIt.ViewModels
             this._previousState.IncludeSubtitles = this.IncludeSubtitles;
             this._previousState.DeleteNonMediaFiles = this.DeleteNonMediaFiles;
             this._previousState.SearchSubDirectories = this.SearchSubDirectories;
+        }
+
+        /// <summary>
+        /// Save the settings to the users settings file
+        /// </summary>
+        private void saveSettings()
+        {            
+            Properties.Settings.Default.GetEpisodeTitles = User.Settings.Get().GetEpisodeTitles;
+            Properties.Settings.Default.IncludeSubtitles = User.Settings.Get().IncludeSubtitles;
+            Properties.Settings.Default.DeleteNonMediaFiles = User.Settings.Get().DeleteNonMediaFiles;
+            Properties.Settings.Default.Save();
+            //Properties.Settings.Default.SearchSubDirectories = this.SearchSubDirectories;
         }
         #endregion
     }

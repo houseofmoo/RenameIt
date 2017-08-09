@@ -6,17 +6,73 @@ namespace RenameIt.ViewModels
     public class MainWindowViewModel : Base.ViewModel
     {
         #region private constants
-        private const string SETTINGS = "Settings";
+        // content
+        private const string RENAME_IT_ACRONYM = "R N";
         private const string RENAME_IT = "RenameIt";
+        private const string EXTENSTIONS = "Extensions";
+        private const string OPTIONS = "Options";
+
+        // button formats
+        private const int MENU_BUTTON_VISIBLE = 100;
+        private const int MENU_BUTTON_INVISIBLE = 0;
+
+        // menu formats
+        private const int MENU_SHOWN = 100;
+        private const int MENU_HIDDEN = 35;
         #endregion
 
         #region private fields
-        private ICommand _changePage;
+        private int _menuWidth = MENU_SHOWN;
+        private int _menuButtonOpacity = MENU_BUTTON_VISIBLE;
+
+        // commands
+        private ICommand _menuTitleButtonCommand;
+        private ICommand _renameItButtonCommand;
+        private ICommand _extensionsButtonCommand;
+        private ICommand _optionsButtonCommand;
+
         private Identifiers.Pages _currentPage;
-        private string _changePageButtonContent = SETTINGS;
         #endregion
 
         #region public properties
+        // content
+        public string MenuTitleButtonContent { get { return RENAME_IT_ACRONYM; } }
+        public string RenameItButtonContent { get { return RENAME_IT; } }
+        public string ExtensionsButtonContent { get { return EXTENSTIONS; } }
+        public string OptionsButtonContent { get { return OPTIONS; } }
+
+        // dimensions
+        public int MenuWidth
+        {
+            get { return _menuWidth; }
+            set
+            {
+                if (_menuWidth == value)
+                    return;
+                _menuWidth = value;
+                OnPropertyChanged(nameof(MenuWidth));
+            }
+        }
+
+        // opacity
+        public int MenuButtonOpacity
+        {
+            get { return _menuButtonOpacity; }
+            set
+            {
+                if (_menuButtonOpacity == value)
+                    return;
+                _menuButtonOpacity = value;
+                OnPropertyChanged(nameof(MenuButtonOpacity));
+            }
+        }
+
+        // commands
+        public ICommand MenuTitleButtonCommand { get { return _menuTitleButtonCommand; } }
+        public ICommand RenameItButtonCommand { get { return _renameItButtonCommand; } }
+        public ICommand ExtensionsButtonCommand { get { return _extensionsButtonCommand; } }
+        public ICommand OptionsButtonCommand { get { return _optionsButtonCommand; } }
+
         /// <summary>
         /// Holds the current page we're viewing
         /// </summary>
@@ -31,26 +87,6 @@ namespace RenameIt.ViewModels
                 OnPropertyChanged(nameof(CurrentPage));
             }
         }
-
-        /// <summary>
-        /// Command to change between pages
-        /// </summary>
-        public ICommand ChangePageCommand { get { return this._changePage; } }
-
-        /// <summary>
-        /// The content of the change page button
-        /// </summary>
-        public string ChangePageButtonContent
-        {
-            get { return _changePageButtonContent; }
-            set
-            {
-                if (_changePageButtonContent == value)
-                    return;
-                _changePageButtonContent = value;
-                OnPropertyChanged(nameof(ChangePageButtonContent));
-            }
-        }
         #endregion
 
         #region constructors
@@ -63,56 +99,46 @@ namespace RenameIt.ViewModels
             this._currentPage = Identifiers.Pages.RenameIt;
 
             // set change page command
-            this._changePage = new Commands.RelayCommand(this.onChangePage, true);
-        }
+            this._menuTitleButtonCommand = new Commands.RelayCommand(this.onTitleButtonClick, true);
+            this._renameItButtonCommand = new Commands.RelayCommand(this.onRenameItButtonClick, true);
+            this._extensionsButtonCommand = new Commands.RelayCommand(this.onExtensionsButtonClick, true);
+            this._optionsButtonCommand = new Commands.RelayCommand(this.onOptionsButtonClick, true);
+    }
         #endregion
 
         #region methods
         /// <summary>
         /// Occurs on change page command
         /// </summary>
-        private void onChangePage()
+        private void onTitleButtonClick()
         {
-            // update settings
-            if (this.CurrentPage == Identifiers.Pages.Settings)
-                updateSettingsFile();
-
-            // change page
-            ChangePage();
-        }
-
-        /// <summary>
-        /// Changes the page between RenameIt and Settings
-        /// </summary>
-        private void ChangePage()
-        {
-            if (this.CurrentPage == Identifiers.Pages.RenameIt)
+            // hide the menu
+            if (this.MenuWidth == MENU_SHOWN)
             {
-                // switch to settings page
-                this.CurrentPage = Identifiers.Pages.Settings;
-                this.ChangePageButtonContent = RENAME_IT;
+                this.MenuWidth = MENU_HIDDEN;
+                this.MenuButtonOpacity = MENU_BUTTON_INVISIBLE;
             }
             else
             {
-                // switch to rename it main page
-                this.CurrentPage = Identifiers.Pages.RenameIt;
-                this.ChangePageButtonContent = SETTINGS;
+                this.MenuWidth = MENU_SHOWN;
+                this.MenuButtonOpacity = MENU_BUTTON_VISIBLE;
             }
         }
 
-        /// <summary>
-        /// Updates the settings XML file using the global settings state
-        /// </summary>
-        private void updateSettingsFile()
+        private void onRenameItButtonClick()
         {
-            // update changes to settings
-            // update settings file - to do, need better way
-            Properties.Settings.Default.GetEpisodeTitles = User.Settings.Get().GetEpisodeTitles;
-            Properties.Settings.Default.IncludeSubtitles = User.Settings.Get().IncludeSubtitles;
-            Properties.Settings.Default.DeleteNonMediaFiles = User.Settings.Get().DeleteNonMediaFiles;
-            Properties.Settings.Default.Save();
-            //Properties.Settings.Default.SearchSubDirectories = this.SearchSubDirectories;
-        } 
+            this.CurrentPage = Identifiers.Pages.RenameIt;
+        }
+
+        private void onExtensionsButtonClick()
+        {
+            this.CurrentPage = Identifiers.Pages.Extensions;
+        }
+
+        private void onOptionsButtonClick()
+        {
+            this.CurrentPage = Identifiers.Pages.Options;
+        }
         #endregion
     }
 }

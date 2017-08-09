@@ -30,11 +30,6 @@ namespace RenameIt.ViewModels
         private ICommand _previewButtonCommand;
         private ICommand _confirmButtonCommand;
 
-        // button enabled
-        private bool _directoryButtonEnabled = true;
-        private bool _previewButtonEnabled = false;
-        private bool _confirmButtonEnabled = false;
-
         // textbox text
         private string _showName;
         private string _season;
@@ -42,7 +37,6 @@ namespace RenameIt.ViewModels
 
         // formatting
         private double _listViewColumnSize = LIST_VIEW_COLUMN_SIZE;
-        private double _listViewHeight = MINIMUM_LIST_VIEW_HEIGHT;
 
         // data items
         private ObservableCollection<Directory.ItemViewModel> _videoItems;
@@ -53,80 +47,13 @@ namespace RenameIt.ViewModels
         #endregion
 
         #region button properties
-        /// <summary>
-        /// Get directory button command
-        /// </summary>
-        public ICommand DirectoryButtonCommand { get { return _directroyButtonCommand; } }
-
-        /// <summary>
-        /// Returns directory button content.
-        /// </summary>
         public string DirectoryButtonContent { get { return DIRECTORY; } }
-
-        /// <summary>
-        /// Get preview button command
-        /// </summary>
-        public ICommand PreviewButtonCommand { get { return _previewButtonCommand; } }
-
-        /// <summary>
-        /// Returns preview button content
-        /// </summary>
         public string PreviewButtonContent { get { return PREVIEW; } }
-
-        /// <summary>
-        /// Gets confirm button command
-        /// </summary>
-        public ICommand ConfirmButtonCommand { get { return _confirmButtonCommand; } }
-
-        /// <summary>
-        /// Returns confirm button content.
-        /// </summary>
         public string ConfirmButtonContent { get { return CONFIRM; } }
 
-        /// <summary>
-        /// Enables and disables the directory button
-        /// </summary>
-        public bool DirectoryButtonEnabled
-        {
-            get { return _directoryButtonEnabled; }
-            set
-            {
-                if (_directoryButtonEnabled == value)
-                    return;
-                _directoryButtonEnabled = value;
-                OnPropertyChanged(nameof(DirectoryButtonEnabled));
-            }
-        }
-
-        /// <summary>
-        /// Enables and disables the preview button
-        /// </summary>
-        public bool PreviewButtonEnabled
-        {
-            get { return _previewButtonEnabled; }
-            set
-            {
-                if (_previewButtonEnabled == value)
-                    return;
-                _previewButtonEnabled = value;
-                OnPropertyChanged(nameof(PreviewButtonEnabled));
-            }
-        }
-
-        /// <summary>
-        /// Enables and disables the confirm button
-        /// </summary>
-        public bool ConfirmButtonEnabled
-        {
-            get { return _confirmButtonEnabled; }
-            set
-            {
-                if (_confirmButtonEnabled == value)
-                    return;
-                _confirmButtonEnabled = value;
-                OnPropertyChanged(nameof(ConfirmButtonEnabled));
-            }
-        }
+        public ICommand DirectoryButtonCommand { get { return _directroyButtonCommand; } }
+        public ICommand PreviewButtonCommand { get { return _previewButtonCommand; } }
+        public ICommand ConfirmButtonCommand { get { return _confirmButtonCommand; } }
         #endregion
 
         #region textbox properties
@@ -196,17 +123,7 @@ namespace RenameIt.ViewModels
         /// <summary>
         /// Holds the list view height. Sets a default valut. Value cannot go below default value
         /// </summary>
-        public double ListViewHeight
-        {
-            get { return _listViewHeight; }
-            set
-            {
-                if (_listViewHeight == value)
-                    return;
-                _listViewHeight = value < MINIMUM_LIST_VIEW_HEIGHT ? MINIMUM_LIST_VIEW_HEIGHT : value;
-                OnPropertyChanged(nameof(ListViewHeight));
-            }
-        }
+        public double ListViewHeight { get { return MINIMUM_LIST_VIEW_HEIGHT; } }
         #endregion
 
         #region data items properties
@@ -264,10 +181,6 @@ namespace RenameIt.ViewModels
         /// </summary>
         private void directoryButtonClick()
         {
-            // disable confirm button, we do not want users to be able to
-            // confirm changes before previewing them
-            this.ConfirmButtonEnabled = false;
-
             // gets the files from the selected directory
             var files = Helpers.MediaFiles.GetFilesFromDirectory(out this._directoryPath);
 
@@ -287,10 +200,6 @@ namespace RenameIt.ViewModels
             // do we want subtitle files?
             if (User.Settings.Get().IncludeSubtitles)
                 this.SubtitleItems = new ObservableCollection<Directory.ItemViewModel>(subtitleFiles.Select(file => new Directory.ItemViewModel(file)));
-
-            // if items lists have any items, we enable preview button
-            if (this.VideoItems.Any() || this.SubtitleItems.Any())
-                this.PreviewButtonEnabled = true;
         }
 
         /// <summary>
@@ -326,9 +235,6 @@ namespace RenameIt.ViewModels
 
             // present changes to user
             this.previewNewNames(titles);
-
-            // enable the confirm button
-            this.ConfirmButtonEnabled = true;
         }
 
         /// <summary>
@@ -339,13 +245,6 @@ namespace RenameIt.ViewModels
             // make changes to files
             Helpers.MediaFiles.UpdateFileNames(this.VideoItems);
             Helpers.MediaFiles.UpdateFileNames(this.SubtitleItems);
-
-            // disable confirm button
-            this.ConfirmButtonEnabled = false;
-
-            // if for some reason we have confirmed on no items, we disable preview button
-            if (!this.VideoItems.Any() && !this.SubtitleItems.Any())
-                this.PreviewButtonEnabled = false;
         }
         #endregion
 

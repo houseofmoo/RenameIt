@@ -9,6 +9,7 @@ namespace RenameIt.Identifiers
     public enum Pages
     {
         RenameIt = 0,
-        Settings = 1,
+        Options = 1,
+        Extensions = 2,
     }
 }
