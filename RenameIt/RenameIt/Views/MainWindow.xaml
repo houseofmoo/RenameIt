@@ -6,11 +6,15 @@
         xmlns:local="clr-namespace:RenameIt"
         xmlns:PageConverter="clr-namespace:RenameIt.ValueConverters"
         mc:Ignorable="d"
-        Title="Welcome to RenameIt, the video file renaming tool" Height="850" Width="900">
+        Title="Welcome to RenameIt, the video file renaming tool" 
+        Height="850" 
+        Width="900"
+        MinWidth="600"
+        MinHeight="820" Closing="Window_Closing">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding MenuWidth}"/>
+            <ColumnDefinition Width="40"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -19,27 +23,6 @@
             <Button Style="{StaticResource MenuTitleButton}"
                 Content="{Binding MenuTitleButtonContent}" 
                 Command="{Binding MenuTitleButtonCommand}"
-                VerticalAlignment="Top"/>
-
-            <!-- RenameIt button -->
-            <Button Style="{StaticResource MenuButton}"
-                Content="{Binding RenameItButtonContent}" 
-                Command="{Binding RenameItButtonCommand}"
-                Opacity="{Binding MenuButtonOpacity}"
-                VerticalAlignment="Top"/>
-
-            <!-- Extensions button -->
-            <Button Style="{StaticResource MenuButton}"
-                Content="{Binding ExtensionsButtonContent}" 
-                Command="{Binding ExtensionsButtonCommand}"
-                Opacity="{Binding MenuButtonOpacity}"
-                VerticalAlignment="Top"/>
-
-            <!-- Options button -->
-            <Button Style="{StaticResource MenuButton}"
-                Content="{Binding OptionsButtonContent}" 
-                Command="{Binding OptionsButtonCommand}"
-                Opacity="{Binding MenuButtonOpacity}"
                 VerticalAlignment="Top"/>
         </StackPanel>
         

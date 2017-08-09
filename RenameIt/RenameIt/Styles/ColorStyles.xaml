@@ -26,7 +26,11 @@
     <!-- Main Background color -->
     <Color x:Key="MainBackground">#FFFFFF</Color>
     <SolidColorBrush x:Key="MainBackgroundBrush" Color="{StaticResource MainBackground}"/>
-
+    
+    <!-- Main text block text color -->
+    <Color x:Key="MainTextBlockTextColor">#000000</Color>
+    <SolidColorBrush x:Key="MainTextBlockTextColorBrush" Color="{StaticResource MainTextBlockTextColor}"/>
+    
     <!-- Main text color -->
     <Color x:Key="MainTextColor">#EEEEEE</Color>
     <SolidColorBrush x:Key="MainTextColorBrush" Color="{StaticResource MainTextColor}"/>

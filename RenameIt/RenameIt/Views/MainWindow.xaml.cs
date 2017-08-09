@@ -12,5 +12,11 @@ namespace RenameIt.Views
             InitializeComponent();
             this.DataContext = new ViewModels.MainWindowViewModel();
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // save settings before closing
+            Properties.Settings.Default.Save();
+        }
     }
 }

@@ -21,16 +21,15 @@ namespace RenameIt.Identifiers
         /// </summary>
         private static readonly string[] _subtitleDefault = { ".srt" };
 
+        public static string[] VideoDefaults {  get { return _videoDefault; } }
+        public static string[] SubtitleDefaults { get { return _subtitleDefault; } }
+
         /// <summary>
         /// Reset video and subtitle extensions to defaults
         /// </summary>
         public static void ResetDefaultExtensions()
         {
-            User.Settings.Get().VideoExtensions.Clear();
-            User.Settings.Get().VideoExtensions.AddRange(_videoDefault);
-
-            User.Settings.Get().SubtitleExtensions.Clear();
-            User.Settings.Get().SubtitleExtensions.AddRange(_subtitleDefault);
+            throw new NotImplementedException();
         }
     }
 }

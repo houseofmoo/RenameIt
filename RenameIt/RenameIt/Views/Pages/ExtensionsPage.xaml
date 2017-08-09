@@ -8,7 +8,22 @@
       d:DesignHeight="300" d:DesignWidth="300"
       Title="ExtensionsPage">
 
-    <Grid>
-        
-    </Grid>
+    <StackPanel>
+        <TextBlock Text="{Binding VideoExtensionTitle}" Margin="5 0 0 0"/>
+        <TextBox Style="{StaticResource MainTextBox}"
+                 Tag="Add a video extension..."
+                 Text="{Binding VideoExtensionsText}"/>
+
+        <TextBlock Text="{Binding SubtitleExtensionsTitle}" Margin="5 10 0 0"/>
+        <TextBox Style="{StaticResource MainTextBox}"
+                 Tag="Add a subtitle extension..."
+                 Text="{Binding SubtitleExtensionsText}"/>
+
+        <TextBlock Text="*Extensions must be seperated by a comma and include the dot (.) prefix (.mp4, .avi)."
+                   TextWrapping="Wrap"
+                   FontSize="11"
+                   Foreground="Gray"/>
+
+
+    </StackPanel>
 </Page>

@@ -172,4 +172,115 @@
         </Setter>
     </Style>
 
+    <!-- Window options buttons -->
+    <Style x:Key="WindowOptionsButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource MainButtonBackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource MainTextColorBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!-- Border -->
+                    <Border x:Name="border" 
+                        CornerRadius="3"
+                        BorderThickness="1" 
+                        Background="{StaticResource MainButtonBackgroundBrush}" 
+                        SnapsToDevicePixels="True">
+
+                        <!-- Text portion -->
+                        <TextBlock x:Name="text"
+                                Text="{TemplateBinding Content}" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"
+                                Padding="10">
+                            <TextBlock.Foreground>
+                                <SolidColorBrush x:Name="textBoxColor"
+                                                 Color="{StaticResource MainTextColor}"/>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <!-- Animation Mouse Enter -->
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource MainButtonBackgroundOnMouseOver}" Duration="0:0:0.2" Storyboard.TargetName="border" Storyboard.TargetProperty="Background.Color"/>
+                                    <ColorAnimation To="{StaticResource MainTextColorOnMouseOver}" Duration="0:0:0.2" Storyboard.TargetName="textBoxColor" Storyboard.TargetProperty="Color"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <!-- Animation Mouse Leave -->
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource MainButtonBackground}" Duration="0:0:0.2" Storyboard.TargetName="border" Storyboard.TargetProperty="Background.Color"/>
+                                    <ColorAnimation To="{StaticResource MainTextColor}" Duration="0:0:0.2" Storyboard.TargetName="textBoxColor" Storyboard.TargetProperty="Color"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!-- Hide/Show list box buttons -->
+    <Style x:Key="ListBoxButtons" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource MainBackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource MainTextBlockTextColorBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="UltraBlack"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!-- Border -->
+                    <Border x:Name="border" 
+                        CornerRadius="3"
+                        BorderThickness="1" 
+                        Background="{StaticResource MainBackgroundBrush}" 
+                        SnapsToDevicePixels="True">
+
+                        <!-- Text portion -->
+                        <TextBlock x:Name="text"
+                                Text="{TemplateBinding Content}" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center">
+                            <TextBlock.Foreground>
+                                <SolidColorBrush x:Name="textBoxColor"
+                                                 Color="{StaticResource MainTextBlockTextColor}"/>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <!-- Animation Mouse Enter -->
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource MainButtonBackground}" Duration="0:0:0.2" Storyboard.TargetName="textBoxColor" Storyboard.TargetProperty="Color"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <!-- Animation Mouse Leave -->
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource MainTextBlockTextColor}" Duration="0:0:0.2" Storyboard.TargetName="textBoxColor" Storyboard.TargetProperty="Color"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

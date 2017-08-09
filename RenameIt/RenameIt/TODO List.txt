@@ -1,7 +1,4 @@
-1. Add ability to add sub folders so you can mass 
-change several season at once
+1. When the video/subtitle title buttons are clicked (to change list view visibility), we
+	want the remaining listview to slot into the upper portion of the page
 
-2. check box to turn fetcher on/off
-
-3. contentviewmodel is a mess. previewButtonClick() needs 
-validation, and addLeadingZeroes() probably needs work.
+2. User editable extensions

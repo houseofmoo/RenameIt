@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:RenameIt.Views.Pages"
+      xmlns:PageConverter="clr-namespace:RenameIt.ValueConverters"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="600"
       Title="RenameItPage">
@@ -24,8 +25,14 @@
 
             <!-- Videos listview-->
             <StackPanel Grid.Row="0">
-                <TextBlock Text="Videos" FontSize="16" HorizontalAlignment="Center"/>
-                <ListView ItemsSource="{Binding VideoItems}" Height="{Binding ListViewHeight}">
+                <!-- videos button -->
+                <Button Content="{Binding VideoTitleContent}" 
+                        Style="{StaticResource ListBoxButtons}" 
+                        Command="{Binding VideoTitleCommand}"
+                        HorizontalAlignment="Left"/>
+
+                <!-- videos list box -->
+                <ListView ItemsSource="{Binding VideoItems}" Height="{Binding ListViewHeight}" Visibility="{Binding VideoListViewVisible}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Width="{Binding ListViewColumnSize}"  DisplayMemberBinding="{Binding Name}" Header="Name"/>
@@ -38,8 +45,14 @@
 
             <!-- Subtitles listview -->
             <StackPanel Grid.Row="1">
-                <TextBlock Text="Subtitles" FontSize="16" HorizontalAlignment="Center"/>
-                <ListView ItemsSource="{Binding SubtitleItems}" Height="{Binding ListViewHeight}">
+                <!-- subtitle button -->
+                <Button Content="{Binding SubtitleTitleContent}" 
+                        Style="{StaticResource ListBoxButtons}" 
+                        Command="{Binding SubtitleTitleCommand}"
+                        HorizontalAlignment="Left"/>
+
+                <!-- subtitle list box -->
+                <ListView ItemsSource="{Binding SubtitleItems}" Height="{Binding ListViewHeight}" Visibility="{Binding SubtitleListViewVisible}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Width="{Binding ListViewColumnSize}"  DisplayMemberBinding="{Binding Name}" Header="Name"/>
@@ -52,35 +65,75 @@
         </Grid>
 
         <!-- Text Boxes and Buttons -->
-        <StackPanel Grid.Column="1"  Margin="5 30 5 5">
-            <!-- Text Boxes -->
-            <TextBox Style="{StaticResource placeHolder}"
-                     Tag="Show Name"
-                     Text="{Binding ShowName}"/>
+        <Grid Grid.Column="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <TextBox Style="{StaticResource placeHolder}"
-                     Tag="Season"
-                     Text="{Binding Season}"/>
+            <StackPanel Grid.Row="0" Margin="5 30 5 5">
+                <!-- Text Boxes -->
+                <TextBox Style="{StaticResource placeHolder}"
+                         Tag="Show Name"
+                         Text="{Binding ShowName}"/>
 
-            <TextBox Style="{StaticResource placeHolder}"
-                     Tag="Episode Start Number"
-                     Text="{Binding EpisodeStart}"/>
+                <TextBox Style="{StaticResource placeHolder}"
+                         Tag="Season"
+                         Text="{Binding Season}"/>
 
-            <!-- Directory Button -->
-            <Button Style="{StaticResource WindowButton}" 
-                    Content="{Binding DirectoryButtonContent, FallbackValue=Directory}" 
-                    Command="{Binding DirectoryButtonCommand}"/>
+                <TextBox Style="{StaticResource placeHolder}"
+                         Tag="Episode Start Number"
+                         Text="{Binding EpisodeStart}"/>
 
-            <!-- Preview Button -->
-            <Button Style="{StaticResource WindowButton}" 
-                    Content="{Binding PreviewButtonContent, FallbackValue=Preview}" 
-                    Command="{Binding PreviewButtonCommand}"/>
+                <!-- Directory Button -->
+                <Button Style="{StaticResource WindowButton}" 
+                        Content="{Binding DirectoryButtonContent, FallbackValue=Directory}" 
+                        Command="{Binding DirectoryButtonCommand}"/>
+
+                <!-- Preview Button -->
+                <Button Style="{StaticResource WindowButton}" 
+                        Content="{Binding PreviewButtonContent, FallbackValue=Preview}" 
+                        Command="{Binding PreviewButtonCommand}"/>
 
                 <!-- Confirm Button -->
-            <Button Style="{StaticResource WindowButton}" 
-                    Content="{Binding ConfirmButtonContent, FallbackValue=Confirm}"
-                    Command="{Binding ConfirmButtonCommand}"/>
-        </StackPanel>
+                <Button Style="{StaticResource WindowButton}" 
+                        Content="{Binding ConfirmButtonContent, FallbackValue=Confirm}"
+                        Command="{Binding ConfirmButtonCommand}"/>
+            </StackPanel>
 
+            <StackPanel Grid.Row="1">
+                <Grid Margin="5 30 5 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="5*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Directory Button -->
+                    <Button Style="{StaticResource WindowOptionsButton}" 
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            Content="{Binding OptionsButtonContent}" 
+                            Command="{Binding OptionsButtonCommand}"/>
+
+                    <!-- Preview Button -->
+                    <Button Style="{StaticResource WindowOptionsButton}" 
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            Content="{Binding ExtensionsButtonContent}" 
+                            Command="{Binding ExtensionsButtonCommand}"/>
+
+                    <Frame Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="1"
+                        NavigationUIVisibility="Hidden"
+                        Background="{StaticResource MainBackgroundBrush}"
+                        Content="{Binding CurrentSubPage, Converter={PageConverter:PageValueConverter}}"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

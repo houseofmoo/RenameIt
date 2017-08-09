@@ -18,10 +18,17 @@ namespace RenameIt.ViewModels
         private const string DIRECTORY = "Select Directory";
         private const string PREVIEW = "Preview Changes";
         private const string CONFIRM = "Commit Changes";
+        private const string EXTENSTIONS = "Extensions";
+        private const string OPTIONS = "Options";
+        private const string VIDEO_TITLE = "Videos";
+        private const string SUBTITLE_TITLE = "Subtitles";
 
         // formatting constants
         private const double LIST_VIEW_COLUMN_SIZE = 205d;
         private const double MINIMUM_LIST_VIEW_HEIGHT = 335d;
+
+        private const string VISIBLE = "Visible";
+        private const string HIDDEN = "Hidden";
         #endregion
 
         #region private fields
@@ -29,6 +36,10 @@ namespace RenameIt.ViewModels
         private ICommand _directroyButtonCommand;
         private ICommand _previewButtonCommand;
         private ICommand _confirmButtonCommand;
+        private ICommand _optionsButtonCommand;
+        private ICommand _extensionsButtonCommand;
+        private ICommand _videoTitleCommand;
+        private ICommand _subtitleTitleCommand;
 
         // textbox text
         private string _showName;
@@ -37,6 +48,8 @@ namespace RenameIt.ViewModels
 
         // formatting
         private double _listViewColumnSize = LIST_VIEW_COLUMN_SIZE;
+        private string _videoListBoxVisible = VISIBLE;
+        private string _subtitleListBoxVisible = VISIBLE;
 
         // data items
         private ObservableCollection<Directory.ItemViewModel> _videoItems;
@@ -44,16 +57,27 @@ namespace RenameIt.ViewModels
 
         // working directory
         private string _directoryPath;
+
+        // sub page
+        private Identifiers.Pages _currentSubPage;
         #endregion
 
         #region button properties
         public string DirectoryButtonContent { get { return DIRECTORY; } }
         public string PreviewButtonContent { get { return PREVIEW; } }
         public string ConfirmButtonContent { get { return CONFIRM; } }
+        public string OptionsButtonContent { get { return OPTIONS; } }
+        public string ExtensionsButtonContent { get { return EXTENSTIONS; } }
+        public string VideoTitleContent { get { return VIDEO_TITLE; } }
+        public string SubtitleTitleContent { get { return SUBTITLE_TITLE; } }
 
         public ICommand DirectoryButtonCommand { get { return _directroyButtonCommand; } }
         public ICommand PreviewButtonCommand { get { return _previewButtonCommand; } }
         public ICommand ConfirmButtonCommand { get { return _confirmButtonCommand; } }
+        public ICommand OptionsButtonCommand { get { return _optionsButtonCommand; } }
+        public ICommand ExtensionsButtonCommand { get { return _extensionsButtonCommand; } }
+        public ICommand VideoTitleCommand { get { return _videoTitleCommand; } }
+        public ICommand SubtitleTitleCommand { get { return _subtitleTitleCommand; } }
         #endregion
 
         #region textbox properties
@@ -124,6 +148,30 @@ namespace RenameIt.ViewModels
         /// Holds the list view height. Sets a default valut. Value cannot go below default value
         /// </summary>
         public double ListViewHeight { get { return MINIMUM_LIST_VIEW_HEIGHT; } }
+
+        public string VideoListViewVisible
+        {
+            get { return _videoListBoxVisible; }
+            set
+            {
+                if (_videoListBoxVisible == value)
+                    return;
+                _videoListBoxVisible = value;
+                OnPropertyChanged(nameof(VideoListViewVisible));
+            }
+        }
+
+        public string SubtitleListViewVisible
+        {
+            get { return _subtitleListBoxVisible; }
+            set
+            {
+                if (_subtitleListBoxVisible == value)
+                    return;
+                _subtitleListBoxVisible = value;
+                OnPropertyChanged(nameof(SubtitleListViewVisible));
+            }
+        }
         #endregion
 
         #region data items properties
@@ -158,6 +206,20 @@ namespace RenameIt.ViewModels
         }
         #endregion
 
+        #region subpages
+        public Identifiers.Pages CurrentSubPage
+        {
+            get { return _currentSubPage; }
+            set
+            {
+                if (_currentSubPage == value)
+                    return;
+                _currentSubPage = value;
+                OnPropertyChanged(nameof(CurrentSubPage));
+            }
+        }
+        #endregion
+
         #region constructor
         /// <summary>
         /// Default constructor.
@@ -172,6 +234,13 @@ namespace RenameIt.ViewModels
             this._directroyButtonCommand = new Commands.RelayCommand(this.directoryButtonClick, true);
             this._previewButtonCommand = new Commands.RelayCommand(this.previewButtonClick, true);
             this._confirmButtonCommand = new Commands.RelayCommand(this.confirmButtonClick, true);
+            this._optionsButtonCommand = new Commands.RelayCommand(this.optionsButtonClick, true);
+            this._extensionsButtonCommand = new Commands.RelayCommand(this.extensionsButtonClick, true);
+            this._videoTitleCommand = new Commands.RelayCommand(this.videoTitleButtonClick, true);
+            this._subtitleTitleCommand = new Commands.RelayCommand(this.subtitleTitleButtonClick, true);
+
+            // current sub page
+            this._currentSubPage = Identifiers.Pages.Options;
         }
         #endregion
 
@@ -185,10 +254,10 @@ namespace RenameIt.ViewModels
             var files = Helpers.MediaFiles.GetFilesFromDirectory(out this._directoryPath);
 
             // build video files list
-            var videoFiles = Helpers.MediaFiles.GetMatchingFiles(files, User.Settings.Get().VideoExtensions);
+            var videoFiles = Helpers.MediaFiles.GetMatchingFiles(files, Identifiers.Extensions.VideoDefaults.ToList());
 
             // build subtitle files list
-            var subtitleFiles = Helpers.MediaFiles.GetMatchingFiles(files, User.Settings.Get().SubtitleExtensions);
+            var subtitleFiles = Helpers.MediaFiles.GetMatchingFiles(files, Identifiers.Extensions.SubtitleDefaults.ToList());
 
             // if we found no valid items in the directory, nothing to do
             if (!videoFiles.Any() && !subtitleFiles.Any())
@@ -198,7 +267,7 @@ namespace RenameIt.ViewModels
             this.VideoItems = new ObservableCollection<Directory.ItemViewModel>(videoFiles.Select(file => new Directory.ItemViewModel(file)));
 
             // do we want subtitle files?
-            if (User.Settings.Get().IncludeSubtitles)
+            if (Properties.Settings.Default.IncludeSubtitles)
                 this.SubtitleItems = new ObservableCollection<Directory.ItemViewModel>(subtitleFiles.Select(file => new Directory.ItemViewModel(file)));
         }
 
@@ -218,7 +287,7 @@ namespace RenameIt.ViewModels
             List<string> titles = null;
 
             // only fetch titles if user wants to
-            if (User.Settings.Get().GetEpisodeTitles)
+            if (Properties.Settings.Default.GetEpisodeTitles)
             {
                 // create request
                 var showInfo = new Models.Titles.Request()
@@ -245,6 +314,46 @@ namespace RenameIt.ViewModels
             // make changes to files
             Helpers.MediaFiles.UpdateFileNames(this.VideoItems);
             Helpers.MediaFiles.UpdateFileNames(this.SubtitleItems);
+
+            // delete non-media files
+            if (Properties.Settings.Default.DeleteNonMediaFiles)
+            {
+                // get files from dir
+                // check extensions again sub/vid
+                // delete ones that don't match
+            }
+        }
+
+        /// <summary>
+        /// Changes to the options subpage
+        /// </summary>
+        private void optionsButtonClick()
+        {
+            this.CurrentSubPage = Identifiers.Pages.Options;
+        }
+
+        /// <summary>
+        /// Changes to the extensions subpage
+        /// </summary>
+        private void extensionsButtonClick()
+        {
+            this.CurrentSubPage = Identifiers.Pages.Extensions;
+        }
+
+        /// <summary>
+        /// Hides the video list box
+        /// </summary>
+        private void videoTitleButtonClick()
+        {
+            this.VideoListViewVisible = (this.VideoListViewVisible == HIDDEN) ? VISIBLE : HIDDEN;
+        }
+
+        /// <summary>
+        /// Hides the subtitle list box
+        /// </summary>
+        private void subtitleTitleButtonClick()
+        {
+            this.SubtitleListViewVisible = (this.SubtitleListViewVisible == HIDDEN) ? VISIBLE : HIDDEN;
         }
         #endregion
 

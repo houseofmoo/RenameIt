@@ -23,6 +23,7 @@ namespace RenameIt.Views.Pages
         public ExtensionsPage()
         {
             InitializeComponent();
+            this.DataContext = new ViewModels.ExtensionsViewModel();
         }
     }
 }

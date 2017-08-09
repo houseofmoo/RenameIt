@@ -9,49 +9,31 @@
       Title="OptionsPage">
 
     <!-- Options -->
-    <Grid Margin="10 100 10 10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
-            <!-- Get Episode Titles checkbox -->
-            <CheckBox Content="{Binding GetEpisodeTitlesContent}" 
-                            Margin="5"
-                            FontSize="16"
-                            IsChecked="{Binding GetEpisodeTitles}"/>
+    <StackPanel>
+        <!-- Get Episode Titles checkbox -->
+        <CheckBox Content="{Binding GetEpisodeTitlesContent}" 
+            Margin="5"
+            FontSize="14"
+            IsChecked="{Binding GetEpisodeTitles}"/>
 
-            <!-- Include Subtitles checkbox -->
-            <CheckBox Content="{Binding IncludeSubtitlesContent}" 
-                            Margin="5"
-                            FontSize="16"
-                            IsChecked="{Binding IncludeSubtitles}"/>
+        <!-- Include Subtitles checkbox -->
+        <CheckBox Content="{Binding IncludeSubtitlesContent}" 
+            Margin="5"
+            FontSize="14"
+            IsChecked="{Binding IncludeSubtitles}"/>
 
-            <!-- Apply Button -->
-            <Button Content="{Binding ApplyButtonContent}" 
-                    Command="{Binding ApplyButtonCommand}"
-                    Style="{StaticResource WindowButton}"/>
-        </StackPanel>
+        <!-- Delete Non-Media Files checkbox -->
+        <CheckBox Content="{Binding DeleteNonMediaFilesContent}" 
+            Margin="5"
+            FontSize="14"
+            IsChecked="{Binding DeleteNonMediaFiles}"/>
 
-        <StackPanel Grid.Column="1">
-            <!-- Delete Non-Media Files checkbox -->
-            <CheckBox Content="{Binding DeleteNonMediaFilesContent}" 
-                            Margin="5"
-                            FontSize="16"
-                            IsChecked="{Binding DeleteNonMediaFiles}"/>
+        <!-- Search Subdirectories checkbox -->
+        <CheckBox Content="{Binding SearchSubDirectoriesContent}" 
+            Margin="5"
+            FontSize="14"
+            IsChecked="{Binding SearchSubDirectories}"
+            IsEnabled="False"/>
 
-            <!-- Search Subdirectories checkbox -->
-            <CheckBox Content="{Binding SearchSubDirectoriesContent}" 
-                            Margin="5"
-                            FontSize="16"
-                            IsChecked="{Binding SearchSubDirectories}"
-                            IsEnabled="False"/>
-
-            <!-- Cancel Button -->
-            <Button Content="{Binding CancelButtonContent}" 
-                    Command="{Binding CancelButtonCommand}"
-                    Style="{StaticResource WindowButton}"/>
-        </StackPanel>
-
-    </Grid>
+    </StackPanel>
 </Page>
