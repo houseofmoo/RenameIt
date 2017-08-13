@@ -317,11 +317,7 @@ namespace RenameIt.ViewModels
 
             // delete non-media files
             if (Properties.Settings.Default.DeleteNonMediaFiles)
-            {
-                // get files from dir
-                // check extensions again sub/vid
-                // delete ones that don't match
-            }
+                Helpers.MediaFiles.DeleteInvalidFiles(this._directoryPath);
         }
 
         /// <summary>
