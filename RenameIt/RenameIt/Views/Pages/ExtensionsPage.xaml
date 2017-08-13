@@ -9,21 +9,105 @@
       Title="ExtensionsPage">
 
     <StackPanel>
+        <!-- Video extensions title -->
         <TextBlock Text="{Binding VideoExtensionTitle}" Margin="5 0 0 0"/>
-        <TextBox Style="{StaticResource MainTextBox}"
-                 Tag="Add a video extension..."
-                 Text="{Binding VideoExtensionsText}"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Video extensions list box -->
+            <ListBox Grid.Column="0" 
+                     ItemsSource="{Binding VideoExtensionsList}"
+                     SelectedItem="{Binding SelectedVideoExtension}"
+                     Height="110">
+                
+                <!-- Delete content menu -->
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Delete" Command="{Binding DeleteVideoExtensionCommand}"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
 
+            <!-- Video extensions add -->
+            <StackPanel Grid.Column="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                <!-- Add video extension text box -->
+                <TextBox Grid.Row="0"
+                         Text="{Binding VideoExtensionTextBoxText}"
+                         Margin="5 0 5 0"
+                         Padding="5"/>
+
+                <!-- Add video extension button -->
+                <Button Grid.Row="1"
+                        Style="{StaticResource WindowOptionsButton}"
+                        Content="Add"
+                        Command="{Binding AddVideoExtensionCommand}"/>
+                </Grid>
+
+            </StackPanel>
+        </Grid>
+
+        <!-- Subtitle extension title -->
         <TextBlock Text="{Binding SubtitleExtensionsTitle}" Margin="5 10 0 0"/>
-        <TextBox Style="{StaticResource MainTextBox}"
-                 Tag="Add a subtitle extension..."
-                 Text="{Binding SubtitleExtensionsText}"/>
 
-        <TextBlock Text="*Extensions must be seperated by a comma and include the dot (.) prefix (.mp4, .avi)."
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Subtitle extensions list box -->
+            <ListBox Grid.Column="0" 
+                     ItemsSource="{Binding SubtitleExtensionsList}"
+                     SelectedItem="{Binding SelectedSubtitleExtension}"
+                     Height="110">
+
+            <!-- Delete content menu -->
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Delete" Command="{Binding DeleteSubtitleExtensionCommand}"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
+
+            <!-- Subtitle extensions add -->
+            <StackPanel Grid.Column="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Add subtitle extension text box -->
+                    <TextBox Grid.Row="0"
+                             Text="{Binding SubtitleExtensionTextBoxText}"
+                         Margin="5 0 5 0"
+                         Padding="5"/>
+
+                    <!-- Add subtitle extension button -->
+                    <Button Grid.Row="1"
+                            Style="{StaticResource WindowOptionsButton}"
+                            Content="Add"
+                            Command="{Binding AddSubtitleExtensionCommand}"/>
+                </Grid>
+
+            </StackPanel>
+        </Grid>
+        
+
+        <!-- Extension note -->
+        <TextBlock Text="Extensions must include the dot (.) prefix (.mp4, .avi)"
+                   Margin="3 10 3 3"
                    TextWrapping="Wrap"
                    FontSize="11"
                    Foreground="Gray"/>
-
 
     </StackPanel>
 </Page>

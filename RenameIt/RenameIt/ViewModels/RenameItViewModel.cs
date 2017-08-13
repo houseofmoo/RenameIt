@@ -254,10 +254,10 @@ namespace RenameIt.ViewModels
             var files = Helpers.MediaFiles.GetFilesFromDirectory(out this._directoryPath);
 
             // build video files list
-            var videoFiles = Helpers.MediaFiles.GetMatchingFiles(files, Identifiers.Extensions.VideoDefaults.ToList());
+            var videoFiles = Helpers.MediaFiles.GetMatchingFiles(files, Properties.Settings.Default.VideoExtensions.Cast<string>().ToList());
 
             // build subtitle files list
-            var subtitleFiles = Helpers.MediaFiles.GetMatchingFiles(files, Identifiers.Extensions.SubtitleDefaults.ToList());
+            var subtitleFiles = Helpers.MediaFiles.GetMatchingFiles(files, Properties.Settings.Default.SubtitleExtensions.Cast<string>().ToList());
 
             // if we found no valid items in the directory, nothing to do
             if (!videoFiles.Any() && !subtitleFiles.Any())

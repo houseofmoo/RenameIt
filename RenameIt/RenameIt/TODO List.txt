@@ -1,4 +1,4 @@
 1. When the video/subtitle title buttons are clicked (to change list view visibility), we
 	want the remaining listview to slot into the upper portion of the page
 
-2. User editable extensions
+2. list view height adjustable
