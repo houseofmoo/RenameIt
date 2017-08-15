@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace RenameIt.ViewModels
 {
-    class ExtensionsViewModel : Base.ViewModel
+    class ExtensionsViewModel : Common.ViewModels.BaseViewModel
     {
         #region private constants
         private const string VIDEO_EXTENSIONS = "Video Extensions";
@@ -45,13 +45,7 @@ namespace RenameIt.ViewModels
         public string SelectedVideoExtension
         {
             get { return _selectedVideoExtension; }
-            set
-            {
-                if (_selectedVideoExtension == value)
-                    return;
-                _selectedVideoExtension = value;
-                OnPropertyChanged(nameof(SelectedVideoExtension));
-            }
+            set { SetProperty(ref _selectedVideoExtension, value, nameof(SelectedVideoExtension)); }
         }
 
         /// <summary>
@@ -60,13 +54,7 @@ namespace RenameIt.ViewModels
         public string SelectedSubtitleExtension
         {
             get { return _selectedSubtitleExtension; }
-            set
-            {
-                if (_selectedSubtitleExtension == value)
-                    return;
-                _selectedSubtitleExtension = value;
-                OnPropertyChanged(nameof(SelectedSubtitleExtension));
-            }
+            set { SetProperty(ref _selectedSubtitleExtension, value, nameof(SelectedSubtitleExtension)); }
         }
 
         /// <summary>
@@ -75,13 +63,7 @@ namespace RenameIt.ViewModels
         public string VideoExtensionTextBoxText
         {
             get { return _videoExtensionTextBoxText; }
-            set
-            {
-                if (_videoExtensionTextBoxText == value)
-                    return;
-                _videoExtensionTextBoxText = value;
-                OnPropertyChanged(nameof(VideoExtensionTextBoxText));
-            }
+            set { SetProperty(ref _videoExtensionTextBoxText, value, nameof(VideoExtensionTextBoxText)); }
         }
 
         /// <summary>
@@ -90,13 +72,7 @@ namespace RenameIt.ViewModels
         public string SubtitleExtensionTextBoxText
         {
             get { return _subtitleExtensionTextBoxText; }
-            set
-            {
-                if (_subtitleExtensionTextBoxText == value)
-                    return;
-                _subtitleExtensionTextBoxText = value;
-                OnPropertyChanged(nameof(SubtitleExtensionTextBoxText));
-            }
+            set { SetProperty(ref _subtitleExtensionTextBoxText, value, nameof(SubtitleExtensionTextBoxText)); }
         }
 
         /// <summary>
@@ -105,13 +81,7 @@ namespace RenameIt.ViewModels
         public ObservableCollection<string> VideoExtensionsList
         {
             get { return _videoExtensionsList; }
-            set
-            {
-                if (_videoExtensionsList == value)
-                    return;
-                _videoExtensionsList = value;
-                OnPropertyChanged(nameof(VideoExtensionsList));
-            }
+            set { SetProperty(ref _videoExtensionsList, value, nameof(VideoExtensionsList)); }
         }
 
         /// <summary>
@@ -120,13 +90,7 @@ namespace RenameIt.ViewModels
         public ObservableCollection<string> SubtitleExtensionsList
         {
             get { return _subtitleExtensionsList; }
-            set
-            {
-                if (_subtitleExtensionsList == value)
-                    return;
-                _subtitleExtensionsList = value;
-                OnPropertyChanged(nameof(SubtitleExtensionsList));
-            }
+            set { SetProperty(ref _subtitleExtensionsList, value, nameof(SubtitleExtensionsList)); }
         }
         #endregion
 
@@ -140,10 +104,10 @@ namespace RenameIt.ViewModels
             this.SubtitleExtensionsList = new ObservableCollection<string>(Properties.Settings.Default.SubtitleExtensions.Cast<string>().ToList());
 
             // commands
-            this._addVideoExtensionCommand = new Commands.RelayCommand(addVideoExtension, true);
-            this._addSubtitleExtensionCommand = new Commands.RelayCommand(addSubtitleExtension, true);
-            this._deleteVideoExtensionCommand = new Commands.RelayCommand(deleteVideoExtension, true);
-            this._deleteSubtitleExtensionCommand = new Commands.RelayCommand(deleteSubtitleExtension, true);
+            this._addVideoExtensionCommand = new Common.Commands.RelayCommand<object>(addVideoExtension, addVideoExtensionCanExecute);
+            this._addSubtitleExtensionCommand = new Common.Commands.RelayCommand<object>(addSubtitleExtension, addSubtitleExtensionCanExecute);
+            this._deleteVideoExtensionCommand = new Common.Commands.RelayCommand<object>(deleteVideoExtension, deleteVideoExtensionCanExecute);
+            this._deleteSubtitleExtensionCommand = new Common.Commands.RelayCommand<object>(deleteSubtitleExtension, deleteSubtitleExtensionCanExecute);
         }
         #endregion
 
@@ -151,7 +115,7 @@ namespace RenameIt.ViewModels
         /// <summary>
         /// Adds video extension from text box
         /// </summary>
-        private void addVideoExtension()
+        private void addVideoExtension(object obj)
         {
             // error check
             if (string.IsNullOrWhiteSpace(this.VideoExtensionTextBoxText))
@@ -170,10 +134,15 @@ namespace RenameIt.ViewModels
             this.VideoExtensionTextBoxText = string.Empty;
         }
 
+        private bool addVideoExtensionCanExecute(object obj)
+        {
+            return true;
+        }
+
         /// <summary>
         /// Add subtitle extension from text box
         /// </summary>
-        private void addSubtitleExtension()
+        private void addSubtitleExtension(object obj)
         {
             // erorr check
             if (string.IsNullOrWhiteSpace(this.SubtitleExtensionTextBoxText))
@@ -192,10 +161,15 @@ namespace RenameIt.ViewModels
             this.SubtitleExtensionTextBoxText = string.Empty;
         }
 
+        private bool addSubtitleExtensionCanExecute(object obj)
+        {
+            return true;
+        }
+
         /// <summary>
         /// Deletes selected video extension
         /// </summary>
-        private void deleteVideoExtension()
+        private void deleteVideoExtension(object obj)
         {
             // error check
             if (this.SelectedVideoExtension == null)
@@ -208,10 +182,19 @@ namespace RenameIt.ViewModels
             this.VideoExtensionsList.Remove(this.SelectedVideoExtension);
         }
 
+        private bool deleteVideoExtensionCanExecute(object obj)
+        {
+            return !string.IsNullOrWhiteSpace(this.SelectedVideoExtension) &&
+                this.VideoExtensionsList != null &&
+                this.VideoExtensionsList.Any() &&
+                this.VideoExtensionsList.Contains(this.SelectedVideoExtension);
+                
+        }
+
         /// <summary>
         /// Deleted selected subtitle extensions
         /// </summary>
-        private void deleteSubtitleExtension()
+        private void deleteSubtitleExtension(object obj)
         {
             // error echeck
             if (this._selectedSubtitleExtension == null)
@@ -222,6 +205,14 @@ namespace RenameIt.ViewModels
 
             // remove from list
             this.SubtitleExtensionsList.Remove(this.SelectedSubtitleExtension);
+        }
+
+        private bool deleteSubtitleExtensionCanExecute(object obj)
+        {
+            return !string.IsNullOrWhiteSpace(this.SelectedSubtitleExtension) &&
+                this.SubtitleExtensionsList != null &&
+                this.SubtitleExtensionsList.Any() &&
+                this.SubtitleExtensionsList.Contains(this.SelectedSubtitleExtension);
         }
         #endregion
     }

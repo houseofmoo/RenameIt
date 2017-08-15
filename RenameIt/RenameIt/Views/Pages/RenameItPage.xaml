@@ -112,20 +112,21 @@
                         <RowDefinition Height="5*"/>
                     </Grid.RowDefinitions>
                     
-                    <!-- Directory Button -->
+                    <!-- Options Button -->
                     <Button Style="{StaticResource WindowOptionsButton}" 
                             Grid.Column="0"
                             Grid.Row="0"
                             Content="{Binding OptionsButtonContent}" 
                             Command="{Binding OptionsButtonCommand}"/>
 
-                    <!-- Preview Button -->
+                    <!-- Extensions Button -->
                     <Button Style="{StaticResource WindowOptionsButton}" 
                             Grid.Column="1"
                             Grid.Row="0"
                             Content="{Binding ExtensionsButtonContent}" 
                             Command="{Binding ExtensionsButtonCommand}"/>
-
+                    
+                    <!-- Notice text -->
                     <Frame Grid.Column="0"
                         Grid.ColumnSpan="2"
                         Grid.Row="1"

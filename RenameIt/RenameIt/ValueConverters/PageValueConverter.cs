@@ -7,7 +7,7 @@ namespace RenameIt.ValueConverters
     /// <summary>
     /// Converts the <see cref="Identifiers.Pages"/> to an actual page.
     /// </summary>
-    class PageValueConverter : Base.ValueConverter<PageValueConverter>
+    class PageValueConverter : Common.ValueConverters.BaseValueConverter<PageValueConverter>
     {
         /// <summary>
         /// Converts our <see cref="Identifiers.Pages"/> to the associated page

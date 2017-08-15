@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,7 +12,7 @@ namespace RenameIt.ViewModels
     /// <summary>
     /// ViewModel for the main window.
     /// </summary>
-    class RenameItViewModel : Base.ViewModel
+    class RenameItViewModel : Common.ViewModels.BaseViewModel
     {
         #region private constants
         // button text content values
@@ -48,8 +49,8 @@ namespace RenameIt.ViewModels
 
         // formatting
         private double _listViewColumnSize = LIST_VIEW_COLUMN_SIZE;
-        private string _videoListBoxVisible = VISIBLE;
-        private string _subtitleListBoxVisible = VISIBLE;
+        private string _videoListViewVisible = VISIBLE;
+        private string _subtitleListViewVisible = VISIBLE;
 
         // data items
         private ObservableCollection<Directory.ItemViewModel> _videoItems;
@@ -87,13 +88,7 @@ namespace RenameIt.ViewModels
         public string ShowName
         {
             get { return _showName; }
-            set
-            {
-                if (value == _showName)
-                    return;
-                _showName = value;
-                OnPropertyChanged(nameof(ShowName));
-            }
+            set { SetProperty(ref _showName, value, nameof(ShowName)); }
         }
 
         /// <summary>
@@ -102,13 +97,7 @@ namespace RenameIt.ViewModels
         public string Season
         {
             get { return _season; }
-            set
-            {
-                if (value == _season)
-                    return;
-                _season = value;
-                OnPropertyChanged(nameof(Season));
-            }
+            set { SetProperty(ref _season, value, nameof(Season)); }
         }
 
         /// <summary>
@@ -117,13 +106,7 @@ namespace RenameIt.ViewModels
         public string EpisodeStart
         {
             get { return _episodeStart; }
-            set
-            {
-                if (value == _episodeStart)
-                    return;
-                _episodeStart = value;
-                OnPropertyChanged(nameof(EpisodeStart));
-            }
+            set { SetProperty(ref _episodeStart, value, nameof(EpisodeStart)); }
         }
         #endregion
 
@@ -134,14 +117,7 @@ namespace RenameIt.ViewModels
         public double ListViewColumnSize
         {
             get { return _listViewColumnSize; }
-            set
-            {
-                if (_listViewColumnSize == value)
-                    return;
-                
-                _listViewColumnSize = value;
-                OnPropertyChanged(nameof(ListViewColumnSize));
-            }
+            set { SetProperty(ref _listViewColumnSize, value, nameof(ListViewColumnSize)); }
         }
 
         /// <summary>
@@ -151,26 +127,14 @@ namespace RenameIt.ViewModels
 
         public string VideoListViewVisible
         {
-            get { return _videoListBoxVisible; }
-            set
-            {
-                if (_videoListBoxVisible == value)
-                    return;
-                _videoListBoxVisible = value;
-                OnPropertyChanged(nameof(VideoListViewVisible));
-            }
+            get { return _videoListViewVisible; }
+            set { SetProperty(ref _videoListViewVisible, value, nameof(VideoListViewVisible)); }
         }
 
         public string SubtitleListViewVisible
         {
-            get { return _subtitleListBoxVisible; }
-            set
-            {
-                if (_subtitleListBoxVisible == value)
-                    return;
-                _subtitleListBoxVisible = value;
-                OnPropertyChanged(nameof(SubtitleListViewVisible));
-            }
+            get { return _subtitleListViewVisible; }
+            set { SetProperty(ref _subtitleListViewVisible, value, nameof(SubtitleListViewVisible)); }
         }
         #endregion
 
@@ -181,13 +145,7 @@ namespace RenameIt.ViewModels
         public ObservableCollection<Directory.ItemViewModel> VideoItems
         {
             get { return _videoItems; }
-            set
-            {
-                if (_videoItems == value)
-                    return;
-                _videoItems = value;
-                OnPropertyChanged(nameof(VideoItems));
-            }
+            set { SetProperty(ref _videoItems, value, nameof(VideoItems)); }
         }
 
         /// <summary>
@@ -196,13 +154,7 @@ namespace RenameIt.ViewModels
         public ObservableCollection<Directory.ItemViewModel> SubtitleItems
         {
             get { return _subtitleItems; }
-            set
-            {
-                if (_subtitleItems == value)
-                    return;
-                _subtitleItems = value;
-                OnPropertyChanged(nameof(SubtitleItems));
-            }
+            set { SetProperty(ref _subtitleItems, value, nameof(SubtitleItems)); }
         }
         #endregion
 
@@ -210,13 +162,7 @@ namespace RenameIt.ViewModels
         public Identifiers.Pages CurrentSubPage
         {
             get { return _currentSubPage; }
-            set
-            {
-                if (_currentSubPage == value)
-                    return;
-                _currentSubPage = value;
-                OnPropertyChanged(nameof(CurrentSubPage));
-            }
+            set { SetProperty(ref _currentSubPage, value, nameof(CurrentSubPage)); }
         }
         #endregion
 
@@ -231,13 +177,13 @@ namespace RenameIt.ViewModels
             this.SubtitleItems = new ObservableCollection<Directory.ItemViewModel>();
 
             // pass mutator functions to button view model which contain the command
-            this._directroyButtonCommand = new Commands.RelayCommand(this.directoryButtonClick, true);
-            this._previewButtonCommand = new Commands.RelayCommand(this.previewButtonClick, true);
-            this._confirmButtonCommand = new Commands.RelayCommand(this.confirmButtonClick, true);
-            this._optionsButtonCommand = new Commands.RelayCommand(this.optionsButtonClick, true);
-            this._extensionsButtonCommand = new Commands.RelayCommand(this.extensionsButtonClick, true);
-            this._videoTitleCommand = new Commands.RelayCommand(this.videoTitleButtonClick, true);
-            this._subtitleTitleCommand = new Commands.RelayCommand(this.subtitleTitleButtonClick, true);
+            this._directroyButtonCommand = new Common.Commands.RelayCommand<object>(this.directoryButtonClick, canUserDirectoryButton);
+            this._previewButtonCommand = new Common.Commands.RelayCommand<object>(this.previewButtonClick, previewButtonCanExecute);
+            this._confirmButtonCommand = new Common.Commands.RelayCommand<object>(this.confirmButtonClick, confirmButtonCanExecute);
+            this._optionsButtonCommand = new Common.Commands.RelayCommand<object>(this.optionsButtonClick, optionsButtonCanExecute);
+            this._extensionsButtonCommand = new Common.Commands.RelayCommand<object>(this.extensionsButtonClick, extensionsButtonCanExecute);
+            this._videoTitleCommand = new Common.Commands.RelayCommand<object>(this.videoTitleButtonClick, videoTitleButtonCanExecute);
+            this._subtitleTitleCommand = new Common.Commands.RelayCommand<object>(this.subtitleTitleButtonClick, subtitleTitleCanExecute);
 
             // current sub page
             this._currentSubPage = Identifiers.Pages.Options;
@@ -248,7 +194,7 @@ namespace RenameIt.ViewModels
         /// <summary>
         /// When the directory button is clicked.
         /// </summary>
-        private void directoryButtonClick()
+        private void directoryButtonClick(object obj)
         {
             // gets the files from the selected directory
             var files = Helpers.MediaFiles.GetFilesFromDirectory(out this._directoryPath);
@@ -271,10 +217,15 @@ namespace RenameIt.ViewModels
                 this.SubtitleItems = new ObservableCollection<Directory.ItemViewModel>(subtitleFiles.Select(file => new Directory.ItemViewModel(file)));
         }
 
+        private bool canUserDirectoryButton(object obj)
+        {
+            return true;
+        }
+
         /// <summary>
         /// When the preview button is clicked.
         /// </summary>
-        private void previewButtonClick()
+        private void previewButtonClick(object obj)
         {
             // if input is invalid
             if (!Helpers.Util.ValidateInput(this.ShowName, this.Season, this.EpisodeStart, this.VideoItems.Count))
@@ -298,18 +249,27 @@ namespace RenameIt.ViewModels
                     EpisodeCount = this.VideoItems.Count,
                 };
 
-                // fetch titles
-                titles = Helpers.Fetcher.GetEpisodeTitles(showInfo);
+                // fetch titles on new thread - not yet working
+                //var thread = new Thread(() =>
+                //{
+                //    titles = Helpers.Fetcher.GetEpisodeTitles(showInfo);
+                //});
+               titles = Helpers.Fetcher.GetEpisodeTitles(showInfo);
             }
 
             // present changes to user
             this.previewNewNames(titles);
         }
 
+        private bool previewButtonCanExecute(object obj)
+        {
+            return this.VideoItems.Any() || this.SubtitleItems.Any();
+        }
+
         /// <summary>
         /// When the confirm button is clicked.
         /// </summary>
-        private void confirmButtonClick()
+        private void confirmButtonClick(object obj)
         {
             // make changes to files
             Helpers.MediaFiles.UpdateFileNames(this.VideoItems);
@@ -320,36 +280,81 @@ namespace RenameIt.ViewModels
                 Helpers.MediaFiles.DeleteInvalidFiles(this._directoryPath);
         }
 
+        private bool confirmButtonCanExecute(object obj)
+        {
+            // check video names have updated
+            if (this.VideoItems.Any())
+            {
+                foreach (var video in this.VideoItems)
+                {
+                    if (video.NewName != string.Empty && video.NewName != video.Name)
+                        return true;
+                }
+            }
+
+            // check subtitle names have updated
+            if (this.SubtitleItems.Any())
+            {
+                foreach (var subtitle in this.SubtitleItems)
+                {
+                    if (subtitle.NewName != string.Empty && subtitle.NewName != subtitle.Name)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Changes to the options subpage
         /// </summary>
-        private void optionsButtonClick()
+        private void optionsButtonClick(object obj)
         {
             this.CurrentSubPage = Identifiers.Pages.Options;
+        }
+
+        private bool optionsButtonCanExecute(object obj)
+        {
+            return true;
         }
 
         /// <summary>
         /// Changes to the extensions subpage
         /// </summary>
-        private void extensionsButtonClick()
+        private void extensionsButtonClick(object obj)
         {
             this.CurrentSubPage = Identifiers.Pages.Extensions;
+        }
+
+        private bool extensionsButtonCanExecute(object obj)
+        {
+            return true;
         }
 
         /// <summary>
         /// Hides the video list box
         /// </summary>
-        private void videoTitleButtonClick()
+        private void videoTitleButtonClick(object obj)
         {
             this.VideoListViewVisible = (this.VideoListViewVisible == HIDDEN) ? VISIBLE : HIDDEN;
+        }
+
+        private bool videoTitleButtonCanExecute(object obj)
+        {
+            return true;
         }
 
         /// <summary>
         /// Hides the subtitle list box
         /// </summary>
-        private void subtitleTitleButtonClick()
+        private void subtitleTitleButtonClick(object obj)
         {
             this.SubtitleListViewVisible = (this.SubtitleListViewVisible == HIDDEN) ? VISIBLE : HIDDEN;
+        }
+
+        private bool subtitleTitleCanExecute(object obj)
+        {
+            return true;
         }
         #endregion
 

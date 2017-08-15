@@ -5,7 +5,7 @@ namespace RenameIt.ViewModels
     /// <summary>
     /// Allows user to define their personal settings for RenameIt
     /// </summary>
-    class OptionsViewModel : Base.ViewModel
+    class OptionsViewModel : Common.ViewModels.BaseViewModel
     {
         #region private constants
         // check box content values
@@ -30,14 +30,7 @@ namespace RenameIt.ViewModels
         public bool GetEpisodeTitles
         {
             get { return _getEpisodeTitles; }
-            set
-            {
-                if (_getEpisodeTitles == value)
-                    return;
-                _getEpisodeTitles = value;
-                Properties.Settings.Default.GetEpisodeTitles = value;
-                OnPropertyChanged(nameof(GetEpisodeTitles));
-            }
+            set { SetProperty(ref _getEpisodeTitles, value, nameof(GetEpisodeTitles)); }
         }
 
         /// <summary>
@@ -46,14 +39,7 @@ namespace RenameIt.ViewModels
         public bool IncludeSubtitles
         {
             get { return _includeSubtitles; }
-            set
-            {
-                if (_includeSubtitles == value)
-                    return;
-                _includeSubtitles = value;
-                Properties.Settings.Default.IncludeSubtitles = value;
-                OnPropertyChanged(nameof(IncludeSubtitles));
-            }
+            set { SetProperty(ref _includeSubtitles, value, nameof(IncludeSubtitles)); }
         }
 
         /// <summary>
@@ -62,14 +48,7 @@ namespace RenameIt.ViewModels
         public bool DeleteNonMediaFiles
         {
             get { return _deleteNonMediaFiles; }
-            set
-            {
-                if (_deleteNonMediaFiles == value)
-                    return;
-                _deleteNonMediaFiles = value;
-                Properties.Settings.Default.DeleteNonMediaFiles = value;
-                OnPropertyChanged(nameof(DeleteNonMediaFiles));
-            }
+            set { SetProperty(ref _deleteNonMediaFiles, value, nameof(DeleteNonMediaFiles)); }
         }
 
         /// <summary>
@@ -78,14 +57,7 @@ namespace RenameIt.ViewModels
         public bool SearchSubDirectories
         {
             get { return _searchSubdirectories; }
-            set
-            {
-                if (_searchSubdirectories == value)
-                    return;
-                _searchSubdirectories = value;
-                //Properties.Settings.Default.SearchSubDirectories = value;
-                OnPropertyChanged(nameof(SearchSubDirectories));
-            }
+            set { SetProperty(ref _searchSubdirectories, value, nameof(SearchSubDirectories)); }
         }
 
         public string GetEpisodeTitlesContent { get { return GET_EPISODE_TITLES; } }

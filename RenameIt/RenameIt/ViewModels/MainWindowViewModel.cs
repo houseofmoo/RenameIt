@@ -3,15 +3,13 @@ using System.Windows.Input;
 
 namespace RenameIt.ViewModels
 {
-    public class MainWindowViewModel : Base.ViewModel
+    public class MainWindowViewModel : Common.ViewModels.BaseViewModel
     {
         #region private constants
-        // content
         private const string RENAME_IT_ACRONYM = "R N";
         #endregion
 
         #region private fields
-        // commands
         private ICommand _menuTitleButtonCommand;
 
         private Identifiers.Pages _currentPage;
@@ -28,13 +26,7 @@ namespace RenameIt.ViewModels
         public Identifiers.Pages CurrentPage
         {
             get { return _currentPage; }
-            set
-            {
-                if (_currentPage == value)
-                    return;
-                _currentPage = value;
-                OnPropertyChanged(nameof(CurrentPage));
-            }
+            set { SetProperty(ref _currentPage, value, nameof(CurrentPage)); }
         }
         #endregion
 
@@ -48,7 +40,7 @@ namespace RenameIt.ViewModels
             this._currentPage = Identifiers.Pages.RenameIt;
 
             // set change page command
-            this._menuTitleButtonCommand = new Commands.RelayCommand(this.onTitleButtonClick, true);
+            this._menuTitleButtonCommand = new Common.Commands.RelayCommand<object>(this.onTitleButtonClick, titleButtonCliclCanExecute);
     }
         #endregion
 
@@ -56,9 +48,14 @@ namespace RenameIt.ViewModels
         /// <summary>
         /// Occurs on change page command
         /// </summary>
-        private void onTitleButtonClick()
+        private void onTitleButtonClick(object obj)
         {
             // do something neat
+        }
+
+        private bool titleButtonCliclCanExecute(object obj)
+        {
+            return true;
         }
         #endregion
     }

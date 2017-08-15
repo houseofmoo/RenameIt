@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RenameIt.ViewModels.Directory
 {
-    public class ItemViewModel : Base.ViewModel
+    public class ItemViewModel : Common.ViewModels.BaseViewModel
     {
         #region private fields
         private string _fullPath;
@@ -23,13 +23,7 @@ namespace RenameIt.ViewModels.Directory
         public string FullPath
         {
             get { return _fullPath; }
-            set
-            {
-                if (_fullPath == value)
-                    return;
-                _fullPath = value;
-                OnPropertyChanged(nameof(FullPath));
-            }
+            set { _fullPath = value; }
         }
 
         /// <summary>
@@ -38,13 +32,7 @@ namespace RenameIt.ViewModels.Directory
         public string Directory
         {
             get { return _directory; }
-            set
-            {
-                if (_directory == value)
-                    return;
-                _directory = value;
-                OnPropertyChanged(nameof(Directory));
-            }
+            set { _directory = value; }
         }
 
         /// <summary>
@@ -53,13 +41,7 @@ namespace RenameIt.ViewModels.Directory
         public string Name
         {
             get { return _name; }
-            set
-            {
-                if (_name == value)
-                    return;
-                _name = value;
-                OnPropertyChanged(nameof(Name));
-            }
+            set { SetProperty(ref _name, value, nameof(Name)); }
         }
 
         /// <summary>
@@ -68,13 +50,7 @@ namespace RenameIt.ViewModels.Directory
         public string Extension
         {
             get { return _extension; }
-            set
-            {
-                if (_extension == value)
-                    return;
-                _extension = value;
-                OnPropertyChanged(nameof(Extension));
-            }
+            set { _extension = value; }
         }
 
         /// <summary>
@@ -83,13 +59,7 @@ namespace RenameIt.ViewModels.Directory
         public string NewName
         {
             get { return _newName; }
-            set
-            {
-                if (_newName == value)
-                    return;
-                _newName = value;
-                OnPropertyChanged(nameof(NewName));
-            }
+            set { SetProperty(ref _newName, value, nameof(NewName)); }
         }
 
         /// <summary>

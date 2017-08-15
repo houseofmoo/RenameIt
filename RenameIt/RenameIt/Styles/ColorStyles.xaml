@@ -51,4 +51,8 @@
     <Color x:Key="PlaceholdForeground">#DED7C1</Color>
     <SolidColorBrush x:Key="PlaceholdForegroundBrush" Color="{StaticResource PlaceholdForeground}"/>
     
+    <!-- Disabled button -->
+    <Color x:Key="DisabledButton">#b2b4b7</Color>
+    <SolidColorBrush x:Key="DisabledButtonBrush" Color="{StaticResource DisabledButton}"/>
+
 </ResourceDictionary>

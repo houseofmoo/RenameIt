@@ -166,6 +166,11 @@
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>
+
+                        <!-- Is Enabled -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource DisabledButtonBrush}"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

@@ -59,7 +59,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Commands\RelayParameterizedCommand.cs" />
+    <Compile Include="Common\Commands\RelayCommand.cs" />
+    <Compile Include="Common\ValueConverters\BaseValueConverter.cs" />
+    <Compile Include="Common\ViewModels\BaseViewModel.cs" />
+    <Compile Include="Helpers\BackgroundWorkers.cs" />
     <Compile Include="ViewModels\ExtensionsViewModel.cs" />
     <Compile Include="ViewModels\OptionsViewModel.cs" />
     <Compile Include="Views\Pages\ExtensionsPage.xaml.cs">
@@ -95,7 +98,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Helpers\Util.cs" />
     <Compile Include="Identifiers\Extensions.cs" />
     <Compile Include="Identifiers\Pages.cs" />
@@ -105,9 +107,7 @@
     <Compile Include="Helpers\Fetcher.cs" />
     <Compile Include="Helpers\MediaFiles.cs" />
     <Compile Include="Models\DirectoryItem.cs" />
-    <Compile Include="ValueConverters\Base\ValueConverter.cs" />
     <Compile Include="ValueConverters\PageValueConverter.cs" />
-    <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Compile Include="ViewModels\Directory\ItemViewModel.cs" />
     <Compile Include="ViewModels\RenameItViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
