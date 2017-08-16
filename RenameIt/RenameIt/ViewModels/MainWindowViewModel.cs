@@ -40,7 +40,7 @@ namespace RenameIt.ViewModels
             this._currentPage = Identifiers.Pages.RenameIt;
 
             // set change page command
-            this._menuTitleButtonCommand = new Common.Commands.RelayCommand<object>(this.onTitleButtonClick, titleButtonCliclCanExecute);
+            this._menuTitleButtonCommand = new Common.Commands.RelayCommand<object>(this.onTitleButtonClick);
     }
         #endregion
 
@@ -51,11 +51,6 @@ namespace RenameIt.ViewModels
         private void onTitleButtonClick(object obj)
         {
             // do something neat
-        }
-
-        private bool titleButtonCliclCanExecute(object obj)
-        {
-            return true;
         }
         #endregion
     }

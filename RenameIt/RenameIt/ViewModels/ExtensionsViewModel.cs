@@ -104,8 +104,8 @@ namespace RenameIt.ViewModels
             this.SubtitleExtensionsList = new ObservableCollection<string>(Properties.Settings.Default.SubtitleExtensions.Cast<string>().ToList());
 
             // commands
-            this._addVideoExtensionCommand = new Common.Commands.RelayCommand<object>(addVideoExtension, addVideoExtensionCanExecute);
-            this._addSubtitleExtensionCommand = new Common.Commands.RelayCommand<object>(addSubtitleExtension, addSubtitleExtensionCanExecute);
+            this._addVideoExtensionCommand = new Common.Commands.RelayCommand<object>(addVideoExtension);
+            this._addSubtitleExtensionCommand = new Common.Commands.RelayCommand<object>(addSubtitleExtension);
             this._deleteVideoExtensionCommand = new Common.Commands.RelayCommand<object>(deleteVideoExtension, deleteVideoExtensionCanExecute);
             this._deleteSubtitleExtensionCommand = new Common.Commands.RelayCommand<object>(deleteSubtitleExtension, deleteSubtitleExtensionCanExecute);
         }
@@ -134,10 +134,6 @@ namespace RenameIt.ViewModels
             this.VideoExtensionTextBoxText = string.Empty;
         }
 
-        private bool addVideoExtensionCanExecute(object obj)
-        {
-            return true;
-        }
 
         /// <summary>
         /// Add subtitle extension from text box
@@ -161,10 +157,6 @@ namespace RenameIt.ViewModels
             this.SubtitleExtensionTextBoxText = string.Empty;
         }
 
-        private bool addSubtitleExtensionCanExecute(object obj)
-        {
-            return true;
-        }
 
         /// <summary>
         /// Deletes selected video extension

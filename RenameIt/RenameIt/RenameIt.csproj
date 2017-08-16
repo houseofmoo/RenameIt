@@ -62,7 +62,6 @@
     <Compile Include="Common\Commands\RelayCommand.cs" />
     <Compile Include="Common\ValueConverters\BaseValueConverter.cs" />
     <Compile Include="Common\ViewModels\BaseViewModel.cs" />
-    <Compile Include="Helpers\BackgroundWorkers.cs" />
     <Compile Include="ViewModels\ExtensionsViewModel.cs" />
     <Compile Include="ViewModels\OptionsViewModel.cs" />
     <Compile Include="Views\Pages\ExtensionsPage.xaml.cs">

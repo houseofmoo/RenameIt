@@ -33,6 +33,9 @@ namespace RenameIt.ViewModels
         #endregion
 
         #region private fields
+        // enables / disables confirm button
+        private bool _canConfirm = false;
+
         // button commands
         private ICommand _directroyButtonCommand;
         private ICommand _previewButtonCommand;
@@ -64,6 +67,15 @@ namespace RenameIt.ViewModels
         #endregion
 
         #region button properties
+        /// <summary>
+        /// Maintains the ability for confirm button to be used
+        /// </summary>
+        public bool CanConfirm
+        {
+            get { return _canConfirm; }
+            set { SetProperty(ref _canConfirm, value, nameof(CanConfirm)); }
+        }
+
         public string DirectoryButtonContent { get { return DIRECTORY; } }
         public string PreviewButtonContent { get { return PREVIEW; } }
         public string ConfirmButtonContent { get { return CONFIRM; } }
@@ -168,7 +180,7 @@ namespace RenameIt.ViewModels
 
         #region constructor
         /// <summary>
-        /// Default constructor.
+        /// Default constructor
         /// </summary>
         public RenameItViewModel()
         {
@@ -176,14 +188,14 @@ namespace RenameIt.ViewModels
             this.VideoItems = new ObservableCollection<Directory.ItemViewModel>();
             this.SubtitleItems = new ObservableCollection<Directory.ItemViewModel>();
 
-            // pass mutator functions to button view model which contain the command
-            this._directroyButtonCommand = new Common.Commands.RelayCommand<object>(this.directoryButtonClick, canUserDirectoryButton);
-            this._previewButtonCommand = new Common.Commands.RelayCommand<object>(this.previewButtonClick, previewButtonCanExecute);
-            this._confirmButtonCommand = new Common.Commands.RelayCommand<object>(this.confirmButtonClick, confirmButtonCanExecute);
-            this._optionsButtonCommand = new Common.Commands.RelayCommand<object>(this.optionsButtonClick, optionsButtonCanExecute);
-            this._extensionsButtonCommand = new Common.Commands.RelayCommand<object>(this.extensionsButtonClick, extensionsButtonCanExecute);
-            this._videoTitleCommand = new Common.Commands.RelayCommand<object>(this.videoTitleButtonClick, videoTitleButtonCanExecute);
-            this._subtitleTitleCommand = new Common.Commands.RelayCommand<object>(this.subtitleTitleButtonClick, subtitleTitleCanExecute);
+            // buttom commands
+            this._directroyButtonCommand = new Common.Commands.RelayCommand<object>(this.directoryButtonExecute);
+            this._previewButtonCommand = new Common.Commands.RelayCommand<object>(this.previewButtonExecute, previewButtonCanExecute);
+            this._confirmButtonCommand = new Common.Commands.RelayCommand<object>(this.confirmButtonExecute, confirmButtonCanExecute);
+            this._optionsButtonCommand = new Common.Commands.RelayCommand<object>(this.optionsButtonExecute);
+            this._extensionsButtonCommand = new Common.Commands.RelayCommand<object>(this.extensionsButtonExecute);
+            this._videoTitleCommand = new Common.Commands.RelayCommand<object>(this.videoTitleButtonExecute);
+            this._subtitleTitleCommand = new Common.Commands.RelayCommand<object>(this.subtitleTitleButtonExecute);
 
             // current sub page
             this._currentSubPage = Identifiers.Pages.Options;
@@ -194,7 +206,7 @@ namespace RenameIt.ViewModels
         /// <summary>
         /// When the directory button is clicked.
         /// </summary>
-        private void directoryButtonClick(object obj)
+        private void directoryButtonExecute(object obj)
         {
             // gets the files from the selected directory
             var files = Helpers.MediaFiles.GetFilesFromDirectory(out this._directoryPath);
@@ -205,9 +217,13 @@ namespace RenameIt.ViewModels
             // build subtitle files list
             var subtitleFiles = Helpers.MediaFiles.GetMatchingFiles(files, Properties.Settings.Default.SubtitleExtensions.Cast<string>().ToList());
 
-            // if we found no valid items in the directory, nothing to do
+            // if we found no valid items in the directory
             if (!videoFiles.Any() && !subtitleFiles.Any())
+            {
+                this.VideoItems = new ObservableCollection<Directory.ItemViewModel>();
+                this.SubtitleItems = new ObservableCollection<Directory.ItemViewModel>();
                 return;
+            }
 
             // build and set VideoItems list
             this.VideoItems = new ObservableCollection<Directory.ItemViewModel>(videoFiles.Select(file => new Directory.ItemViewModel(file)));
@@ -217,15 +233,10 @@ namespace RenameIt.ViewModels
                 this.SubtitleItems = new ObservableCollection<Directory.ItemViewModel>(subtitleFiles.Select(file => new Directory.ItemViewModel(file)));
         }
 
-        private bool canUserDirectoryButton(object obj)
-        {
-            return true;
-        }
-
         /// <summary>
         /// When the preview button is clicked.
         /// </summary>
-        private void previewButtonClick(object obj)
+        private void previewButtonExecute(object obj)
         {
             // if input is invalid
             if (!Helpers.Util.ValidateInput(this.ShowName, this.Season, this.EpisodeStart, this.VideoItems.Count))
@@ -259,6 +270,9 @@ namespace RenameIt.ViewModels
 
             // present changes to user
             this.previewNewNames(titles);
+
+            // allow confirm button to be pressed
+            this.CanConfirm = true;
         }
 
         private bool previewButtonCanExecute(object obj)
@@ -269,7 +283,7 @@ namespace RenameIt.ViewModels
         /// <summary>
         /// When the confirm button is clicked.
         /// </summary>
-        private void confirmButtonClick(object obj)
+        private void confirmButtonExecute(object obj)
         {
             // make changes to files
             Helpers.MediaFiles.UpdateFileNames(this.VideoItems);
@@ -278,83 +292,45 @@ namespace RenameIt.ViewModels
             // delete non-media files
             if (Properties.Settings.Default.DeleteNonMediaFiles)
                 Helpers.MediaFiles.DeleteInvalidFiles(this._directoryPath);
+
+            this.CanConfirm = false;
         }
 
         private bool confirmButtonCanExecute(object obj)
         {
-            // check video names have updated
-            if (this.VideoItems.Any())
-            {
-                foreach (var video in this.VideoItems)
-                {
-                    if (video.NewName != string.Empty && video.NewName != video.Name)
-                        return true;
-                }
-            }
-
-            // check subtitle names have updated
-            if (this.SubtitleItems.Any())
-            {
-                foreach (var subtitle in this.SubtitleItems)
-                {
-                    if (subtitle.NewName != string.Empty && subtitle.NewName != subtitle.Name)
-                        return true;
-                }
-            }
-
-            return false;
+            return this.CanConfirm;
         }
 
         /// <summary>
         /// Changes to the options subpage
         /// </summary>
-        private void optionsButtonClick(object obj)
+        private void optionsButtonExecute(object obj)
         {
             this.CurrentSubPage = Identifiers.Pages.Options;
-        }
-
-        private bool optionsButtonCanExecute(object obj)
-        {
-            return true;
         }
 
         /// <summary>
         /// Changes to the extensions subpage
         /// </summary>
-        private void extensionsButtonClick(object obj)
+        private void extensionsButtonExecute(object obj)
         {
             this.CurrentSubPage = Identifiers.Pages.Extensions;
-        }
-
-        private bool extensionsButtonCanExecute(object obj)
-        {
-            return true;
         }
 
         /// <summary>
         /// Hides the video list box
         /// </summary>
-        private void videoTitleButtonClick(object obj)
+        private void videoTitleButtonExecute(object obj)
         {
             this.VideoListViewVisible = (this.VideoListViewVisible == HIDDEN) ? VISIBLE : HIDDEN;
-        }
-
-        private bool videoTitleButtonCanExecute(object obj)
-        {
-            return true;
         }
 
         /// <summary>
         /// Hides the subtitle list box
         /// </summary>
-        private void subtitleTitleButtonClick(object obj)
+        private void subtitleTitleButtonExecute(object obj)
         {
             this.SubtitleListViewVisible = (this.SubtitleListViewVisible == HIDDEN) ? VISIBLE : HIDDEN;
-        }
-
-        private bool subtitleTitleCanExecute(object obj)
-        {
-            return true;
         }
         #endregion
 

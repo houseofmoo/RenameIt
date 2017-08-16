@@ -78,7 +78,6 @@ namespace RenameIt.ViewModels.Directory
             Directory = string.Empty;
             Name = string.Empty;
             NewName = string.Empty;
-
         }
 
         /// <summary>
