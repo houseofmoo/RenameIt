@@ -1,0 +1,37 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Common.Styles"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- 
+    To use fonts, must add:
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="Common/Styles/Fonts.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    to App.xaml.
+    Then you must specifiy the FontFamily as FontAwesome.
+    Get more icons from http://fontawesome.io/cheatsheet/
+    -->
+    
+    <!-- FontAwesome font -->
+    <FontFamily x:Key="FontAwesome">pack://application:,,,/Common/Fonts/#FontAwesome</FontFamily>
+    
+    <!-- FontAwesome icons -->
+    <system:String x:Key="ChatIcon">&#xf086;</system:String>
+    <system:String x:Key="UserIcon">&#xf007;</system:String>
+    <system:String x:Key="PictureIcon">&#xf1c5;</system:String>
+    <system:String x:Key="CogIcon">&#xf013;</system:String>
+    <system:String x:Key="SaveIcon">&#xf0c7;</system:String>
+    <system:String x:Key="TextFileIcon">&#xf15c;</system:String>
+    <system:String x:Key="FolderClosedFilledIcon">&#xf07b;</system:String>
+    <system:String x:Key="FolderOpenFilledIcon">&#xf07c;</system:String>
+    <system:String x:Key="FolderClosedEmptyIcon">&#xf114;</system:String>
+    <system:String x:Key="FolderOpenEmptyIcon">&#xf115;</system:String>
+    <system:String x:Key="ArrowLeftFilledIcon">&#xf177;</system:String>
+    <system:String x:Key="ArrowRightFilledIcon">&#xf178;</system:String>
+    <system:String x:Key="RebelScumFilled">&#xf1d0;</system:String>
+    <system:String x:Key="HamburgerMenuFilled">&#xf0c9;</system:String>
+    
+</ResourceDictionary>

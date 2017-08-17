@@ -9,6 +9,7 @@ namespace RenameIt.Views.Pages
         public RenameItPage()
         {
             InitializeComponent();
+            this.ViewModel = null;
         }
     }
 }

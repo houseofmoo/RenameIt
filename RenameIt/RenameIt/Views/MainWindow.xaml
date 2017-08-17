@@ -20,8 +20,10 @@
 
         <StackPanel Grid.Column="0" Background="{StaticResource MenuBackgroundBrush}">
             <!-- Title button -->
+            <!--{Binding MenuTitleButtonContent}-->
             <Button Style="{StaticResource MenuTitleButton}"
-                Content="{Binding MenuTitleButtonContent}" 
+                FontFamily="{StaticResource FontAwesome}"
+                Content="{StaticResource HamburgerMenu}" 
                 Command="{Binding MenuTitleButtonCommand}"
                 VerticalAlignment="Top"/>
         </StackPanel>
