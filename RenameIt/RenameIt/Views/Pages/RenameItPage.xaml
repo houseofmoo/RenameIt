@@ -1,9 +1,11 @@
-﻿<Page x:Class="RenameIt.Views.Pages.RenameItPage"
+﻿<page:BasePage x:TypeArguments="vm:RenameItViewModel" x:Class="RenameIt.Views.Pages.RenameItPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:RenameIt.Views.Pages"
+      xmlns:page="clr-namespace:Common.Pages"
+      xmlns:vm="clr-namespace:RenameIt.ViewModels"
       xmlns:PageConverter="clr-namespace:RenameIt.ValueConverters"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="600"
@@ -137,4 +139,4 @@
             </StackPanel>
         </Grid>
     </Grid>
-</Page>
+</page:BasePage>

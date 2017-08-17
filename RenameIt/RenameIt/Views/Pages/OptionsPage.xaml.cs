@@ -5,12 +5,11 @@ namespace RenameIt.Views.Pages
     /// <summary>
     /// Interaction logic for OptionsPage.xaml
     /// </summary>
-    public partial class OptionsPage : Page
+    public partial class OptionsPage : Common.Pages.BasePage<ViewModels.OptionsViewModel>
     {
         public OptionsPage()
         {
             InitializeComponent();
-            this.DataContext = new ViewModels.OptionsViewModel();
         }
     }
 }

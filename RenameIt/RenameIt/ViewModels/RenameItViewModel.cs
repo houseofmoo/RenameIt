@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace RenameIt.ViewModels
@@ -12,7 +10,7 @@ namespace RenameIt.ViewModels
     /// <summary>
     /// ViewModel for the main window.
     /// </summary>
-    class RenameItViewModel : Common.ViewModels.BaseViewModel
+    public class RenameItViewModel : Common.ViewModels.BaseViewModel
     {
         #region private constants
         // button text content values

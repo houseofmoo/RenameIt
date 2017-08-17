@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace RenameIt.ViewModels
 {
-    class ExtensionsViewModel : Common.ViewModels.BaseViewModel
+    public class ExtensionsViewModel : Common.ViewModels.BaseViewModel
     {
         #region private constants
         private const string VIDEO_EXTENSIONS = "Video Extensions";
@@ -104,8 +104,8 @@ namespace RenameIt.ViewModels
             this.SubtitleExtensionsList = new ObservableCollection<string>(Properties.Settings.Default.SubtitleExtensions.Cast<string>().ToList());
 
             // commands
-            this._addVideoExtensionCommand = new Common.Commands.RelayCommand<object>(addVideoExtension);
-            this._addSubtitleExtensionCommand = new Common.Commands.RelayCommand<object>(addSubtitleExtension);
+            this._addVideoExtensionCommand = new Common.Commands.RelayCommand<object>(addVideoExtensionExecute);
+            this._addSubtitleExtensionCommand = new Common.Commands.RelayCommand<object>(addSubtitleExtensionExecute);
             this._deleteVideoExtensionCommand = new Common.Commands.RelayCommand<object>(deleteVideoExtension, deleteVideoExtensionCanExecute);
             this._deleteSubtitleExtensionCommand = new Common.Commands.RelayCommand<object>(deleteSubtitleExtension, deleteSubtitleExtensionCanExecute);
         }
@@ -115,11 +115,13 @@ namespace RenameIt.ViewModels
         /// <summary>
         /// Adds video extension from text box
         /// </summary>
-        private void addVideoExtension(object obj)
+        private void addVideoExtensionExecute(object obj)
         {
             // error check
             if (string.IsNullOrWhiteSpace(this.VideoExtensionTextBoxText))
                 return;
+            else if (this.VideoExtensionTextBoxText[0] != '.')
+                 return;
 
             if (!this.VideoExtensionsList.Contains(this.VideoExtensionTextBoxText))
             {
@@ -134,14 +136,15 @@ namespace RenameIt.ViewModels
             this.VideoExtensionTextBoxText = string.Empty;
         }
 
-
         /// <summary>
         /// Add subtitle extension from text box
         /// </summary>
-        private void addSubtitleExtension(object obj)
+        private void addSubtitleExtensionExecute(object obj)
         {
             // erorr check
             if (string.IsNullOrWhiteSpace(this.SubtitleExtensionTextBoxText))
+                return;
+            else if (this.SubtitleExtensionTextBoxText[0] != '.')
                 return;
 
             if (!this.SubtitleExtensionsList.Contains(this.SubtitleExtensionTextBoxText))
@@ -156,7 +159,6 @@ namespace RenameIt.ViewModels
             // empty text box
             this.SubtitleExtensionTextBoxText = string.Empty;
         }
-
 
         /// <summary>
         /// Deletes selected video extension

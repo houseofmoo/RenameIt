@@ -4,7 +4,7 @@ using System.Windows.Input;
 namespace Common.Commands
 {
     /// <summary>
-    /// Relays a command.
+    /// Relays a command
     /// </summary>
     class RelayCommand<T> : ICommand
     {
@@ -41,9 +41,7 @@ namespace Common.Commands
         /// Defines the method that determines whether the command can execute in its current state.
         ///</summary>
         ///<param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
-        ///<returns>
-        /// true if this command can be executed; otherwise, false.
-        ///</returns>
+        ///<returns>True if this command can be executed; otherwise, false</returns>
         public bool CanExecute(object parameter)
         {
             return this._canExecute == null || this._canExecute((T)parameter);

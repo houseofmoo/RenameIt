@@ -18,12 +18,11 @@ namespace RenameIt.Views.Pages
     /// <summary>
     /// Interaction logic for ExtensionsPage.xaml
     /// </summary>
-    public partial class ExtensionsPage : Page
+    public partial class ExtensionsPage : Common.Pages.BasePage<ViewModels.ExtensionsViewModel>
     {
         public ExtensionsPage()
         {
             InitializeComponent();
-            this.DataContext = new ViewModels.ExtensionsViewModel();
         }
     }
 }

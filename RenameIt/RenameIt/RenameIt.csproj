@@ -59,7 +59,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\Animations\PageAnimation.cs" />
+    <Compile Include="Common\Animations\PageAnimationExtensions.cs" />
+    <Compile Include="Common\Animations\StoryboardExtensions.cs" />
+    <Compile Include="Common\AttachedProperties\BaseAttachedProperty.cs" />
     <Compile Include="Common\Commands\RelayCommand.cs" />
+    <Compile Include="Common\Pages\BasePage.cs" />
     <Compile Include="Common\ValueConverters\BaseValueConverter.cs" />
     <Compile Include="Common\ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\ExtensionsViewModel.cs" />
@@ -162,5 +167,6 @@
   <ItemGroup>
     <Resource Include="Images\icon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

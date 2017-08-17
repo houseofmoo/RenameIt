@@ -5,7 +5,7 @@ namespace RenameIt.ViewModels
     /// <summary>
     /// Allows user to define their personal settings for RenameIt
     /// </summary>
-    class OptionsViewModel : Common.ViewModels.BaseViewModel
+    public class OptionsViewModel : Common.ViewModels.BaseViewModel
     {
         #region private constants
         // check box content values
