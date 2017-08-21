@@ -59,7 +59,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Common\General\Expressions\ExpressionHelpers.cs" />
+    <Compile Include="Common\General\Expressions\ExpressionExtensions.cs" />
+    <Compile Include="Common\General\SpecialWriters\PropertiesToBytes.cs" />
     <Compile Include="Common\MVVM\Animations\PageAnimation.cs" />
     <Compile Include="Common\MVVM\Animations\PageAnimationExtensions.cs" />
     <Compile Include="Common\MVVM\Animations\StoryboardExtensions.cs" />

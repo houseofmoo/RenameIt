@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
-namespace Common.Writers
+namespace Common.SpecialWriters
 {
     /// <summary>
     /// Contains the <see cref="Write{T}(string, T)"/> 

@@ -7,7 +7,7 @@ namespace Common.Expressions
     /// <summary>
     /// Helper for expressions
     /// </summary>
-    public static class ExpressionHelpers
+    public static class ExpressionExtensions
     {
         /// <summary>
         /// Compiles the expression and gets the return value
