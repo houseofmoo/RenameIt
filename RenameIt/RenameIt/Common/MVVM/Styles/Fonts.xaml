@@ -7,7 +7,7 @@
     To use fonts, must add:
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="Common/Styles/Fonts.xaml"/>
+                    <ResourceDictionary Source="Common/MVVM/Styles/Fonts.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     to App.xaml.
@@ -16,9 +16,10 @@
     -->
     
     <!-- FontAwesome font -->
-    <FontFamily x:Key="FontAwesome">pack://application:,,,/Common/Fonts/#FontAwesome</FontFamily>
+    <FontFamily x:Key="FontAwesome">pack://application:,,,/Common/MVVM/Fonts/#FontAwesome</FontFamily>
     
     <!-- FontAwesome icons -->
+    <system:String x:Key="LoaderIcon">&#xf110;</system:String>
     <system:String x:Key="ChatIcon">&#xf086;</system:String>
     <system:String x:Key="UserIcon">&#xf007;</system:String>
     <system:String x:Key="PictureIcon">&#xf1c5;</system:String>

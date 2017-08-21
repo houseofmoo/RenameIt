@@ -59,14 +59,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Common\Animations\PageAnimation.cs" />
-    <Compile Include="Common\Animations\PageAnimationExtensions.cs" />
-    <Compile Include="Common\Animations\StoryboardExtensions.cs" />
-    <Compile Include="Common\AttachedProperties\BaseAttachedProperty.cs" />
-    <Compile Include="Common\Commands\RelayCommand.cs" />
-    <Compile Include="Common\Pages\BasePage.cs" />
-    <Compile Include="Common\ValueConverters\BaseValueConverter.cs" />
-    <Compile Include="Common\ViewModels\BaseViewModel.cs" />
+    <Compile Include="Common\General\Expressions\ExpressionHelpers.cs" />
+    <Compile Include="Common\MVVM\Animations\PageAnimation.cs" />
+    <Compile Include="Common\MVVM\Animations\PageAnimationExtensions.cs" />
+    <Compile Include="Common\MVVM\Animations\StoryboardExtensions.cs" />
+    <Compile Include="Common\MVVM\AttachedProperties\BaseAttachedProperty.cs" />
+    <Compile Include="Common\MVVM\Commands\RelayCommand.cs" />
+    <Compile Include="Common\MVVM\Pages\BasePage.cs" />
+    <Compile Include="Common\MVVM\ValueConverters\BaseValueConverter.cs" />
+    <Compile Include="Common\MVVM\ViewModels\BaseViewModel.cs" />
+    <Compile Include="ValueConverters\LoadingValueConverter.cs" />
     <Compile Include="ViewModels\ExtensionsViewModel.cs" />
     <Compile Include="ViewModels\OptionsViewModel.cs" />
     <Compile Include="Views\Pages\ExtensionsPage.xaml.cs">
@@ -78,9 +80,13 @@
     <Compile Include="Views\Pages\RenameItPage.xaml.cs">
       <DependentUpon>RenameItPage.xaml</DependentUpon>
     </Compile>
-    <Page Include="Common\Styles\Fonts.xaml">
+    <Page Include="Common\MVVM\Styles\Fonts.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Common\MVVM\Styles\Text.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\ButtonStyles.xaml">
       <SubType>Designer</SubType>
@@ -154,7 +160,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Common\Fonts\fontawesome-webfont.ttf" />
+    <Resource Include="Common\MVVM\Fonts\fontawesome-webfont.ttf" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

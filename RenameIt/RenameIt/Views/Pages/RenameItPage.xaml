@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:RenameIt.Views.Pages"
       xmlns:page="clr-namespace:Common.Pages"
       xmlns:vm="clr-namespace:RenameIt.ViewModels"
-      xmlns:PageConverter="clr-namespace:RenameIt.ValueConverters"
+      xmlns:valueConverters="clr-namespace:RenameIt.ValueConverters"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="600"
       Title="RenameItPage">
@@ -89,18 +89,26 @@
 
                 <!-- Directory Button -->
                 <Button Style="{StaticResource WindowButton}" 
-                        Content="{Binding DirectoryButtonContent, FallbackValue=Directory}" 
+                        Content="{Binding DirectoryButtonContent}" 
                         Command="{Binding DirectoryButtonCommand}"/>
 
                 <!-- Preview Button -->
                 <Button Style="{StaticResource WindowButton}" 
-                        Content="{Binding PreviewButtonContent, FallbackValue=Preview}" 
+                        Content="{Binding PreviewButtonContent}" 
                         Command="{Binding PreviewButtonCommand}"/>
 
                 <!-- Confirm Button -->
                 <Button Style="{StaticResource WindowButton}" 
-                        Content="{Binding ConfirmButtonContent, FallbackValue=Confirm}"
+                        Content="{Binding ConfirmButtonContent}"
                         Command="{Binding ConfirmButtonCommand}"/>
+                
+                <!-- loading icon -->
+                <TextBlock Style="{StaticResource SpinningText}"
+                           FontSize="35"
+                           Visibility="{Binding FetchingTitles, Converter={valueConverters:LoadingValueConverter}}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           />
             </StackPanel>
 
             <StackPanel Grid.Row="1">
@@ -113,12 +121,12 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="5*"/>
                     </Grid.RowDefinitions>
-                    
+
                     <!-- Options Button -->
                     <Button Style="{StaticResource WindowOptionsButton}" 
                             Grid.Column="0"
                             Grid.Row="0"
-                            Content="{Binding OptionsButtonContent}" 
+                            Content="{Binding OptionsButtonContent}"
                             Command="{Binding OptionsButtonCommand}"/>
 
                     <!-- Extensions Button -->
@@ -127,14 +135,14 @@
                             Grid.Row="0"
                             Content="{Binding ExtensionsButtonContent}" 
                             Command="{Binding ExtensionsButtonCommand}"/>
-                    
-                    <!-- Notice text -->
+
+                    <!-- Subcontent frame -->
                     <Frame Grid.Column="0"
                         Grid.ColumnSpan="2"
                         Grid.Row="1"
                         NavigationUIVisibility="Hidden"
                         Background="{StaticResource MainBackgroundBrush}"
-                        Content="{Binding CurrentSubPage, Converter={PageConverter:PageValueConverter}}"/>
+                        Content="{Binding CurrentSubPage, Converter={valueConverters:PageValueConverter}}"/>
                 </Grid>
             </StackPanel>
         </Grid>

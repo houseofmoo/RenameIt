@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -31,8 +32,7 @@ namespace RenameIt.ViewModels
         #endregion
 
         #region private fields
-        // enables / disables confirm button
-        private bool _canConfirm = false;
+        private bool _fetchingTitles = false;
 
         // button commands
         private ICommand _directroyButtonCommand;
@@ -66,12 +66,13 @@ namespace RenameIt.ViewModels
 
         #region button properties
         /// <summary>
-        /// Maintains the ability for confirm button to be used
+        /// Are we currently fetching episode titles, updated before and after 
+        /// executing a fetch titles operation
         /// </summary>
-        public bool CanConfirm
+        public bool FetchingTitles
         {
-            get { return _canConfirm; }
-            set { SetProperty(ref _canConfirm, value, nameof(CanConfirm)); }
+            get { return _fetchingTitles; }
+            set { SetProperty(ref _fetchingTitles, value, nameof(FetchingTitles)); }
         }
 
         public string DirectoryButtonContent { get { return DIRECTORY; } }
@@ -188,8 +189,8 @@ namespace RenameIt.ViewModels
 
             // buttom commands
             this._directroyButtonCommand = new Common.Commands.RelayCommand<object>(this.directoryButtonExecute);
-            this._previewButtonCommand = new Common.Commands.RelayCommand<object>(this.previewButtonExecute, previewButtonCanExecute);
-            this._confirmButtonCommand = new Common.Commands.RelayCommand<object>(this.confirmButtonExecute, confirmButtonCanExecute);
+            this._previewButtonCommand = new Common.Commands.RelayCommand<object>(this.previewButtonExecute);
+            this._confirmButtonCommand = new Common.Commands.RelayCommand<object>(this.confirmButtonExecute);
             this._optionsButtonCommand = new Common.Commands.RelayCommand<object>(this.optionsButtonExecute);
             this._extensionsButtonCommand = new Common.Commands.RelayCommand<object>(this.extensionsButtonExecute);
             this._videoTitleCommand = new Common.Commands.RelayCommand<object>(this.videoTitleButtonExecute);
@@ -234,48 +235,43 @@ namespace RenameIt.ViewModels
         /// <summary>
         /// When the preview button is clicked.
         /// </summary>
-        private void previewButtonExecute(object obj)
+        private async void previewButtonExecute(object obj)
         {
-            // if input is invalid
-            if (!Helpers.Util.ValidateInput(this.ShowName, this.Season, this.EpisodeStart, this.VideoItems.Count))
+            // if input is invalid and we have video or subtitle items to update
+            if (Helpers.Util.InvalidTextBoxInput(this.ShowName, this.Season, this.EpisodeStart) ||
+                (!this.VideoItems.Any() || !this.SubtitleItems.Any()))
             {
                 MessageBox.Show("Please provide a show name, an season number (decimal) and a episode begin number (decimal).");
                 return;
             }
 
-            // list to hold titles
-            List<string> titles = null;
-
             // only fetch titles if user wants to
             if (Properties.Settings.Default.GetEpisodeTitles)
             {
-                // create request
-                var showInfo = new Models.Titles.Request()
+                // run command if we're not already running command
+                await RunCommand(() => this.FetchingTitles, async () =>
                 {
-                    ShowName = this.ShowName,
-                    Season = this.Season,
-                    EpisodeBegin = this.EpisodeStart,
-                    EpisodeCount = this.VideoItems.Count,
-                };
+                    // create request
+                    var showInfo = new Models.Titles.Request()
+                    {
+                        ShowName = this.ShowName,
+                        Season = this.Season,
+                        EpisodeBegin = this.EpisodeStart,
+                        EpisodeCount = this.VideoItems.Count,
+                    };
+                    // get titles list
+                    var titles = await Helpers.Fetcher.GetEpisodeTitles(showInfo);
 
-                // fetch titles on new thread - not yet working
-                //var thread = new Thread(() =>
-                //{
-                //    titles = Helpers.Fetcher.GetEpisodeTitles(showInfo);
-                //});
-               titles = Helpers.Fetcher.GetEpisodeTitles(showInfo);
+                    // present changes to user
+                    this.previewNewNames(titles);
+                });
+            }
+            else
+            {
+                // present changes to user
+                this.previewNewNames(null);
             }
 
-            // present changes to user
-            this.previewNewNames(titles);
-
-            // allow confirm button to be pressed
-            this.CanConfirm = true;
-        }
-
-        private bool previewButtonCanExecute(object obj)
-        {
-            return this.VideoItems.Any() || this.SubtitleItems.Any();
         }
 
         /// <summary>
@@ -283,6 +279,14 @@ namespace RenameIt.ViewModels
         /// </summary>
         private void confirmButtonExecute(object obj)
         {
+            // if input is invalid and we have video or subtitle items to update
+            if (Helpers.Util.InvalidTextBoxInput(this.ShowName, this.Season, this.EpisodeStart) ||
+                (!this.VideoItems.Any() || !this.SubtitleItems.Any()))
+            {
+                MessageBox.Show("Please provide a show name, an season number (decimal) and a episode begin number (decimal).");
+                return;
+            }
+
             // make changes to files
             Helpers.MediaFiles.UpdateFileNames(this.VideoItems);
             Helpers.MediaFiles.UpdateFileNames(this.SubtitleItems);
@@ -290,13 +294,6 @@ namespace RenameIt.ViewModels
             // delete non-media files
             if (Properties.Settings.Default.DeleteNonMediaFiles)
                 Helpers.MediaFiles.DeleteInvalidFiles(this._directoryPath);
-
-            this.CanConfirm = false;
-        }
-
-        private bool confirmButtonCanExecute(object obj)
-        {
-            return this.CanConfirm;
         }
 
         /// <summary>

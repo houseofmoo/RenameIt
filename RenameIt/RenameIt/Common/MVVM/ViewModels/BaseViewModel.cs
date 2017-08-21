@@ -1,5 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+
+using Common.Expressions; // Expressions extension library
 
 namespace Common.ViewModels
 {
@@ -42,6 +47,36 @@ namespace Common.ViewModels
 
             // invoke property changed event
             this.OnPropertyChanged(propertyName);
+        }
+
+        /// <summary>
+        /// Runs a command if the updating flag is not set
+        /// If the flag is true - the function is already running so we do not run the action
+        /// If the flag is false - run the action
+        /// Once the action is finished, then the flag is reset to false
+        /// </summary>
+        /// <param name="updatingFlag">The boolean property flag defining if the command is already running</param>
+        /// <param name="action">The action to run if the command is not already running</param>
+        /// <returns></returns>
+        protected async Task RunCommand(Expression<Func<bool>> updatingFlag, Func<Task> action)
+        {
+            // check if the flag property is true (meaning function is already running)
+            if (updatingFlag.GetPropertyValue())
+                return;
+
+            // set property flag to true to indicate we're running
+            updatingFlag.SetPropertyValue(true);
+
+            try
+            {
+                // run the pass in action
+                await action();
+            }
+            finally
+            {
+                // set property to false
+                updatingFlag.SetPropertyValue(false);
+            }
         }
     }
 }

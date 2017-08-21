@@ -7,7 +7,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!-- The order is important -->
-                <ResourceDictionary Source="Common/Styles/Fonts.xaml"/>
+                <ResourceDictionary Source="Common/MVVM/Styles/Fonts.xaml"/>
+                <ResourceDictionary Source="Common/MVVM/Styles/Text.xaml"/>
                 <ResourceDictionary Source="Styles/ColorStyles.xaml"/>
                 <ResourceDictionary Source="Styles/TextBoxStyles.xaml"/>
                 <ResourceDictionary Source="Styles/ButtonStyles.xaml"/>

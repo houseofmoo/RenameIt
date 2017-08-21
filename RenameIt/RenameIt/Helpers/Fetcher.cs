@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace RenameIt.Helpers
 {
@@ -36,17 +38,17 @@ namespace RenameIt.Helpers
         /// </summary>
         /// <param name="showInfo">Information we need to make request to API.</param>
         /// <returns></returns>
-        public static List<string> GetEpisodeTitles(Models.Titles.Request showInfo)
+        public static async Task<List<string>> GetEpisodeTitles(Models.Titles.Request showInfo)
         {
             // get show id
-            string showId = fetchShowId(showInfo.ShowName);
+            string showId = await fetchShowId(showInfo.ShowName);
 
             // if getting show id failed, no reason to continue
             if (showId == null)
                 return null;
 
             // get episode titles
-            List<string> titles = fetchShowTitles(showId, showInfo);
+            List<string> titles = await fetchShowTitles(showId, showInfo);
 
             return titles;
         }
@@ -56,7 +58,7 @@ namespace RenameIt.Helpers
         /// </summary>
         /// <param name="showName">Name of show whose ID we're attempting to get.</param>
         /// <returns></returns>
-        private static string fetchShowId(string showName)
+        private static async Task<string> fetchShowId(string showName)
         {
             try
             {
@@ -67,10 +69,11 @@ namespace RenameIt.Helpers
                 string url = TvApiShowIdQueryUrl + showName;
 
                 // make request and map reply to object
-                Models.Titles.ShowIdReply reply = null;
-                using (var client = new System.Net.WebClient())
+                Models.Titles.ShowIdReply reply = new Models.Titles.ShowIdReply();
+
+                using (var client = new System.Net.Http.HttpClient())
                 {
-                    var json = client.DownloadString(url);
+                    var json = await client.GetStringAsync(url);
                     var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                     reply = serializer.Deserialize<Models.Titles.ShowIdReply>(json);
                 }
@@ -94,7 +97,7 @@ namespace RenameIt.Helpers
         /// <param name="epBegin">Which episode to begin with.</param>
         /// <param name="epCount">Number of episodes we are expecting to find.</param>
         /// <returns></returns>
-        private static List<string> fetchShowTitles(string showId, Models.Titles.Request showInfo)
+        private static async Task<List<string>> fetchShowTitles(string showId, Models.Titles.Request showInfo)
         {
             // list that will hold episode titles
             List<string> titles = new List<string>();
@@ -105,7 +108,7 @@ namespace RenameIt.Helpers
                 int episodeBegin = Convert.ToInt32(showInfo.EpisodeBegin);
 
                 // create new webclient for api requests 
-                using (var client = new System.Net.WebClient())
+                using (var client = new System.Net.Http.HttpClient())
                 {
                     // make a request for each episodes title
                     for (int i = 0; i < showInfo.EpisodeCount; i++)
@@ -115,7 +118,7 @@ namespace RenameIt.Helpers
                                      showInfo.Season + TvApiEpisodeNumberQuery + episodeBegin;
 
                         // make request and map reply to object
-                        var json = client.DownloadString(url);
+                        var json = await client.GetStringAsync(url);
                         var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                         var reply = serializer.Deserialize<Models.Titles.EpisodeInfoReply>(json);
                         

@@ -102,6 +102,10 @@ namespace RenameIt.Helpers
                 // remove illegal characters
                 item.NewName = removeIllegalFileCharacters(item.NewName);
 
+                // check if theres a new name to update to and that the file does not already exist
+                if (item.NewName == string.Empty || File.Exists(item.Directory + "\\" + item.NewName))
+                    return;
+
                 // change name
                 File.Move(item.FullPath, item.Directory + "\\" + item.NewName);
 

@@ -8,7 +8,7 @@ namespace RenameIt.Helpers
 {
     public static class Util
     {
-        public static bool ValidateInput(string showName, string season, string episodeStartNumber, int count)
+        public static bool InvalidTextBoxInput(string showName, string season, string episodeStartNumber)
         {
             try
             {
@@ -23,10 +23,9 @@ namespace RenameIt.Helpers
             }
 
             // return ture if each text box is filled and count > 0
-            return !string.IsNullOrWhiteSpace(showName) &&
-                !string.IsNullOrWhiteSpace(season) &&
-                !string.IsNullOrWhiteSpace(episodeStartNumber) &&
-                count > 0;
+            return string.IsNullOrWhiteSpace(showName) ||
+                string.IsNullOrWhiteSpace(season) ||
+                string.IsNullOrWhiteSpace(episodeStartNumber);
         }
     }
 }
