@@ -14,8 +14,8 @@ namespace Common.Pages
         #region private fields
         private VM _viewModel;
 
-        private Common.Animations.PageAnimation _pageLoadAnimation = Common.Animations.PageAnimation.FadeIn;
-        private Common.Animations.PageAnimation _pageUnloadAnimation = Common.Animations.PageAnimation.FadeOut;
+        private PageAnimation _pageLoadAnimation = PageAnimation.FadeIn;
+        private PageAnimation _pageUnloadAnimation = PageAnimation.FadeOut;
 
         private float _animationTime = 0.5f;
         #endregion

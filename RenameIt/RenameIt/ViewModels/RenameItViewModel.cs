@@ -301,7 +301,10 @@ namespace RenameIt.ViewModels
         /// </summary>
         private void optionsButtonExecute(object obj)
         {
-            this.CurrentSubPage = Identifiers.Pages.Options;
+            if (this.CurrentSubPage != Identifiers.Pages.Options)
+            {
+                this.CurrentSubPage = Identifiers.Pages.Options;
+            }
         }
 
         /// <summary>
@@ -309,7 +312,11 @@ namespace RenameIt.ViewModels
         /// </summary>
         private void extensionsButtonExecute(object obj)
         {
-            this.CurrentSubPage = Identifiers.Pages.Extensions;
+            if (this.CurrentSubPage != Identifiers.Pages.Extensions)
+            {
+                this.CurrentSubPage = Identifiers.Pages.Extensions;
+            }
+            
         }
 
         /// <summary>

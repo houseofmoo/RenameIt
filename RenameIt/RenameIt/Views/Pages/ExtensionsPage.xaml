@@ -6,6 +6,7 @@
       xmlns:page="clr-namespace:Common.Pages"
       xmlns:vm="clr-namespace:RenameIt.ViewModels"
       xmlns:local="clr-namespace:RenameIt.Views.Pages"
+      xmlns:attachedProp="clr-namespace:Common.AttachedProperties"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="ExtensionsPage">

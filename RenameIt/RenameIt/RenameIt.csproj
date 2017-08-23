@@ -61,10 +61,13 @@
     </ApplicationDefinition>
     <Compile Include="Common\General\Expressions\ExpressionExtensions.cs" />
     <Compile Include="Common\General\SpecialWriters\PropertiesToBytes.cs" />
+    <Compile Include="Common\MVVM\Animations\FrameworkElementAnimationsExtensions.cs" />
     <Compile Include="Common\MVVM\Animations\PageAnimation.cs" />
     <Compile Include="Common\MVVM\Animations\PageAnimationExtensions.cs" />
     <Compile Include="Common\MVVM\Animations\StoryboardExtensions.cs" />
+    <Compile Include="Common\MVVM\AttachedProperties\AnimationsAttachProperty.cs" />
     <Compile Include="Common\MVVM\AttachedProperties\BaseAttachedProperty.cs" />
+    <Compile Include="Common\MVVM\AttachedProperties\BaseAnimateProperty.cs" />
     <Compile Include="Common\MVVM\Commands\RelayCommand.cs" />
     <Compile Include="Common\MVVM\Pages\BasePage.cs" />
     <Compile Include="Common\MVVM\ValueConverters\BaseValueConverter.cs" />
