@@ -14,24 +14,12 @@ namespace RenameIt.ViewModels
     public class RenameItViewModel : Common.ViewModels.BaseViewModel
     {
         #region private constants
-        // button text content values
-        private const string DIRECTORY = "Select Directory";
-        private const string PREVIEW = "Preview Changes";
-        private const string CONFIRM = "Commit Changes";
-        private const string EXTENSTIONS = "Extensions";
-        private const string OPTIONS = "Options";
-        private const string VIDEO_TITLE = "Videos";
-        private const string SUBTITLE_TITLE = "Subtitles";
-
-        // formatting constants
-        private const double LIST_VIEW_COLUMN_SIZE = 205d;
-        private const double MINIMUM_LIST_VIEW_HEIGHT = 335d;
-
         private const string VISIBLE = "Visible";
         private const string HIDDEN = "Hidden";
         #endregion
 
         #region private fields
+        // loading icon display property
         private bool _fetchingTitles = false;
 
         // button commands
@@ -49,7 +37,6 @@ namespace RenameIt.ViewModels
         private string _episodeStart;
 
         // formatting
-        private double _listViewColumnSize = LIST_VIEW_COLUMN_SIZE;
         private string _videoListViewVisible = VISIBLE;
         private string _subtitleListViewVisible = VISIBLE;
 
@@ -71,25 +58,17 @@ namespace RenameIt.ViewModels
         /// </summary>
         public bool FetchingTitles
         {
-            get { return _fetchingTitles; }
-            set { SetProperty(ref _fetchingTitles, value, nameof(FetchingTitles)); }
+            get => _fetchingTitles;
+            set => SetProperty(ref _fetchingTitles, value, nameof(FetchingTitles));
         }
 
-        public string DirectoryButtonContent { get { return DIRECTORY; } }
-        public string PreviewButtonContent { get { return PREVIEW; } }
-        public string ConfirmButtonContent { get { return CONFIRM; } }
-        public string OptionsButtonContent { get { return OPTIONS; } }
-        public string ExtensionsButtonContent { get { return EXTENSTIONS; } }
-        public string VideoTitleContent { get { return VIDEO_TITLE; } }
-        public string SubtitleTitleContent { get { return SUBTITLE_TITLE; } }
-
-        public ICommand DirectoryButtonCommand { get { return _directroyButtonCommand; } }
-        public ICommand PreviewButtonCommand { get { return _previewButtonCommand; } }
-        public ICommand ConfirmButtonCommand { get { return _confirmButtonCommand; } }
-        public ICommand OptionsButtonCommand { get { return _optionsButtonCommand; } }
-        public ICommand ExtensionsButtonCommand { get { return _extensionsButtonCommand; } }
-        public ICommand VideoTitleCommand { get { return _videoTitleCommand; } }
-        public ICommand SubtitleTitleCommand { get { return _subtitleTitleCommand; } }
+        public ICommand DirectoryButtonCommand { get => _directroyButtonCommand; }
+        public ICommand PreviewButtonCommand { get => _previewButtonCommand; }
+        public ICommand ConfirmButtonCommand { get => _confirmButtonCommand; }
+        public ICommand OptionsButtonCommand { get => _optionsButtonCommand; }
+        public ICommand ExtensionsButtonCommand { get => _extensionsButtonCommand; }
+        public ICommand VideoTitleCommand { get => _videoTitleCommand; }
+        public ICommand SubtitleTitleCommand { get => _subtitleTitleCommand; }
         #endregion
 
         #region textbox properties
@@ -98,8 +77,8 @@ namespace RenameIt.ViewModels
         /// </summary>
         public string ShowName
         {
-            get { return _showName; }
-            set { SetProperty(ref _showName, value, nameof(ShowName)); }
+            get => _showName;
+            set => SetProperty(ref _showName, value);
         }
 
         /// <summary>
@@ -107,8 +86,8 @@ namespace RenameIt.ViewModels
         /// </summary>
         public string Season
         {
-            get { return _season; }
-            set { SetProperty(ref _season, value, nameof(Season)); }
+            get => _season;
+            set => SetProperty(ref _season, value);
         }
 
         /// <summary>
@@ -116,36 +95,22 @@ namespace RenameIt.ViewModels
         /// </summary>
         public string EpisodeStart
         {
-            get { return _episodeStart; }
-            set { SetProperty(ref _episodeStart, value, nameof(EpisodeStart)); }
+            get => _episodeStart;
+            set => SetProperty(ref _episodeStart, value);
         }
         #endregion
 
         #region formatting properties
-        /// <summary>
-        /// Sets the column width of the list view initially
-        /// </summary>
-        public double ListViewColumnSize
-        {
-            get { return _listViewColumnSize; }
-            set { SetProperty(ref _listViewColumnSize, value, nameof(ListViewColumnSize)); }
-        }
-
-        /// <summary>
-        /// Holds the list view height. Sets a default valut. Value cannot go below default value
-        /// </summary>
-        public double ListViewHeight { get { return MINIMUM_LIST_VIEW_HEIGHT; } }
-
         public string VideoListViewVisible
         {
-            get { return _videoListViewVisible; }
-            set { SetProperty(ref _videoListViewVisible, value, nameof(VideoListViewVisible)); }
+            get => _videoListViewVisible;
+            set => SetProperty(ref _videoListViewVisible, value);
         }
 
         public string SubtitleListViewVisible
         {
-            get { return _subtitleListViewVisible; }
-            set { SetProperty(ref _subtitleListViewVisible, value, nameof(SubtitleListViewVisible)); }
+            get => _subtitleListViewVisible;
+            set => SetProperty(ref _subtitleListViewVisible, value);
         }
         #endregion
 
@@ -155,8 +120,8 @@ namespace RenameIt.ViewModels
         /// </summary>
         public ObservableCollection<Directory.ItemViewModel> VideoItems
         {
-            get { return _videoItems; }
-            set { SetProperty(ref _videoItems, value, nameof(VideoItems)); }
+            get => _videoItems;
+            set => SetProperty(ref _videoItems, value);
         }
 
         /// <summary>
@@ -164,16 +129,16 @@ namespace RenameIt.ViewModels
         /// </summary>
         public ObservableCollection<Directory.ItemViewModel> SubtitleItems
         {
-            get { return _subtitleItems; }
-            set { SetProperty(ref _subtitleItems, value, nameof(SubtitleItems)); }
+            get => _subtitleItems;
+            set => SetProperty(ref _subtitleItems, value);
         }
         #endregion
 
         #region subpages
         public Identifiers.Pages CurrentSubPage
         {
-            get { return _currentSubPage; }
-            set { SetProperty(ref _currentSubPage, value, nameof(CurrentSubPage)); }
+            get => _currentSubPage;
+            set => SetProperty(ref _currentSubPage, value);
         }
         #endregion
 

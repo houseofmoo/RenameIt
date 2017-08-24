@@ -31,7 +31,7 @@ namespace Common.SpecialWriters
             { typeof(float), (w, v) => w.Write((float)v) },
             { typeof(double), (w, v) => w.Write((double)v) },
 
-            // array of primitives
+            // primitives[]
             { typeof(char[]), (w, v) => writeArray(w, (v as char[])) },
             { typeof(bool[]), (w, v) => writeArray(w, (v as bool[])) },
             { typeof(sbyte[]), (w, v) => writeArray(w, (v as sbyte[])) },
@@ -91,7 +91,7 @@ namespace Common.SpecialWriters
         /// <typeparam name="T">Nested classes type</typeparam>
         /// <param name="binWriter">The <see cref="BinaryWriter"/></param>
         /// <param name="obj">The object whose properties we want to write</param>
-        private static void writeNestedClass<T>(BinaryWriter binWriter, T obj) where T : new()
+        private static void writeNestedClass<T>(BinaryWriter binWriter, T obj)
         {
             // get class objects property info
             PropertyInfo[] properties = obj.GetType().GetProperties();
@@ -149,7 +149,7 @@ namespace Common.SpecialWriters
         /// <typeparam name="T">Type of objects in array</typeparam>
         /// <param name="binWriter">The <see cref="BinaryWriter"/></param>
         /// <param name="list">The array containing the objects</param>
-        private static void writeArrayOfNestedClasses<T>(BinaryWriter binWriter, T[] list) where T : new()
+        private static void writeArrayOfNestedClasses<T>(BinaryWriter binWriter, T[] list)
         {
             foreach (var obj in list)
             {

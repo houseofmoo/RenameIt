@@ -29,18 +29,18 @@
             <!-- Videos listview-->
             <StackPanel Grid.Row="0">
                 <!-- videos button -->
-                <Button Content="{Binding VideoTitleContent}" 
+                <Button Content="Videos" 
                         Style="{StaticResource ListBoxButtons}" 
                         Command="{Binding VideoTitleCommand}"
                         HorizontalAlignment="Left"/>
 
                 <!-- videos list box -->
-                <ListView ItemsSource="{Binding VideoItems}" Height="{Binding ListViewHeight}" Visibility="{Binding VideoListViewVisible}">
+                <ListView ItemsSource="{Binding VideoItems}" Height="335" Visibility="{Binding VideoListViewVisible}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Width="{Binding ListViewColumnSize}"  DisplayMemberBinding="{Binding Name}" Header="Name"/>
+                            <GridViewColumn Width="205"  DisplayMemberBinding="{Binding Name}" Header="Name"/>
                             <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Arrow}" Header="=>"/>
-                            <GridViewColumn Width="{Binding ListViewColumnSize}" DisplayMemberBinding="{Binding NewName}" Header="New Name"/>
+                            <GridViewColumn Width="205" DisplayMemberBinding="{Binding NewName}" Header="New Name"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -49,18 +49,18 @@
             <!-- Subtitles listview -->
             <StackPanel Grid.Row="1">
                 <!-- subtitle button -->
-                <Button Content="{Binding SubtitleTitleContent}" 
+                <Button Content="Subtitles" 
                         Style="{StaticResource ListBoxButtons}" 
                         Command="{Binding SubtitleTitleCommand}"
                         HorizontalAlignment="Left"/>
 
                 <!-- subtitle list box -->
-                <ListView ItemsSource="{Binding SubtitleItems}" Height="{Binding ListViewHeight}" Visibility="{Binding SubtitleListViewVisible}">
+                <ListView ItemsSource="{Binding SubtitleItems}" Height="335" Visibility="{Binding SubtitleListViewVisible}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Width="{Binding ListViewColumnSize}"  DisplayMemberBinding="{Binding Name}" Header="Name"/>
+                            <GridViewColumn Width="205"  DisplayMemberBinding="{Binding Name}" Header="Name"/>
                             <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Arrow}" Header="=>"/>
-                            <GridViewColumn Width="{Binding ListViewColumnSize}" DisplayMemberBinding="{Binding NewName}" Header="New Name"/>
+                            <GridViewColumn Width="205" DisplayMemberBinding="{Binding NewName}" Header="New Name"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -90,17 +90,17 @@
 
                 <!-- Directory Button -->
                 <Button Style="{StaticResource WindowButton}" 
-                        Content="{Binding DirectoryButtonContent}" 
+                        Content="Select Directory" 
                         Command="{Binding DirectoryButtonCommand}"/>
 
                 <!-- Preview Button -->
                 <Button Style="{StaticResource WindowButton}" 
-                        Content="{Binding PreviewButtonContent}" 
+                        Content="Preview Changes" 
                         Command="{Binding PreviewButtonCommand}"/>
 
                 <!-- Confirm Button -->
                 <Button Style="{StaticResource WindowButton}" 
-                        Content="{Binding ConfirmButtonContent}"
+                        Content="Commit Changes"
                         Command="{Binding ConfirmButtonCommand}"/>
                 
                 <!-- loading icon -->
@@ -127,14 +127,14 @@
                     <Button Style="{StaticResource WindowOptionsButton}" 
                             Grid.Column="0"
                             Grid.Row="0"
-                            Content="{Binding OptionsButtonContent}"
+                            Content="Options"
                             Command="{Binding OptionsButtonCommand}"/>
 
                     <!-- Extensions Button -->
                     <Button Style="{StaticResource WindowOptionsButton}" 
                             Grid.Column="1"
                             Grid.Row="0"
-                            Content="{Binding ExtensionsButtonContent}" 
+                            Content="Extensions" 
                             Command="{Binding ExtensionsButtonCommand}"/>
 
                     <!-- sub content -->

@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:RenameIt.Common.Styles">
+                    xmlns:local="clr-namespace:Common.Styles">
     
     <!-- spin text 360 degrees -->
     <Style TargetType="{x:Type TextBlock}" x:Key="SpinningText">

@@ -24,22 +24,20 @@ namespace RenameIt.ViewModels
         #endregion
 
         #region checkbox properties
-        public string GetEpisodeTitlesContent { get { return GET_EPISODE_TITLES; } }
-        public string IncludeSubtitlesContent { get { return INCLUDE_SUBTITLES; } }
-        public string DeleteNonMediaFilesContent { get { return DELETE_NONMEDIA_FILES; } }
-        public string SearchSubDirectoriesContent { get { return SEARCH_SUBDIRECTORIES; } }
+        public string GetEpisodeTitlesContent { get => GET_EPISODE_TITLES; }
+        public string IncludeSubtitlesContent { get => INCLUDE_SUBTITLES; }
+        public string DeleteNonMediaFilesContent { get => DELETE_NONMEDIA_FILES; }
+        public string SearchSubDirectoriesContent { get => SEARCH_SUBDIRECTORIES; }
 
         /// <summary>
         /// Stores the checkbox value of Get Episode Titles, updates global settings
         /// </summary>
         public bool GetEpisodeTitles
         {
-            get { return _getEpisodeTitles; }
+            get => _getEpisodeTitles;
             set
             {
-                SetProperty(ref _getEpisodeTitles, value, nameof(GetEpisodeTitles));
-                
-                // set global settings object to new value
+                SetProperty(ref _getEpisodeTitles, value);
                 Properties.Settings.Default.GetEpisodeTitles = value;
             }
         }
@@ -49,12 +47,10 @@ namespace RenameIt.ViewModels
         /// </summary>
         public bool IncludeSubtitles
         {
-            get { return _includeSubtitles; }
+            get => _includeSubtitles;
             set
             {
-                SetProperty(ref _includeSubtitles, value, nameof(IncludeSubtitles));
-
-                // set global settings object to new value
+                SetProperty(ref _includeSubtitles, value);
                 Properties.Settings.Default.IncludeSubtitles = value;
             }
         }
@@ -64,12 +60,10 @@ namespace RenameIt.ViewModels
         /// </summary>
         public bool DeleteNonMediaFiles
         {
-            get { return _deleteNonMediaFiles; }
+            get => _deleteNonMediaFiles;
             set
             {
-                SetProperty(ref _deleteNonMediaFiles, value, nameof(DeleteNonMediaFiles));
-
-                // set global settings object to new value
+                SetProperty(ref _deleteNonMediaFiles, value);
                 Properties.Settings.Default.DeleteNonMediaFiles = value;
             }
         }
@@ -79,12 +73,10 @@ namespace RenameIt.ViewModels
         /// </summary>
         public bool SearchSubDirectories
         {
-            get { return _searchSubdirectories; }
+            get => _searchSubdirectories;
             set
             {
-                SetProperty(ref _searchSubdirectories, value, nameof(SearchSubDirectories));
-
-                // set global settings object to new value
+                SetProperty(ref _searchSubdirectories, value);
                 // Properties.Settings.Default.SearchSubDirectories = value;
             }
         }

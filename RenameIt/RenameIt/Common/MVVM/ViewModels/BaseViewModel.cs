@@ -5,11 +5,12 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Common.Expressions; // Expressions extension library
+using System.Runtime.CompilerServices;
 
 namespace Common.ViewModels
 {
     /// <summary>
-    /// Base ViewModel other view models inherit from to get OnPropertyChanged event.
+    /// Base ViewModel other view models inherit from to get <see cref="SetProperty{T}(ref T, T, string)"/> method
     /// </summary>
     public class BaseViewModel : INotifyPropertyChanged
     {
@@ -35,8 +36,8 @@ namespace Common.ViewModels
         /// <typeparam name="T">Values type</typeparam>
         /// <param name="property">Property to be updated</param>
         /// <param name="newValue">Value property will be updated to</param>
-        /// <param name="propertyName">Name of property to be updated</param>
-        public void SetProperty<T>(ref T property, T newValue, string propertyName)
+        /// <param name="propertyName">The callers name is passed in to this method automatically. Defaults to null</param>
+        protected void SetProperty<T>(ref T property, T newValue, [CallerMemberName] string propertyName = null)
         {
             // if current and new value are equal do nothing
             if (EqualityComparer<T>.Default.Equals(property, newValue))

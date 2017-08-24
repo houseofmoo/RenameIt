@@ -30,22 +30,22 @@ namespace RenameIt.ViewModels
         #endregion
 
         #region public properties
-        public string VideoExtensionTitle { get { return VIDEO_EXTENSIONS; } }
-        public string SubtitleExtensionsTitle { get { return SUBTITLE_EXTENSIONS; } }
+        public string VideoExtensionTitle { get => VIDEO_EXTENSIONS; }
+        public string SubtitleExtensionsTitle { get => SUBTITLE_EXTENSIONS; }
 
-        public ICommand AddVideoExtensionCommand { get { return _addVideoExtensionCommand; } }
-        public ICommand AddSubtitleExtensionCommand { get { return _addSubtitleExtensionCommand; } }
+        public ICommand AddVideoExtensionCommand { get => _addVideoExtensionCommand; }
+        public ICommand AddSubtitleExtensionCommand { get => _addSubtitleExtensionCommand; }
 
-        public ICommand DeleteVideoExtensionCommand { get { return _deleteVideoExtensionCommand; } }
-        public ICommand DeleteSubtitleExtensionCommand { get { return _deleteSubtitleExtensionCommand; } }
+        public ICommand DeleteVideoExtensionCommand { get => _deleteVideoExtensionCommand; }
+        public ICommand DeleteSubtitleExtensionCommand { get => _deleteSubtitleExtensionCommand; }
 
         /// <summary>
         /// The currently selected item in the video extensions list box
         /// </summary>
         public string SelectedVideoExtension
         {
-            get { return _selectedVideoExtension; }
-            set { SetProperty(ref _selectedVideoExtension, value, nameof(SelectedVideoExtension)); }
+            get => _selectedVideoExtension;
+            set => SetProperty(ref _selectedVideoExtension, value);
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace RenameIt.ViewModels
         /// </summary>
         public string SelectedSubtitleExtension
         {
-            get { return _selectedSubtitleExtension; }
-            set { SetProperty(ref _selectedSubtitleExtension, value, nameof(SelectedSubtitleExtension)); }
+            get => _selectedSubtitleExtension;
+            set => SetProperty(ref _selectedSubtitleExtension, value);
         }
 
         /// <summary>
@@ -62,8 +62,8 @@ namespace RenameIt.ViewModels
         /// </summary>
         public string VideoExtensionTextBoxText
         {
-            get { return _videoExtensionTextBoxText; }
-            set { SetProperty(ref _videoExtensionTextBoxText, value, nameof(VideoExtensionTextBoxText)); }
+            get => _videoExtensionTextBoxText;
+            set => SetProperty(ref _videoExtensionTextBoxText, value);
         }
 
         /// <summary>
@@ -71,8 +71,8 @@ namespace RenameIt.ViewModels
         /// </summary>
         public string SubtitleExtensionTextBoxText
         {
-            get { return _subtitleExtensionTextBoxText; }
-            set { SetProperty(ref _subtitleExtensionTextBoxText, value, nameof(SubtitleExtensionTextBoxText)); }
+            get => _subtitleExtensionTextBoxText;
+            set => SetProperty(ref _subtitleExtensionTextBoxText, value);
         }
 
         /// <summary>
@@ -80,8 +80,8 @@ namespace RenameIt.ViewModels
         /// </summary>
         public ObservableCollection<string> VideoExtensionsList
         {
-            get { return _videoExtensionsList; }
-            set { SetProperty(ref _videoExtensionsList, value, nameof(VideoExtensionsList)); }
+            get => _videoExtensionsList;
+            set => SetProperty(ref _videoExtensionsList, value);
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace RenameIt.ViewModels
         /// </summary>
         public ObservableCollection<string> SubtitleExtensionsList
         {
-            get { return _subtitleExtensionsList; }
-            set { SetProperty(ref _subtitleExtensionsList, value, nameof(SubtitleExtensionsList)); }
+            get => _subtitleExtensionsList;
+            set => SetProperty(ref _subtitleExtensionsList, value);
         }
         #endregion
 

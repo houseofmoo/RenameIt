@@ -9,8 +9,8 @@ namespace Common.Commands
     class RelayCommand<T> : ICommand
     {
         #region fields
-        private readonly Action<T> _execute = null;
-        private readonly Predicate<T> _canExecute = null;
+        private readonly Action<T> _action = null;
+        private readonly Func<T, bool> _canExecuteAction = null;
         #endregion
 
         #region constructors
@@ -24,15 +24,15 @@ namespace Common.Commands
         /// <summary>
         /// Creates a new command.
         /// </summary>
-        /// <param name="execute">The execution logic.</param>
-        /// <param name="canExecute">The execution status logic.</param>
-        public RelayCommand(Action<T> execute, Predicate<T> canExecute)
+        /// <param name="action">The execution logic.</param>
+        /// <param name="canExecuteAction">The execution status logic.</param>
+        public RelayCommand(Action<T> action, Func<T, bool> canExecuteAction)
         {
-            if (execute == null)
+            if (action == null)
                 throw new ArgumentNullException("execute", "execute parameter cannot be null");
 
-            this._execute = execute;
-            this._canExecute = canExecute;
+            this._action = action;
+            this._canExecuteAction = canExecuteAction;
         }
         #endregion
 
@@ -44,7 +44,7 @@ namespace Common.Commands
         ///<returns>True if this command can be executed; otherwise, false</returns>
         public bool CanExecute(object parameter)
         {
-            return this._canExecute == null || this._canExecute((T)parameter);
+            return this._canExecuteAction == null || this._canExecuteAction((T)parameter);
         }
 
         ///<summary>
@@ -62,7 +62,7 @@ namespace Common.Commands
         ///<param name="parameter">Data used by the command. If the command does not require data to be passed, this object can be set to <see langword="null" />.</param>
         public void Execute(object parameter)
         {
-            this._execute((T)parameter);
+            this._action((T)parameter);
         }
         #endregion
     }
